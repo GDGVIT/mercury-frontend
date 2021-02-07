@@ -33,15 +33,15 @@
 ## Running
 
 
-< directions to install > 
+Directions to install
 ```bash
-< insert code >
+npm install
 ```
 
-< directions to execute >
+Directions to execute
 
 ```bash
-< insert code >
+npm start
 ```
 
 ## Contributors
