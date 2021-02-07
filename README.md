@@ -2,8 +2,8 @@
 <a href="https://dscvit.com">
 	<img src="https://user-images.githubusercontent.com/30529572/92081025-fabe6f00-edb1-11ea-9169-4a8a61a5dd45.png" alt="DSC VIT"/>
 </a>
-	<h2 align="center"> < Mercury Mailer > </h2>
-	<h4 align="center"> < Website for sending emails easily with beautiful templates in bulk > <h4>
+	<h2 align="center"> Mercury Mailer </h2>
+	<h4 align="center"> Website for sending emails easily with beautiful templates in bulk <h4>
 </p>
 
 ---
@@ -15,13 +15,13 @@
 
 
 ## Features
-- [ ]  < Seperate links for sending static mails and dynamic mails >
-- [ ]  < Input for CSV file containing email IDs and related indformation >
-- [ ]  < UI to input email subject, images, and email body >
-- [ ]  < Rich-Text Editor for entering content >
-- [ ]  < Sending MJML template code to Backend >
-- [ ]  < UI to change footer content >
-- [ ]  < Preview of the email >
+- [ ]  Seperate links for sending static mails and dynamic mails
+- [ ]  Input for CSV file containing email IDs and related indformation
+- [ ]  UI to input email subject, images, and email body
+- [ ]  Rich-Text Editor for entering content
+- [ ]  Sending MJML template code to Backend
+- [ ]  UI to change footer content
+- [ ]  Preview of the email
 
 <br>
 
@@ -49,7 +49,7 @@
 <table>
 	<tr align="center">
 		<td>
-		John Doe
+		Sricharan Ramesh
 		<p align="center">
 			<img src = "https://dscvit.com/images/dsc-logo-square.svg" width="150" height="150" alt="Sricharan Ramesh (Insert Your Image Link In Src">
 		</p>
