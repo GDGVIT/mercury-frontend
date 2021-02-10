@@ -2,8 +2,8 @@
 <a href="https://dscvit.com">
 	<img src="https://user-images.githubusercontent.com/30529572/92081025-fabe6f00-edb1-11ea-9169-4a8a61a5dd45.png" alt="DSC VIT"/>
 </a>
-	<h2 align="center"> < Insert Project Title Here > </h2>
-	<h4 align="center"> < Insert Project Description Here > <h4>
+	<h2 align="center"> Mercury Mailer </h2>
+	<h4 align="center"> Website for sending emails easily with beautiful templates in bulk <h4>
 </p>
 
 ---
@@ -15,10 +15,13 @@
 
 
 ## Features
-- [ ]  < feature >
-- [ ]  < feature >
-- [ ]  < feature >
-- [ ]  < feature >
+- [ ]  Seperate links for sending static mails and dynamic mails
+- [ ]  Input for CSV file containing email IDs and related indformation
+- [ ]  UI to input email subject, images, and email body
+- [ ]  Rich-Text Editor for entering content
+- [ ]  Sending MJML template code to Backend
+- [ ]  UI to change footer content
+- [ ]  Preview of the email
 
 <br>
 
@@ -30,15 +33,15 @@
 ## Running
 
 
-< directions to install > 
+Directions to install
 ```bash
-< insert code >
+npm install
 ```
 
-< directions to execute >
+Directions to execute
 
 ```bash
-< insert code >
+npm start
 ```
 
 ## Contributors
@@ -46,15 +49,15 @@
 <table>
 	<tr align="center">
 		<td>
-		John Doe
+		Sricharan Ramesh
 		<p align="center">
-			<img src = "https://dscvit.com/images/dsc-logo-square.svg" width="150" height="150" alt="Your Name Here (Insert Your Image Link In Src">
+			<img src = "https://dscvit.com/images/dsc-logo-square.svg" width="150" height="150" alt="Sricharan Ramesh (Insert Your Image Link In Src">
 		</p>
 			<p align="center">
-				<a href = "https://github.com/person1">
+				<a href = "https://github.com/Cha195">
 					<img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36" alt="GitHub"/>
 				</a>
-				<a href = "https://www.linkedin.com/in/person1">
+				<a href = "https://www.linkedin.com/in/sricharan-ramesh-33296318b">
 					<img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36" alt="LinkedIn"/>
 				</a>
 			</p>
