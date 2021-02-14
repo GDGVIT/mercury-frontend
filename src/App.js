@@ -1,14 +1,14 @@
-import './App.css';
-import ContentEditor from "./Components/Editor";
+import './App.css'
+import ContentEditor from './Components/Editor'
 import DataUpload from './Components/DataUpload'
 
-function App() {
+function App () {
   return (
-    <div className="">
+    <div>
       <ContentEditor />
       <DataUpload />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
