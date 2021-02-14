@@ -1,12 +1,20 @@
 import './App.css'
-import ContentEditor from './Components/Editor'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import DataUpload from './Components/DataUpload'
+import ContentEditor from './Components/Editor'
 
 function App () {
   return (
     <div>
-      <ContentEditor />
-      <DataUpload />
+      <BrowserRouter>
+        <Switch>
+          <Route path='/' exact component={DataUpload} />
+          <Route
+            path='/mail'
+            component={ContentEditor}
+          />
+        </Switch>
+      </BrowserRouter>
     </div>
   )
 }

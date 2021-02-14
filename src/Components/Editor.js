@@ -3,10 +3,9 @@ import { EditorState, convertToRaw } from 'draft-js'
 import Editor from '@draft-js-plugins/editor'
 import createMentionPlugin, { defaultSuggestionsFilter } from '@draft-js-plugins/mention'
 import editorStyles from './editorStyles.module.css'
-import mentions from './mentions'
 import '@draft-js-plugins/mention/lib/plugin.css'
 
-const ContentEditor = () => {
+const ContentEditor = (props) => {
   const ref = useRef(null)
 
   const [editorState, setEditorState] = useState(() =>
@@ -14,7 +13,7 @@ const ContentEditor = () => {
   )
 
   const [open, setOpen] = useState(true)
-  const [suggestions, setSuggestions] = useState(mentions)
+  const [suggestions, setSuggestions] = useState(props.location.state.headers)
 
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin()
@@ -28,7 +27,7 @@ const ContentEditor = () => {
   }, [])
 
   const onSearchChange = useCallback(({ value }) => {
-    setSuggestions(defaultSuggestionsFilter(value, mentions))
+    setSuggestions(defaultSuggestionsFilter(value, props.location.state.headers))
   }, [])
 
   const onExtractData = () => {
@@ -39,6 +38,7 @@ const ContentEditor = () => {
 
   return (
     <div>
+      <h1>Edit mails dynamically!</h1>
       <div className={editorStyles.editor} onClick={() => ref.current.focus()}>
         <Editor
           editorKey='editor'
