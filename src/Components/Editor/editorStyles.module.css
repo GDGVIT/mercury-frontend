@@ -4,11 +4,10 @@
   cursor: text;
   padding: 16px;
   border-radius: 2px;
-  margin-bottom: 2em;
   box-shadow: inset 0 1px 8px -3px #ababab;
   background: #fefefe;
-}
-
-.editor :global(.public-DraftEditor-content) {
+  margin: 20px auto;
   min-height: 140px;
+  max-width: 1200px;
+  text-align: start;
 }

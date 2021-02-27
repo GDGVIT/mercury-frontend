@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import CSVReader from 'react-csv-reader'
 import './DataUpload.css'
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const DataUpload = () => {
+  const history = useHistory()
   const [headerData, setHeaderData] = useState([])
-  const [headerBool, setHeaderBool] = useState(false)
   const [buttonBool, setButtonBool] = useState(false)
 
   const getHeaders = (data) => {
@@ -20,7 +20,7 @@ const DataUpload = () => {
     transformHeader: header => header.toLowerCase().replace(/\W/g, '_')
   }
 
-  const handleForce = (data, fileInfo) => {
+  const handleForce = (data) => {
     console.log(data)
     const headers = getHeaders(data)
     let id = 0
@@ -41,20 +41,14 @@ const DataUpload = () => {
   }
 
   const handleNext = () => {
-    setHeaderBool(true)
+    history.push({
+      pathname: '/mail',
+      state: { headers: headerData }
+    })
   }
 
   return (
     <div>
-      {
-        headerBool &&
-          <Redirect
-            to={{
-              pathname: '/mail',
-              state: { headers: headerData }
-            }}
-          />
-      }
       <div className='container'>
         <CSVReader
           cssClass='react-csv-input'
