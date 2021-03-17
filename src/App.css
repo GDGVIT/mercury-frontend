@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Metropolis';
+  src: url('/src/assets/fonts/Metropolis-Regular.otf');
+}
+
 body {
   margin: 0;
+  font-family: 'Metropolis';
 }

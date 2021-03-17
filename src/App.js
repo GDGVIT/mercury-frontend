@@ -4,13 +4,22 @@ import DataUpload from './Components/DataUpload/DataUpload'
 import ContentEditor from './Components/Editor/Editor'
 import MJMLRender from './Components/MJMLRender'
 import Footer from './Components/Footer/Footer'
+import Login from './Components/Landing/Landing'
 
 function App () {
   return (
     <div>
       <BrowserRouter>
         <Switch>
-          <Route path='/' exact component={DataUpload} />
+          <Route
+            exact
+            path='/'
+            component={Login}
+          />
+          <Route
+            path='/csv'
+            component={DataUpload}
+          />
           <Route
             path='/mail'
             component={ContentEditor}

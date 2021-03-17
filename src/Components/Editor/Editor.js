@@ -87,9 +87,9 @@ const ContentEditor = (props) => {
       <div className='container'>
         <h1>Edit mails dynamically!</h1>
         <div style={{ width: '100%', textAlign: 'center' }}>
-          <input type='text' id='subject' placeholder='Subject' style={{ width: '50%' }} />
+          <input label='subject' type='text' id='subject' placeholder='Subject' style={{ width: '50%' }} />
         </div>
-        <input type='file' id='image' name='filename' style={{ margin: '50px' }} onChange={onFileChange} />
+        <input label='image' type='file' id='image' name='filename' style={{ margin: '50px' }} onChange={onFileChange} />
         <div className={editorStyles.editor} onClick={() => ref.current.focus()} style={{ width: '100%' }}>
           <Editor
             editorKey='editor'
