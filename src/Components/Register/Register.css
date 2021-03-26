@@ -1,0 +1,67 @@
+.register-content {
+  position: absolute;
+  margin-top: 50px;
+  left: 60%;
+  width: 35%;
+}
+  
+.register-content h1 {
+  font-size: 300%;
+  font-weight: 700;
+  font-family: 'Metropolis-bold', sans-serif;
+}
+
+.register-content h4 {
+  margin-top: 20px;
+  font-size: 120%;
+  font-weight: 400;
+  font-family: 'Metropolis-regular', sans-serif;
+}
+
+.register-content a {
+  text-decoration: none;
+  color: rgb(66, 158, 243);
+}
+
+.register-content .form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.register-content .text-input {
+  padding: 10px;
+  width: 90%;
+  border-radius: 15px;
+  font-family: 'Roboto-regular', sans-serif;
+  font-weight: 200;
+  font-size: 100%;
+  margin-top: 20px;
+}
+
+.register-content .radio-input {
+  margin-top: 20px;
+  margin-right: 5px;
+  border: 1px solid black;
+}
+
+.register-content .form button {
+  text-decoration: none;
+  border: none;
+  width: 90%;
+  padding: 10px 20px;
+  background: #4285f4;
+  border-radius: 25px;
+  color: white;
+  font-size: 30px;
+  margin-top: 30px;
+  box-shadow: 1px 2px 2px #888;
+}
+
+.register-background {
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 40%;
+}

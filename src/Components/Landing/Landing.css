@@ -1,72 +1,164 @@
 * {
-    margin: 0;
+  margin: 0;
 }
-
-@font-face {
-    font-family: 'Metropolis';
-    src: url('../../assets/fonts/Metropolis-Bold.otf');
-}
-
-/* body {
-    height: 100vh;
-    overflow: hidden;
-} */
 
 .header {
-    margin: 30px 0;
+  padding: 30px 0;
+  box-shadow:  0 10px 10px -10px #ccc;
+  z-index: 9;
 }
 
 .title {
-    margin-left: 30px;
-    margin-bottom: 20px;
-    font-family: 'Metropolis';
-}
-
-.line {
-    display: block;
-    width: 99%;
-    border-top: 2px solid #C8C6C6;
-    margin: auto;
+  margin-left: 30px;
+  font-family: 'Metropolis-bold', sans-serif;
 }
 
 .body {
-    width: 100vw;
-    padding-left: 50px;
-    position: relative;
+  margin-top: 50px;
+  width: 100vw;
+  margin-left: 50px;
+  position: relative;
 }
 
 .content {
-    font-size: 5.2em;
-    font-weight: 300;
-    font-family: 'Metropolis';
-    width: 67%;
+  font-size: 400%;
+  font-weight: 300;
+  font-family: 'Metropolis-bold', sans-serif;
+  width: 67%;
 }
 
 .buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 30%;
-    padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  padding-top: 50px;
+  margin-left: 50px;
 }
 
 .buttons a {
-    text-decoration: none;
-    padding: 15px 60px;
-    font-size: 1.5em;
-    color: white;
-    margin-top: 30px;
-    border-radius: 25px;
-    box-shadow: 1px 2px 2px #888888;
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 60px;
+  font-size: 1.5em;
+  font-family: 'Metropolis-bold', sans-serif;
+  margin-top: 30px;
+  border-radius: 25px;
+  width: 100%;
+  border: 2px solid #4285F4
 }
 
 .background img {
-    z-index: -1;
+  z-index: -1;
 }
 
 .desktop img {
+  position: absolute;
+  right: -5%;
+  bottom: -50%;
+  width: 45%;
+}
+
+.yellow {
+  position: absolute;
+  right: 0;
+  bottom: 10%;
+  width: 15%;
+
+}
+
+.red {
+  position: absolute;
+  right: 10%;
+  bottom: 0;
+  width: 40%;
+}
+
+.green {
+  position: absolute;
+  right: 0;
+  top: 10%;
+  width: 15%;
+}
+
+@media only screen and (max-width: 1100px) {
+  .yellow {
+    position: absolute;
+    right: 0;
+    bottom: 10%;
+    width: 20%;
+  }
+
+  .red {
+    position: absolute;
+    right: 10%;
+    bottom: 0;
+    width: 40%;
+  }
+
+  .green {
+    position: absolute;
+    right: 0;
+    bottom: 15%;
+    width: 20%;
+  }
+
+  .desktop img {
     position: absolute;
     right: 5%;
-    bottom: -50%;
+    bottom: -40%;
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 780px) {
+  .body {
+    margin: 0;
+  }
+
+  .content {
+    font-size: 250%;
+  }
+
+  .buttons {
+    text-align: center;
+    margin: 0;
+    width: 100%;
+  }
+
+  .buttons a {
+    width: 75%;
+    max-width: 300px;
+  }
+
+  .content {
+    margin: 50px auto;
+    text-align: center;
+  }
+
+  .yellow {
+    position: absolute;
+    left: 0;
+    bottom: 10%;
+    width: 30%;
+    transform: scaleX(-1);
+  }
+
+  .green {
+    position: absolute;
+    right: 0;
+    bottom: 0;
     width: 40%;
+  }
+
+  .red {
+    position: absolute;
+    right: 10%;
+    bottom: 0;
+    width: 80%;
+  }
+
+  .desktop img {
+    display: none;
+  }
 }

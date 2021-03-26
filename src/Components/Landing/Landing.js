@@ -8,24 +8,24 @@ import Yellow from '../../assets/yellow.svg'
 
 const Landing = () => {
   return (
-    <>
+    <div style={{ height: '100vh', overflow: 'hidden' }}>
+      <div className='background'>
+        <img alt='red' className='red' src={Red} />
+        <img alt='green' className='green' src={Green} style={{ bottom: '15%' }} />
+        <img alt='yellow' className='yellow' src={Yellow} />
+      </div>
       <Header />
       <div className='body'>
-        <h1 className='content'>BULK MAILING MADE EFFORTLESS</h1>
+        <h1 className='content'>BULK MAILING MADE EFFORTLESS!</h1>
         <div className='buttons'>
-          <a href='/login' style={{ background: '#4285F4' }}>SIGN IN</a>
-          <a href='/register' style={{ background: '#D5D4D4' }}>SIGN UP</a>
+          <a href='/login' style={{ background: '#4285F4', color: 'white' }}>Login</a>
+          <a href='/register' style={{ background: 'white', color: '#4285F4' }}>Register</a>
         </div>
         <div className='desktop'>
           <img alt='desktop' src={Desktop} />
         </div>
       </div>
-      <div className='background'>
-        <img alt='red' style={{ position: 'absolute', right: '10%', bottom: '0', width: '40%' }} src={Red} />
-        <img alt='green' style={{ position: 'absolute', right: '0', top: '10%', width: '15%' }} src={Green} />
-        <img alt='yellow' style={{ position: 'absolute', right: '0', bottom: '10%', width: '15%' }} src={Yellow} />
-      </div>
-    </>
+    </div>
   )
 }
 

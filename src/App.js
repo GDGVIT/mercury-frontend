@@ -2,36 +2,34 @@ import './App.css'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import DataUpload from './Components/DataUpload/DataUpload'
 import ContentEditor from './Components/Editor/Editor'
-import MJMLRender from './Components/MJMLRender'
 import Footer from './Components/Footer/Footer'
-import Login from './Components/Landing/Landing'
+import Landing from './Components/Landing/Landing'
+import Login from './Components/Login/Login'
+import Register from './Components/Register/Register'
 
 function App () {
   return (
     <div>
       <BrowserRouter>
         <Switch>
-          <Route
-            exact
-            path='/'
-            component={Login}
-          />
-          <Route
-            path='/csv'
-            component={DataUpload}
-          />
-          <Route
-            path='/mail'
-            component={ContentEditor}
-          />
-          <Route
-            path='/template'
-            component={MJMLRender}
-          />
-          <Route
-            path='/footer'
-            component={Footer}
-          />
+          <Route exact path='/'>
+            <Landing />
+          </Route>
+          <Route path='/login'>
+            <Login />
+          </Route>
+          <Route path='/register'>
+            <Register />
+          </Route>
+          <Route path='/csv'>
+            <DataUpload />
+          </Route>
+          <Route path='/mail'>
+            <ContentEditor />
+          </Route>
+          <Route path='/footer'>
+            <Footer />
+          </Route>
         </Switch>
       </BrowserRouter>
     </div>

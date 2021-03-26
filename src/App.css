@@ -1,9 +1,19 @@
 @font-face {
-  font-family: 'Metropolis';
+  font-family: 'Metropolis-regular';
   src: url('/src/assets/fonts/Metropolis-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Metropolis-bold';
+  src: url('/src/assets/fonts/Metropolis-Bold.otf');
+}
+
+@font-face {
+  font-family: 'Roboto-regular';
+  src: url('/src/assets/fonts/Roboto-Regular.ttf');
 }
 
 body {
   margin: 0;
-  font-family: 'Metropolis';
+  font-family: 'Metropolis', sans-serif;
 }
