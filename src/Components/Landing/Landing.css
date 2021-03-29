@@ -4,20 +4,25 @@
 
 .header {
   padding: 30px 0;
-  box-shadow:  0 10px 10px -10px #ccc;
+  box-shadow: 0 10px 10px -10px #ccc;
   z-index: 9;
 }
 
 .title {
-  margin-left: 30px;
+  margin: 0 30px;
   font-family: 'Metropolis-bold', sans-serif;
 }
 
 .body {
-  margin-top: 50px;
+  position: relative;
+  height: calc(100% - 92px);
+  overflow: hidden;
+}
+
+.content-body {
+  padding-top: 50px;
   width: 100vw;
   margin-left: 50px;
-  position: relative;
 }
 
 .content {
@@ -45,120 +50,157 @@
   margin-top: 30px;
   border-radius: 25px;
   width: 100%;
-  border: 2px solid #4285F4
+  border: 2px solid #4285f4;
 }
 
-.background img {
-  z-index: -1;
-}
-
-.desktop img {
+.desktop {
   position: absolute;
   right: -5%;
-  bottom: -50%;
+  bottom: 10%;
   width: 45%;
 }
 
 .yellow {
+  z-index: -1;
   position: absolute;
   right: 0;
-  bottom: 10%;
-  width: 15%;
-
+  bottom: 0;
+  width: 25%;
 }
 
 .red {
+  z-index: -1;
   position: absolute;
-  right: 10%;
+  right: 17%;
   bottom: 0;
-  width: 40%;
+  width: 50%;
 }
 
 .green {
+  z-index: -1;
   position: absolute;
   right: 0;
-  top: 10%;
-  width: 15%;
+  bottom: 65%;
+  width: 20%;
 }
 
-@media only screen and (max-width: 1100px) {
-  .yellow {
-    position: absolute;
-    right: 0;
-    bottom: 10%;
-    width: 20%;
-  }
-
-  .red {
-    position: absolute;
-    right: 10%;
-    bottom: 0;
-    width: 40%;
-  }
-
-  .green {
-    position: absolute;
-    right: 0;
-    bottom: 15%;
-    width: 20%;
-  }
-
-  .desktop img {
-    position: absolute;
-    right: 5%;
-    bottom: -40%;
-    width: 50%;
-  }
-}
-
-@media only screen and (max-width: 780px) {
+@media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
   .body {
+    min-height: 1000px;
+    overflow: scroll;
+  }
+
+  .content-body {
+    padding: 0 50px;
     margin: 0;
   }
 
   .content {
-    font-size: 250%;
+    width: 100%;
+    padding-top: 30px;
+    margin: 50px 0;
+    font-size: 300%;
+    text-align: center;
   }
 
   .buttons {
-    text-align: center;
-    margin: 0;
-    width: 100%;
-  }
-
-  .buttons a {
-    width: 75%;
-    max-width: 300px;
-  }
-
-  .content {
-    margin: 50px auto;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    padding: 0 50px;
+    max-width: 750px;
   }
 
   .yellow {
     position: absolute;
     left: 0;
-    bottom: 10%;
-    width: 30%;
+    bottom: 25%;
+    width: 40%;
     transform: scaleX(-1);
+  }
+
+  .red {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
   }
 
   .green {
     position: absolute;
     right: 0;
-    bottom: 0;
+    bottom: 40%;
+    width: 50%;
+  }
+
+  .desktop {
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    width: 70%;
+  }
+}
+
+@media only screen and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+  .title {
+    margin-left: 35%;
+  }
+
+  .body {
+    min-height: 1000px;
+    overflow: scroll;
+  }
+
+  .content-body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .content {
+    width: 100%;
+    padding-top: 30px;
+    margin: 50px 0;
+    font-size: 250%;
+    text-align: center;
+  }
+
+  .buttons {
+    padding-top: 10px;
+    text-align: center;
+    margin: 0;
+    width: 750%;
+  }
+
+  .buttons a {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .yellow {
+    position: absolute;
+    left: 0;
+    bottom: 15%;
     width: 40%;
+    transform: scaleX(-1);
+  }
+
+  .green {
+    position: absolute;
+    bottom: 30%;
+    width: 50%;
   }
 
   .red {
     position: absolute;
-    right: 10%;
+    right: -10%;
     bottom: 0;
-    width: 80%;
+    width: 100%;
   }
 
-  .desktop img {
+  .desktop {
     display: none;
   }
 }
