@@ -3,6 +3,12 @@
   width: 100vw;
 }
 
+.login-body { 
+  margin-left: 100px;
+  width: 40%;
+  max-width: 500px;
+}
+
 .login-content {
   margin-top: 50px;
 }
@@ -48,6 +54,10 @@
   border: 1px solid black;
 }
 
+.showPassword {
+  font-size: 150%;
+}
+
 .form button {
   text-decoration: none;
   border: none;
@@ -59,6 +69,7 @@
   color: white;
   font-size: 30px;
   margin-top: 30px;
+  margin-bottom: 40px;
   box-shadow: 1px 2px 2px #888;
 }
 
@@ -69,8 +80,65 @@
   width: 40%;
 }
 
-@media only screen and (max-width: 1100px) {
-  .login-content {
+@media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
+  .login {
+    margin: 0;
+  }
+
+  .login-body {
     width: 100%;
+    margin: auto;
+    text-align: center;
+  }
+
+  .showPassword {
+    font-size: 150%;
+  }
+
+  .login-content h1 {
+    font-size: 400%;
+  }
+
+  .form button {
+    font-size: 40px;
+  }
+
+  .text-input {
+    font-size: 150%;
+  }
+
+  .login-content h4 {
+    font-size: 150%;
+  }
+
+  .login-background {
+    top: 100%;
+    width: 70%;
+    right: 15%
+  }
+}
+
+@media only screen and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+  .login {
+    margin: 0;
+  }
+
+  .login-body {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+  }
+
+  .login-content {
+    width: 90%;
+    text-align: start;
+  }
+
+  .login-background {
+    top: 100%;
+    width: 70%;
+    right: 15%
   }
 }

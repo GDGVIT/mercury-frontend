@@ -86,8 +86,8 @@
 
 @media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
   .body {
-    min-height: 1000px;
-    overflow: scroll;
+    min-height: 930px;
+    overflow: hidden;
   }
 
   .content-body {
@@ -110,6 +110,7 @@
     width: 90%;
     padding: 0 50px;
     max-width: 750px;
+    margin: auto;
   }
 
   .yellow {
@@ -146,12 +147,7 @@
   and (max-device-width: 812px)
   and (-webkit-min-device-pixel-ratio: 3) {
   .title {
-    margin-left: 35%;
-  }
-
-  .body {
-    min-height: 1000px;
-    overflow: scroll;
+    margin-left: 20%;
   }
 
   .content-body {
@@ -170,8 +166,8 @@
   .buttons {
     padding-top: 10px;
     text-align: center;
-    margin: 0;
-    width: 750%;
+    margin: auto;
+    width: 75%;
   }
 
   .buttons a {
