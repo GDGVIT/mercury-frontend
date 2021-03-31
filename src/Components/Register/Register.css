@@ -1,8 +1,17 @@
+.register {
+  position: relative;
+  width: 100vw;
+}
+
+.register-body {
+  float: right;
+  margin-right: 100px;
+  width: 40%;
+  max-width: 500px;
+}
+
 .register-content {
-  position: absolute;
   margin-top: 50px;
-  left: 60%;
-  width: 35%;
 }
 
 .register-content h1 {
@@ -11,28 +20,21 @@
   font-family: 'Metropolis-bold', sans-serif;
 }
 
-.register-content h4 {
-  margin-top: 20px;
-  font-size: 120%;
-  font-weight: 400;
-  font-family: 'Metropolis-regular', sans-serif;
-}
-
 .register-content a {
   text-decoration: none;
   color: rgb(66, 158, 243);
 }
 
-.register-content .form {
-  margin-top: 30px;
+.register-form {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.register-content .text-input {
+.text-input {
   padding: 10px;
-  width: 90%;
+  width: 100%;
   border-radius: 15px;
   font-family: 'Roboto-regular', sans-serif;
   font-weight: 200;
@@ -40,22 +42,28 @@
   margin-top: 20px;
 }
 
-.register-content .radio-input {
+.radio-input {
   margin-top: 20px;
   margin-right: 5px;
   border: 1px solid black;
 }
 
-.register-content .form button {
+.showPassword {
+  font-size: 120%;
+}
+
+.register-form button {
   text-decoration: none;
   border: none;
-  width: 90%;
-  padding: 10px 20px;
+  width: 100%;
+  padding: 10px 15px;
   background: #4285f4;
   border-radius: 25px;
+  font-family: 'Metropolis-bold', sans-serif;
   color: white;
   font-size: 30px;
   margin-top: 30px;
+  margin-bottom: 40px;
   box-shadow: 1px 2px 2px #888;
 }
 
@@ -64,4 +72,71 @@
   top: 10%;
   left: 5%;
   width: 40%;
+}
+
+@media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
+  .register {
+    margin: 0;
+  }
+
+  .register-body {
+    float: none;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+  }
+
+  .radio {
+    margin-top: 15px;
+    font-size: 150%;
+    text-align: start;
+  }
+
+  .register-content h1 {
+    font-size: 400%;
+  }
+
+  .register-form button {
+    font-size: 40px;
+  }
+
+  .text-input {
+    font-size: 150%;
+  }
+
+  .register-background {
+    top: 100%;
+    width: 70%;
+    left: 15%;
+  }
+}
+
+@media only screen and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+  .register {
+    margin: 0;
+  }
+
+  .register-body {
+    float: none;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+  }
+
+  .radio {
+    text-align: start;
+  }
+
+  .register-content {
+    width: 90%;
+    text-align: center;
+  }
+
+  .register-background {
+    top: 100%;
+    width: 50%;
+    left: 25%;
+  }
 }
