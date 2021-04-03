@@ -11,11 +11,12 @@
 .title {
   margin: 0 30px;
   font-family: 'Metropolis-bold', sans-serif;
+  font-size: 150%;
 }
 
 .body {
   position: relative;
-  height: calc(100% - 92px);
+  height: calc(100% - 84px);
   overflow: hidden;
 }
 
