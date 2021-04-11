@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState, Component } from 'react'
 import { EditorState, convertToRaw, RichUtils, Modifier } from 'draft-js'
 import Editor, { composeDecorators } from '@draft-js-plugins/editor'
 import createMentionPlugin, { defaultSuggestionsFilter } from '@draft-js-plugins/mention'
@@ -8,10 +8,85 @@ import createFocusPlugin from '@draft-js-plugins/focus'
 import createResizeablePlugin from '@draft-js-plugins/resizeable'
 import createBlockDndPlugin from '@draft-js-plugins/drag-n-drop'
 import createDragNDropUploadPlugin from '@draft-js-plugins/drag-n-drop-upload'
+import createToolbarPlugin, { Separator } from '@draft-js-plugins/static-toolbar'
+import {
+  ItalicButton,
+  BoldButton,
+  UnderlineButton,
+  CodeButton,
+  HeadlineOneButton,
+  HeadlineTwoButton,
+  HeadlineThreeButton,
+  UnorderedListButton,
+  OrderedListButton,
+  BlockquoteButton,
+  CodeBlockButton,
+} from '@draft-js-plugins/buttons'
 import editorStyles from './editorStyles.module.css'
 import mockUpload from './mockUpload'
 import '@draft-js-plugins/alignment/lib/plugin.css'
+import '@draft-js-plugins/static-toolbar/lib/plugin.css'
 import { useHistory, useLocation, Redirect } from 'react-router-dom'
+
+class HeadlinesPicker extends Component {
+  componentDidMount() {
+    setTimeout(() => {
+      window.addEventListener('click', this.onWindowClick);
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.onWindowClick);
+  }
+
+  onWindowClick = () => {
+    this.props.onOverrideContent(undefined);
+  }
+
+  render() {
+    const buttons = [HeadlineOneButton, HeadlineTwoButton, HeadlineThreeButton];
+    return (
+      <div>
+        {buttons.map((Button, i) => (
+          <Button key={i} {...this.props} />
+        ))}
+      </div>
+    );
+  }
+}
+
+class HeadlinesButton extends Component {
+  onClick = () =>
+    // A button can call `onOverrideContent` to replace the content
+    // of the toolbar. This can be useful for displaying sub
+    // menus or requesting additional information from the user.
+    this.props.onOverrideContent(HeadlinesPicker);
+
+  render() {
+    return (
+      <div className={editorStyles.headlineButtonWrapper}>
+        <button onClick={this.onClick} className={editorStyles.headlineButton}>
+          H
+        </button>
+      </div>
+    );
+  }
+}
+
+class ColorsButton extends Component {
+  onClick = () =>
+    this.props.onOverrideContent(ColorControls);
+
+  render() {
+    return (
+      <div className={editorStyles.headlineButtonWrapper}>
+        <button onClick={this.onClick} className={editorStyles.colorsButton}>
+          Color
+        </button>
+      </div>
+    );
+  }
+}
 
 const StyleButton = (props) => {
   function handleToggle (e) {
@@ -93,8 +168,6 @@ const ColorControls = (props) => {
   )
 }
 
-// This object provides the styling information for our custom color
-// styles.
 const colorStyleMap = {
   red: {
     color: 'rgba(255, 0, 0, 1.0)'
@@ -119,6 +192,27 @@ const colorStyleMap = {
   }
 }
 
+const focusPlugin = createFocusPlugin()
+const resizeablePlugin = createResizeablePlugin()
+const blockDndPlugin = createBlockDndPlugin()
+const alignmentPlugin = createAlignmentPlugin()
+const toolbarPlugin = createToolbarPlugin()
+const { Toolbar } = toolbarPlugin
+const { AlignmentTool } = alignmentPlugin
+
+const decorator = composeDecorators(
+  resizeablePlugin.decorator,
+  alignmentPlugin.decorator,
+  focusPlugin.decorator,
+  blockDndPlugin.decorator
+)
+const imagePlugin = createImagePlugin({ decorator })
+
+const dragNDropFileUploadPlugin = createDragNDropUploadPlugin({
+  handleUpload: mockUpload,
+  addImage: imagePlugin.addImage
+})
+
 const ContentEditor = () => {
   let headers
   const location = useLocation()
@@ -126,25 +220,6 @@ const ContentEditor = () => {
   const history = useHistory()
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
   const [open, setOpen] = useState(true)
-
-  const focusPlugin = createFocusPlugin()
-  const resizeablePlugin = createResizeablePlugin()
-  const blockDndPlugin = createBlockDndPlugin()
-  const alignmentPlugin = createAlignmentPlugin()
-  const { AlignmentTool } = alignmentPlugin
-
-  const decorator = composeDecorators(
-    resizeablePlugin.decorator,
-    alignmentPlugin.decorator,
-    focusPlugin.decorator,
-    blockDndPlugin.decorator
-  )
-  const imagePlugin = createImagePlugin({ decorator })
-
-  const dragNDropFileUploadPlugin = createDragNDropUploadPlugin({
-    handleUpload: mockUpload,
-    addImage: imagePlugin.addImage
-  })
 
   const { MentionSuggestions, mentionPlugin } = useMemo(() => {
     const mentionPlugin = createMentionPlugin()
@@ -159,7 +234,8 @@ const ContentEditor = () => {
     alignmentPlugin,
     resizeablePlugin,
     imagePlugin,
-    mentionPlugin
+    mentionPlugin,
+    toolbarPlugin
   ]
 
   const [suggestions, setSuggestions] = useState([])
@@ -256,10 +332,8 @@ const ContentEditor = () => {
           <input label='subject' type='text' id='subject' placeholder='Subject' style={{ width: '50%' }} />
         </div>
         <div className={editorStyles.editor} onClick={() => ref.current.focus()} style={{ width: '100%' }}>
-          <ColorControls
-            editorState={editorState}
-            onToggle={toggleColor}
-          />
+          
+          <AlignmentTool />
           <Editor
             editorKey='editor'
             customStyleMap={colorStyleMap}
@@ -270,7 +344,6 @@ const ContentEditor = () => {
             handleKeyCommand={handleKeyCommand}
             style={{ width: '75%' }}
           />
-          <AlignmentTool />
           {/* <ImageAdd
             editorState={editorState}
             onChange={setEditorState}
@@ -285,6 +358,25 @@ const ContentEditor = () => {
               console.log(mention)
             }}
           />
+          <Toolbar className='toolbar'>
+            {
+              // may be use React.Fragment instead of div to improve perfomance after React 16
+              (externalProps) => (
+                <>
+                  <BoldButton {...externalProps} />
+                  <ItalicButton {...externalProps} />
+                  <UnderlineButton {...externalProps} />
+                  <Separator {...externalProps} />
+                  <HeadlinesButton {...externalProps} />
+                  <ColorsButton {...externalProps} onToggle={toggleColor} editorState={editorState} />
+                  <UnorderedListButton {...externalProps} />
+                  <OrderedListButton {...externalProps} />
+                  <BlockquoteButton {...externalProps} />
+                  <CodeBlockButton {...externalProps} />
+                </>
+              )
+            }
+          </Toolbar>
         </div>
         <div>
           <button onClick={() => onExtractData()}>Extract data</button>

@@ -8,7 +8,7 @@
   background: #fefefe;
   margin: 20px auto;
   min-height: 140px;
-  max-width: 1200px;
+  max-width: 1000px;
   text-align: start;
 }
 
@@ -117,4 +117,39 @@
 
 .addImageConfirmButton:active {
   background: #e6e6e6;
+}
+
+.toolbar {
+  bottom: 0;
+}
+
+.headlineButtonWrapper {
+  display: inline-block;
+}
+
+.headlineButton {
+  background: #fbfbfb;
+  color: #888;
+  font-size: 18px;
+  border: 0;
+  padding-top: 5px;
+  vertical-align: bottom;
+  height: 34px;
+  width: 36px;
+}
+
+.colorsButton {
+  background: #fbfbfb;
+  color: #888;
+  font-size: 18px;
+  border: 0;
+  padding-top: 5px;
+  vertical-align: bottom;
+  height: 34px;
+  width: 72px;
+}
+
+.headlineButton:hover,
+.headlineButton:focus {
+  background: #f3f3f3;
 }

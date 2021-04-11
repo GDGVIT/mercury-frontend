@@ -102,6 +102,7 @@
 
   .text-input {
     font-size: 150%;
+    border: 2px solid black;
   }
 
   .register-background {
