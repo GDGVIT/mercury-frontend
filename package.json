@@ -3,14 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@draft-js-plugins/alignment": "^4.1.0",
+    "@draft-js-plugins/drag-n-drop": "^4.1.0",
+    "@draft-js-plugins/drag-n-drop-upload": "^4.1.0",
     "@draft-js-plugins/editor": "^4.1.0",
+    "@draft-js-plugins/focus": "^4.1.0",
+    "@draft-js-plugins/image": "^4.1.0",
     "@draft-js-plugins/mention": "^4.2.0",
+    "@draft-js-plugins/resizeable": "^4.1.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.6.3",
+    "@testing-library/user-event": "^12.7.1",
     "draft-js": "^0.11.7",
+    "mjml": "^4.8.1",
+    "mjml-react": "^1.1.1",
     "react": "^17.0.1",
+    "react-csv-reader": "^3.2.1",
     "react-dom": "^17.0.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "web-vitals": "^1.1.0"
   },
@@ -18,7 +29,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "standard --fix && stylelint --fix \"**/*.css\""
   },
   "eslintConfig": {
     "extends": [
@@ -37,5 +49,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "standard": "^16.0.3",
+    "stylelint": "^13.11.0",
+    "stylelint-config-standard": "^20.0.0"
   }
 }

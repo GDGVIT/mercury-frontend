@@ -26,8 +26,8 @@
 <br>
 
 ## Dependencies
- - < dependency >
- - < dependency >
+ - Draft.js
+ - react-csv-reader
 
 
 ## Running

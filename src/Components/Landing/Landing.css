@@ -1,0 +1,202 @@
+* {
+  margin: 0;
+}
+
+.header {
+  padding: 30px 0;
+  box-shadow: 0 10px 10px -10px #ccc;
+  z-index: 9;
+}
+
+.title {
+  margin: 0 30px;
+  font-family: 'Metropolis-bold', sans-serif;
+}
+
+.body {
+  position: relative;
+  height: calc(100% - 92px);
+  overflow: hidden;
+}
+
+.content-body {
+  padding-top: 50px;
+  width: 100vw;
+  margin-left: 50px;
+}
+
+.content {
+  font-size: 400%;
+  font-weight: 300;
+  font-family: 'Metropolis-bold', sans-serif;
+  width: 67%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  padding-top: 50px;
+  margin-left: 50px;
+}
+
+.buttons a {
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 60px;
+  font-size: 1.5em;
+  font-family: 'Metropolis-bold', sans-serif;
+  margin-top: 30px;
+  border-radius: 25px;
+  width: 100%;
+  border: 2px solid #4285f4;
+}
+
+.desktop {
+  position: absolute;
+  right: -5%;
+  bottom: 10%;
+  width: 45%;
+}
+
+.yellow {
+  z-index: -1;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 25%;
+}
+
+.red {
+  z-index: -1;
+  position: absolute;
+  right: 17%;
+  bottom: 0;
+  width: 50%;
+}
+
+.green {
+  z-index: -1;
+  position: absolute;
+  right: 0;
+  bottom: 65%;
+  width: 20%;
+}
+
+@media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
+  .body {
+    min-height: 930px;
+    overflow: hidden;
+  }
+
+  .content-body {
+    padding: 0 50px;
+    margin: 0;
+  }
+
+  .content {
+    width: 100%;
+    padding-top: 30px;
+    margin: 50px 0;
+    font-size: 300%;
+    text-align: center;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    padding: 0 50px;
+    max-width: 750px;
+    margin: auto;
+  }
+
+  .yellow {
+    position: absolute;
+    left: 0;
+    bottom: 25%;
+    width: 40%;
+    transform: scaleX(-1);
+  }
+
+  .red {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .green {
+    position: absolute;
+    right: 0;
+    bottom: 40%;
+    width: 50%;
+  }
+
+  .desktop {
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    width: 70%;
+  }
+}
+
+@media only screen and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+  .title {
+    margin-left: 20%;
+  }
+
+  .content-body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .content {
+    width: 100%;
+    padding-top: 30px;
+    margin: 50px 0;
+    font-size: 250%;
+    text-align: center;
+  }
+
+  .buttons {
+    padding-top: 10px;
+    text-align: center;
+    margin: auto;
+    width: 75%;
+  }
+
+  .buttons a {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .yellow {
+    position: absolute;
+    left: 0;
+    bottom: 15%;
+    width: 40%;
+    transform: scaleX(-1);
+  }
+
+  .green {
+    position: absolute;
+    bottom: 30%;
+    width: 50%;
+  }
+
+  .red {
+    position: absolute;
+    right: -10%;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .desktop {
+    display: none;
+  }
+}

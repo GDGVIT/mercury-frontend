@@ -1,0 +1,144 @@
+.login {
+  position: relative;
+  width: 100vw;
+}
+
+.login-body {
+  margin-left: 100px;
+  width: 40%;
+  max-width: 500px;
+}
+
+.login-content {
+  margin-top: 50px;
+}
+
+.login-content h1 {
+  font-size: 300%;
+  font-weight: 700;
+  font-family: 'Metropolis-bold', sans-serif;
+}
+
+.login-content h4 {
+  margin-top: 20px;
+  font-size: 120%;
+  font-weight: 400;
+  font-family: 'Metropolis-regular', sans-serif;
+}
+
+.login-content a {
+  text-decoration: none;
+  color: rgb(66, 158, 243);
+}
+
+.form {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.text-input {
+  padding: 10px;
+  width: 100%;
+  border-radius: 15px;
+  font-family: 'Roboto-regular', sans-serif;
+  font-weight: 200;
+  font-size: 100%;
+  margin-top: 20px;
+}
+
+.radio-input {
+  margin-top: 20px;
+  margin-right: 5px;
+  border: 1px solid black;
+}
+
+.showPassword {
+  font-size: 120%;
+}
+
+.form button {
+  text-decoration: none;
+  border: none;
+  width: 100%;
+  padding: 10px 15px;
+  background: #4285f4;
+  border-radius: 25px;
+  font-family: 'Metropolis-bold', sans-serif;
+  color: white;
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  box-shadow: 1px 2px 2px #888;
+}
+
+.login-background {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  width: 40%;
+}
+
+@media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
+  .login {
+    margin: 0;
+  }
+
+  .login-body {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+  }
+
+  .showPassword {
+    font-size: 150%;
+  }
+
+  .login-content h1 {
+    font-size: 400%;
+  }
+
+  .form button {
+    font-size: 40px;
+  }
+
+  .text-input {
+    font-size: 150%;
+  }
+
+  .login-content h4 {
+    font-size: 150%;
+  }
+
+  .login-background {
+    top: 100%;
+    width: 70%;
+    right: 15%;
+  }
+}
+
+@media only screen and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+  .login {
+    margin: 0;
+  }
+
+  .login-body {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+  }
+
+  .login-content {
+    width: 90%;
+    text-align: start;
+  }
+
+  .login-background {
+    top: 100%;
+    width: 70%;
+    right: 15%;
+  }
+}
