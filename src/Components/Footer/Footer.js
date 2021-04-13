@@ -48,7 +48,7 @@ const Footer = () => {
   }
 
   return (
-    <>
+    <div>
       <button onClick={editClick} style={{ margin: 'auto' }}>{footerButtonText}</button>
       <div className={editorStyles.editor} onClick={() => ref.current.focus()} style={{ width: '100%' }}>
         <Editor
@@ -62,7 +62,7 @@ const Footer = () => {
         />
       </div>
       <button onClick={() => handleNext()} style={{ margin: 'auto' }}>OK!</button>
-    </>
+    </div>
   )
 }
 

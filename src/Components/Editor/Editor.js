@@ -13,14 +13,13 @@ import {
   ItalicButton,
   BoldButton,
   UnderlineButton,
-  CodeButton,
   HeadlineOneButton,
   HeadlineTwoButton,
   HeadlineThreeButton,
   UnorderedListButton,
   OrderedListButton,
   BlockquoteButton,
-  CodeBlockButton,
+  CodeBlockButton
 } from '@draft-js-plugins/buttons'
 import editorStyles from './editorStyles.module.css'
 import mockUpload from './mockUpload'
@@ -29,62 +28,64 @@ import '@draft-js-plugins/static-toolbar/lib/plugin.css'
 import { useHistory, useLocation, Redirect } from 'react-router-dom'
 
 class HeadlinesPicker extends Component {
-  componentDidMount() {
+  componentDidMount () {
     setTimeout(() => {
-      window.addEventListener('click', this.onWindowClick);
-    });
+      window.addEventListener('click', this.onWindowClick)
+    })
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('click', this.onWindowClick);
+  componentWillUnmount () {
+    window.removeEventListener('click', this.onWindowClick)
   }
 
-  onWindowClick = () => {
-    this.props.onOverrideContent(undefined);
+  onWindowClick () {
+    this.props.onOverrideContent(undefined)
   }
 
-  render() {
-    const buttons = [HeadlineOneButton, HeadlineTwoButton, HeadlineThreeButton];
+  render () {
+    const buttons = [HeadlineOneButton, HeadlineTwoButton, HeadlineThreeButton]
     return (
       <div>
         {buttons.map((Button, i) => (
           <Button key={i} {...this.props} />
         ))}
       </div>
-    );
+    )
   }
 }
 
 class HeadlinesButton extends Component {
-  onClick = () =>
+  handleClick () {
     // A button can call `onOverrideContent` to replace the content
     // of the toolbar. This can be useful for displaying sub
     // menus or requesting additional information from the user.
-    this.props.onOverrideContent(HeadlinesPicker);
+    this.props.onOverrideContent(HeadlinesPicker)
+  }
 
-  render() {
+  render () {
     return (
       <div className={editorStyles.headlineButtonWrapper}>
-        <button onClick={this.onClick} className={editorStyles.headlineButton}>
+        <button onClick={this.handleClick} className={editorStyles.headlineButton}>
           H
         </button>
       </div>
-    );
+    )
   }
 }
 
 class ColorsButton extends Component {
-  onClick = () =>
-    this.props.onOverrideContent(ColorControls);
+  handleClick () {
+    this.props.onOverrideContent(ColorControls)
+  }
 
-  render() {
+  render () {
     return (
       <div className={editorStyles.headlineButtonWrapper}>
-        <button onClick={this.onClick} className={editorStyles.colorsButton}>
+        <button onClick={this.handleClick} className={editorStyles.colorsButton}>
           Color
         </button>
       </div>
-    );
+    )
   }
 }
 
@@ -326,13 +327,13 @@ const ContentEditor = () => {
   }
 
   return (
-    <>
+    <div>
       <div className='container'>
         <div style={{ width: '100%', textAlign: 'center' }}>
           <input label='subject' type='text' id='subject' placeholder='Subject' style={{ width: '50%' }} />
         </div>
         <div className={editorStyles.editor} onClick={() => ref.current.focus()} style={{ width: '100%' }}>
-          
+
           <AlignmentTool />
           <Editor
             editorKey='editor'
@@ -362,7 +363,7 @@ const ContentEditor = () => {
             {
               // may be use React.Fragment instead of div to improve perfomance after React 16
               (externalProps) => (
-                <>
+                <div>
                   <BoldButton {...externalProps} />
                   <ItalicButton {...externalProps} />
                   <UnderlineButton {...externalProps} />
@@ -373,7 +374,7 @@ const ContentEditor = () => {
                   <OrderedListButton {...externalProps} />
                   <BlockquoteButton {...externalProps} />
                   <CodeBlockButton {...externalProps} />
-                </>
+                </div>
               )
             }
           </Toolbar>
@@ -384,7 +385,7 @@ const ContentEditor = () => {
           {/* <button onClick={() => onPreview()} style={{ marginLeft: '100px' }}>Preview</button> */}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

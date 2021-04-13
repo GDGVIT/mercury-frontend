@@ -26,6 +26,14 @@
   font-family: 'Metropolis-regular', sans-serif;
 }
 
+.login-content p {
+  margin-top: 20px;
+  font-size: 100%;
+  font-weight: 400;
+  font-family: 'Metropolis-regular', sans-serif;
+  color: red;
+}
+
 .login-content a {
   text-decoration: none;
   color: rgb(66, 158, 243);
@@ -47,12 +55,15 @@
   font-weight: 200;
   font-size: 100%;
   margin-top: 20px;
+  outline: none;
 }
 
-.radio-input {
+.checkbox {
   margin-top: 20px;
   margin-right: 5px;
   border: 1px solid black;
+  outline: none;
+  border-radius: 30px;
 }
 
 .showPassword {
@@ -72,6 +83,7 @@
   margin-top: 30px;
   margin-bottom: 40px;
   box-shadow: 1px 2px 2px #888;
+  outline: none;
 }
 
 .login-background {
@@ -110,6 +122,10 @@
 
   .login-content h4 {
     font-size: 150%;
+  }
+
+  .login-content p {
+    font-size: 120%;
   }
 
   .login-background {
