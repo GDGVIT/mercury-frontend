@@ -11,27 +11,33 @@ const Register = () => {
 
   const handleChange = (event) => {
     setErrorMessage('')
-    console.log(event.target.value)
     const cred = credentials
     cred[event.target.name] = event.target.value
     setCredentials(cred)
   }
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     console.log(credentials)
     if (credentials.password1 === credentials.password2) {
-      window.fetch('/user/register/', {
+      const cred = {
+        username: credentials.username,
+        email: credentials.email,
+        password: credentials.password1
+      }
+      await window.fetch('https://mercury-mailer-dsc.herokuapp.com/user/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(cred)
       }).then((res) => {
         console.log(res)
-        history.push({
-          pathname: '/csv'
-        })
+        if (res.status === 200) {
+          history.push('/csv')
+        } else {
+          setErrorMessage('Registration error')
+        }
       }).catch(err => {
         console.error(err)
-        setErrorMessage('Error')
+        setErrorMessage(err)
       })
     } else {
       setErrorMessage('Password does not match')

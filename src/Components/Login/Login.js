@@ -25,13 +25,15 @@ const Login = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
     }).then((res) => {
-      console.log(res.data)
-      history.push({
-        pathname: '/csv'
-      })
+      console.log(res)
+      if (res.status === 200) {
+        history.push('/csv')
+      } else {
+        setErrorMessage('Login Error')
+      }
     }).catch(err => {
       console.error(err)
-      setErrorMessage('Error')
+      setErrorMessage('Login Error')
     })
   }
 

@@ -33,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "standard --fix && stylelint --fix \"**/*.css\" && jscpd --pattern \"src/**/*.js\""
+    "lint": "standard --fix && stylelint --fix \"**/*.css\""
   },
   "eslintConfig": {
     "extends": [
