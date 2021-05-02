@@ -6,6 +6,7 @@ import Footer from './Components/Footer/Footer'
 import Landing from './Components/Landing/Landing'
 import Login from './Components/Login/Login'
 import Register from './Components/Register/Register'
+import DnDEnditor from './Components/DnDEditor/DnDEditor'
 
 function App () {
   return (
@@ -26,6 +27,9 @@ function App () {
           </Route>
           <Route path='/mail'>
             <ContentEditor />
+          </Route>
+          <Route path='/dnd'>
+            <DnDEnditor />
           </Route>
           <Route path='/footer'>
             <Footer />

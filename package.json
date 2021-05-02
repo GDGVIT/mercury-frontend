@@ -17,8 +17,9 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
     "draft-js": "^0.11.7",
+    "grapesjs": "^0.17.3",
+    "grapesjs-mjml": "^0.5.2",
     "mjml": "^4.8.1",
-    "mjml-react": "^1.1.1",
     "react": "^17.0.1",
     "react-csv-reader": "^3.2.1",
     "react-dom": "^17.0.1",
@@ -33,7 +34,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "standard --fix && stylelint --fix \"**/*.css\" && jscpd --pattern \"src/**/*.js\""
+    "lint": "standard --fix && stylelint --fix \"**/*.css\""
   },
   "eslintConfig": {
     "extends": [
