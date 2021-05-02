@@ -8,6 +8,32 @@
   z-index: 9;
 }
 
+.header a {
+  text-decoration: none; 
+  color: black; 
+}
+
+.header a:visited {
+  text-decoration: none; 
+  color: black; 
+}
+
+.header a:hover {
+  text-decoration: none; 
+  color: black; 
+}
+
+.header a:focus {
+  text-decoration: none; 
+  color: black; 
+}
+
+.header a:hover, a:active {
+  text-decoration: none; 
+  color: black; 
+}
+
+
 .title {
   margin: 0 30px;
   font-family: 'Metropolis-bold', sans-serif;

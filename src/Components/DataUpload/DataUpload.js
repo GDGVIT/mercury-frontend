@@ -43,16 +43,17 @@ const DataUpload = () => {
 
   const handleNext = () => {
     history.push({
-      pathname: '/mail',
+      pathname: '/dnd',
       state: { headers: headerData }
     })
   }
 
   return (
     <div style={{ height: '100vh' }}>
-      {/* {
-        localStorage.getItem('token')
-      } */}
+      {
+        (window.localStorage.getItem('token') === undefined || window.localStorage.getItem('token') === null) &&
+        history.push('/login')
+      }
       <Header />
       <div className='upload-body'>
         <div className='upload-content'>

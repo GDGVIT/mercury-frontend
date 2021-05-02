@@ -328,6 +328,10 @@ const ContentEditor = () => {
 
   return (
     <div>
+      {
+        !window.localStorage.getItem('token') &&
+        history.push('/login')
+      }
       <div className='container'>
         <div style={{ width: '100%', textAlign: 'center' }}>
           <input label='subject' type='text' id='subject' placeholder='Subject' style={{ width: '50%' }} />

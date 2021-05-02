@@ -5,7 +5,7 @@ import ContentEditor from './Components/Editor/Editor'
 import Footer from './Components/Footer/Footer'
 import Landing from './Components/Landing/Landing'
 import Login from './Components/Login/Login'
-import Register from './Components/Register/Register'
+// import Register from './Components/Register/Register'
 
 function App () {
   return (
@@ -18,9 +18,9 @@ function App () {
           <Route path='/login'>
             <Login />
           </Route>
-          <Route path='/register'>
+          {/* <Route path='/register'>
             <Register />
-          </Route>
+          </Route> */}
           <Route path='/csv'>
             <DataUpload />
           </Route>
