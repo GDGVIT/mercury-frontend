@@ -18,7 +18,6 @@
 .upload-container {
   text-align: center;
   width: 33%;
-  padding: 15px;
   margin: 10px auto;
   background-color: white;
   margin-top: 50px;
@@ -29,10 +28,6 @@
 .upload-content h2 {
   font-size: 200%;
   margin-bottom: 20px;
-}
-
-.upload-content h2 {
-  font-size: 200%;
 }
 
 .csv-input {
