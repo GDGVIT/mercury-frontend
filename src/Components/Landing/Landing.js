@@ -15,7 +15,7 @@ const Landing = () => {
           <h1 className='content'>BULK MAILING MADE EFFORTLESS!</h1>
           <div className='buttons'>
             <a href='/login' style={{ background: '#4285F4', color: 'white' }}>Login</a>
-            <a href='/register' style={{ background: 'white', color: '#4285F4' }}>Register</a>
+            {/* <a href='/register' style={{ background: 'white', color: '#4285F4' }}>Register</a> */}
           </div>
         </div>
         <img alt='desktop' className='desktop' src={Desktop} />
