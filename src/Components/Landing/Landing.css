@@ -3,41 +3,42 @@
 }
 
 .header {
-  padding: 30px 0;
+  padding: 25px 0;
   box-shadow: 0 10px 10px -10px #ccc;
   z-index: 9;
+  display: flex;
 }
-
-.header a {
-  text-decoration: none; 
-  color: black; 
-}
-
-.header a:visited {
-  text-decoration: none; 
-  color: black; 
-}
-
-.header a:hover {
-  text-decoration: none; 
-  color: black; 
-}
-
-.header a:focus {
-  text-decoration: none; 
-  color: black; 
-}
-
-.header a:hover, a:active {
-  text-decoration: none; 
-  color: black; 
-}
-
 
 .title {
-  margin: 0 30px;
+  margin: 5px 15px;
   font-family: 'Metropolis-bold', sans-serif;
   font-size: 150%;
+}
+
+.header .logo {
+  width: 35px;
+  margin-left: 30px;
+}
+
+.buttons a {
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 60px;
+  font-size: 1.5em;
+  font-family: 'Metropolis-bold', sans-serif;
+  margin-top: 30px;
+  border-radius: 25px;
+  width: 100%;
+  border: 2px solid #4285f4;
+}
+
+.header a,
+a:focus,
+a:hover,
+a:active,
+a:visited {
+  text-decoration: none;
+  color: black;
 }
 
 .body {
@@ -66,18 +67,6 @@
   width: 30%;
   padding-top: 50px;
   margin-left: 50px;
-}
-
-.buttons a {
-  text-decoration: none;
-  text-align: center;
-  padding: 15px 60px;
-  font-size: 1.5em;
-  font-family: 'Metropolis-bold', sans-serif;
-  margin-top: 30px;
-  border-radius: 25px;
-  width: 100%;
-  border: 2px solid #4285f4;
 }
 
 .desktop {
