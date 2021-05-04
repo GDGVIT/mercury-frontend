@@ -1,74 +1,70 @@
 import React, { useState } from 'react'
-import CSVReader from 'react-csv-reader'
 import Header from '../Header/Header'
+// import CSVReader from 'react-csv-reader'
 import './DataUpload.css'
 import { useHistory } from 'react-router-dom'
 
 const DataUpload = () => {
   const history = useHistory()
-  const [headerData, setHeaderData] = useState([])
+  // const [headerData, setHeaderData] = useState([])
+  const [recipients, setRecipients] = useState([])
   const [buttonBool, setButtonBool] = useState(false)
 
-  const getHeaders = (data) => {
-    console.log(data)
-    return Object.keys(data[0])
-  }
+  // const getHeaders = (data) => {
+  //   return Object.keys(data[0])
+  // }
 
-  const papaparseOptions = {
-    header: true,
-    dynamicTyping: true,
-    skipEmptyLines: true,
-    transformHeader: header => header.toLowerCase().replace(/\W/g, '_')
-  }
+  // const papaparseOptions = {
+  //   header: true,
+  //   dynamicTyping: true,
+  //   skipEmptyLines: true,
+  //   transformHeader: header => header.toLowerCase().replace(/\W/g, '_')
+  // }
 
-  const handleForce = (data) => {
-    console.log(data)
-    const headers = getHeaders(data)
-    let id = 0
-    let values
-    setHeaderData(headers.map(header => {
-      ++id
-      values = []
-      for (let i = 0; i < data.length; i++) {
-        values.push(data[i][header])
-      }
-      return {
-        id,
-        name: header,
-        data: values
-      }
-    }))
+  // const handleForce = (data) => {
+  //   console.log(data)
+  //   const headers = getHeaders(data)
+  //   let id = 0
+  //   setHeaderData(headers.map(header => {
+  //     ++id
+  //     return {
+  //       id,
+  //       name: header
+  //     }
+  //   }))
+  //   id = 0
+  //   setRecipients(data.map((row) => {
+  //     ++id
+  //     return {
+  //       id,
+  //       value: row.email
+  //     }
+  //   }))
+  //   setButtonBool(true)
+  // }
+
+  const handleChange = (event) => {
+    setRecipients(event.target.files[0])
     setButtonBool(true)
   }
 
   const handleNext = () => {
     history.push({
       pathname: '/dnd',
-      state: { headers: headerData }
+      state: { recipients }
     })
   }
 
   return (
-    <div style={{ height: '100vh' }}>
-      {
-        (window.localStorage.getItem('token') === undefined || window.localStorage.getItem('token') === null) &&
-        history.push('/login')
-      }
+    <div>
       <Header />
-      <div className='upload-body'>
-        <div className='upload-content'>
-          <h2>Upload CSV file</h2>
-          <h3>Select file from device or drag and drop</h3>
-        </div>
-        <div className='upload-container'>
-          <CSVReader
-            cssClass='react-csv-input'
-            label='Upload CSV with email IDs'
-            onFileLoaded={handleForce}
-            parserOptions={papaparseOptions}
-          />
-          <button className='next-button' onClick={handleNext} disabled={!buttonBool}>Next</button>
-        </div>
+      <div className='container'>
+        <input
+          type='file'
+          onChange={handleChange}
+          accept='.csv'
+        />
+        <button onClick={handleNext} disabled={!buttonBool}>Next</button>
       </div>
     </div>
   )
