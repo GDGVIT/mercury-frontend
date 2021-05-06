@@ -2,33 +2,33 @@ import './App.css'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import DataUpload from './Components/DataUpload/DataUpload'
 import ContentEditor from './Components/Editor/Editor'
-import Footer from './Components/Footer/Footer'
 import Landing from './Components/Landing/Landing'
 import Login from './Components/Login/Login'
-import Register from './Components/Register/Register'
+// import Footer from './Components/Footer/Footer'
+// import Register from './Components/Register/Register'
 
 function App () {
   return (
     <div>
       <BrowserRouter>
         <Switch>
-          <Route exact path='/'>
-            <Landing />
-          </Route>
-          <Route path='/login'>
+          <Route exact path='/login'>
             <Login />
           </Route>
-          <Route path='/register'>
+          {/* <Route exact path='/register'>
             <Register />
-          </Route>
-          <Route path='/csv'>
+          </Route> */}
+          <Route exact path='/csv'>
             <DataUpload />
           </Route>
-          <Route path='/mail'>
+          <Route exact path='/mail'>
             <ContentEditor />
           </Route>
-          <Route path='/footer'>
+          {/* <Route path='/footer'>
             <Footer />
+          </Route> */}
+          <Route path='/'>
+            <Landing />
           </Route>
         </Switch>
       </BrowserRouter>

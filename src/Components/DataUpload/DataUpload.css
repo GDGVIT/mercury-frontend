@@ -1,15 +1,37 @@
 * {
   box-sizing: border-box;
-  font-family: "Helvetica", sans-serif;
+  font-family: 'Metropolis-regular', sans-serif;
 }
 
-.container {
+.upload-body {
+  height: calc(100% - 84px);
+  background-color: black;
+  padding-left: 50px;
+  padding-top: 50px;
+}
+
+.upload-content {
+  color: white;
+  font-family: 'Monospace-bold', sans-serif;
+}
+
+.upload-container {
   text-align: center;
-  padding: 15px;
+  width: 33%;
   margin: 10px auto;
+  background-color: white;
+  margin-top: 50px;
+  border-radius: 10px;
+  padding: 40px 0;
+}
+
+.upload-content h2 {
+  font-size: 200%;
+  margin-bottom: 20px;
 }
 
 .csv-input {
+  text-decoration: none;
   padding: 10px;
   display: block;
   margin: 15px auto;
@@ -17,7 +39,38 @@
   border-radius: 5px;
 }
 
-.container p {
+.csv-reader-input {
+  width: 200%;
+  padding: 30px;
+}
+
+.csv-label {
+  font-size: 150%;
+  margin-bottom: 10px;
+  font-family: 'Metropolis-bold', sans-serif;
+  font-weight: 300;
+}
+
+.upload-container p {
   padding-top: 10px;
   color: #666;
+  font-family: 'Metropolis-regular', sans-serif;
+}
+
+.next-button {
+  text-decoration: none;
+  padding: 10px 50px;
+  font-size: 1.5em;
+  font-family: 'Metropolis-bold', sans-serif;
+  margin-top: 30px;
+  border-radius: 15px;
+  width: 70%;
+  border: 2px solid black;
+  color: black;
+  outline: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  color: #ddd;
 }

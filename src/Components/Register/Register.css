@@ -20,6 +20,21 @@
   font-family: 'Metropolis-bold', sans-serif;
 }
 
+.register-content h4 {
+  margin-top: 20px;
+  font-size: 120%;
+  font-weight: 400;
+  font-family: 'Metropolis-regular', sans-serif;
+}
+
+.register-content p {
+  margin-top: 20px;
+  font-size: 100%;
+  font-weight: 400;
+  color: red;
+  font-family: 'Metropolis-regular', sans-serif;
+}
+
 .register-content a {
   text-decoration: none;
   color: rgb(66, 158, 243);
@@ -40,12 +55,14 @@
   font-weight: 200;
   font-size: 100%;
   margin-top: 20px;
+  outline: none;
 }
 
-.radio-input {
+.check-password {
   margin-top: 20px;
   margin-right: 5px;
   border: 1px solid black;
+  outline: none;
 }
 
 .showPassword {
@@ -65,6 +82,7 @@
   margin-top: 30px;
   margin-bottom: 40px;
   box-shadow: 1px 2px 2px #888;
+  outline: none;
 }
 
 .register-background {
@@ -86,7 +104,7 @@
     text-align: center;
   }
 
-  .radio {
+  .check {
     margin-top: 15px;
     font-size: 150%;
     text-align: start;
@@ -96,12 +114,21 @@
     font-size: 400%;
   }
 
+  .register-content h4 {
+    font-size: 150%;
+  }
+
+  .register-content p {
+    font-size: 120%;
+  }
+
   .register-form button {
     font-size: 40px;
   }
 
   .text-input {
     font-size: 150%;
+    border: 2px solid black;
   }
 
   .register-background {
@@ -125,7 +152,7 @@
     text-align: center;
   }
 
-  .radio {
+  .check {
     text-align: start;
   }
 

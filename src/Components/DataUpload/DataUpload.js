@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import CSVReader from 'react-csv-reader'
+import Header from '../Header/Header'
 import './DataUpload.css'
 import { useHistory } from 'react-router-dom'
 
@@ -42,21 +43,32 @@ const DataUpload = () => {
 
   const handleNext = () => {
     history.push({
-      pathname: '/mail',
+      pathname: '/dnd',
       state: { headers: headerData }
     })
   }
 
   return (
-    <div>
-      <div className='container'>
-        <CSVReader
-          cssClass='react-csv-input'
-          label='Upload CSV with email IDs'
-          onFileLoaded={handleForce}
-          parserOptions={papaparseOptions}
-        />
-        <button onClick={handleNext} disabled={!buttonBool}>Next</button>
+    <div style={{ height: '100vh' }}>
+      {
+        (window.localStorage.getItem('token') === undefined || window.localStorage.getItem('token') === null) &&
+        history.push('/login')
+      }
+      <Header />
+      <div className='upload-body'>
+        <div className='upload-content'>
+          <h2>Upload CSV file</h2>
+          <h3>Select file from device or drag and drop</h3>
+        </div>
+        <div className='upload-container'>
+          <CSVReader
+            cssClass='react-csv-input'
+            label='Upload CSV with email IDs'
+            onFileLoaded={handleForce}
+            parserOptions={papaparseOptions}
+          />
+          <button className='next-button' onClick={handleNext} disabled={!buttonBool}>Next</button>
+        </div>
       </div>
     </div>
   )

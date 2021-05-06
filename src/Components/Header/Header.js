@@ -1,10 +1,12 @@
 import React from 'react'
 import '../Landing/Landing.css'
+import logo from '../../assets/logo.svg'
 
 const Header = () => {
   return (
     <div className='header'>
-      <h1 className='title'>Mercury Mailer</h1>
+      <img src={logo} className='logo' />
+      <a href='/'><h1 className='title'>Mercury Mailer</h1></a>
     </div>
   )
 }
