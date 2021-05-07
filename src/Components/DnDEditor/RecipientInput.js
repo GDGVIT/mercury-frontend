@@ -90,6 +90,7 @@ const RecipientInput = (props) => {
 
   return (
     <>
+      <h2 style={{ display: 'block', margin: '10px auto' }}>Recipients Email Address</h2>
       {items.map(item => (
         <div className='tag-item' key={item}>
           {item}
@@ -111,7 +112,7 @@ const RecipientInput = (props) => {
         onPaste={handlePaste}
       />
       {error && <p className='error'>{error}</p>}
-      <button className='send' style={{ display: 'block', margin: '10px auto' }}>Send Test Mail</button>
+      <button className='send-test'>Send Test mail</button>
     </>
   )
 }

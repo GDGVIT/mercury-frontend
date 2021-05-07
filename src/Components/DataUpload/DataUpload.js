@@ -6,10 +6,10 @@ import { useHistory } from 'react-router-dom'
 const DataUpload = () => {
   const history = useHistory()
   const [headerData, setHeaderData] = useState([])
+  const [recipients, setRecipients] = useState([])
   const [buttonBool, setButtonBool] = useState(false)
 
   const getHeaders = (data) => {
-    console.log(data)
     return Object.keys(data[0])
   }
 
@@ -21,20 +21,21 @@ const DataUpload = () => {
   }
 
   const handleForce = (data) => {
-    console.log(data)
     const headers = getHeaders(data)
     let id = 0
-    let values
     setHeaderData(headers.map(header => {
       ++id
-      values = []
-      for (let i = 0; i < data.length; i++) {
-        values.push(data[i][header])
-      }
       return {
         id,
-        name: header,
-        data: values
+        name: header
+      }
+    }))
+    id = 0
+    setRecipients(data.map((row) => {
+      ++id
+      return {
+        id,
+        value: row.email
       }
     }))
     setButtonBool(true)
@@ -42,8 +43,8 @@ const DataUpload = () => {
 
   const handleNext = () => {
     history.push({
-      pathname: '/mail',
-      state: { headers: headerData }
+      pathname: '/dnd',
+      state: { headers: headerData, recipients }
     })
   }
 
