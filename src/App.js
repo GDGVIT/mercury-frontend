@@ -28,9 +28,7 @@ function App () {
           <Route path='/mail'>
             <ContentEditor />
           </Route>
-          <Route path='/dnd'>
-            <DnDEnditor />
-          </Route>
+          <Route path='/dnd' render={(props) => <DnDEnditor {...props} />} />
           <Route path='/footer'>
             <Footer />
           </Route>
