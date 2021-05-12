@@ -1,30 +1,44 @@
 import React, { useState } from 'react'
+import { PuffLoader } from 'react-spinners'
+import { css } from '@emotion/core'
 import './DnDEditor.css'
 
 const RecipientInput = (props) => {
   const [items, setItems] = useState([])
   const [value, setValue] = useState('')
   const [error, setError] = useState(null)
-  const { subject, mjml } = props
+  const [buttonText, setButtonText] = useState('Send Test Mail')
+  const LoaderCss = css`
+    display: block;
+    margin: 0 auto;
+  `
   const token = window.localStorage.getItem('token')
 
   const handleTest = () => {
+    const { subject, mjml, recipients } = props
+    setButtonText(<PuffLoader css={LoaderCss} size={36} loading color='white' />)
     const formData = new window.FormData()
-    formData.append('sender_name', 'Mark')
-    formData.append('sender_email', 'mark@gmail.com')
+    formData.append('sender_name', 'Sricharan')
+    formData.append('sender_email', 'charan1952001@gmail.com')
+    formData.append('recipients', recipients, recipients.name)
     formData.append('subject', subject)
     formData.append('body_text', 'Hello world')
     formData.append('body_mjml', mjml)
-    formData.append('aws_region', 'ap-sount-1')
+    formData.append('test_recipient_emails', items)
+    formData.append('aws_region', 'ap-south-1')
 
     window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send_test', {
       method: 'POST',
       headers: new window.Headers({
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'multipart/form-data'
+        Authorization: 'Bearer ' + token
       }),
       body: formData
     }).then((res) => {
+      setButtonText('Send Test Mail')
+      if (res.status !== 200) {
+        setError('Sending Error')
+      }
+      console.log(res)
       return res.json()
     }).then((data) => {
       console.log(data)
@@ -110,7 +124,7 @@ const RecipientInput = (props) => {
         onPaste={handlePaste}
       />
       {error && <p className='error'>{error}</p>}
-      <button className='send-test' onClick={handleTest}>Send Test mail</button>
+      <button className='send-test' onClick={handleTest}>{buttonText}</button>
     </>
   )
 }

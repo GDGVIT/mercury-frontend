@@ -5,17 +5,24 @@ import grapesjs from 'grapesjs'
 import grapesjsMJML from 'grapesjs-mjml'
 import Header from '../Header/Header'
 import RecipientInput from './RecipientInput'
+import { PuffLoader } from 'react-spinners'
+import { css } from '@emotion/core'
 import './DnDEditor.css'
 
 export const DnDEnditor = () => {
   const location = useLocation()
   const [subject, setSubject] = useState('')
+  const [modalOpen, setModalOpen] = useState(false)
   const [error, setError] = useState(null)
   const [mjml, setMjml] = useState(null)
-  const [modalOpen, setModalOpen] = useState(false)
+  const [buttonText, setButtonText] = useState('Send')
+  const token = window.localStorage.getItem('token')
+  const LoaderCss = css`
+    display: block;
+    margin: 0 auto;
+  `
+  const recipients = location.state.recipients
   const [editor, setEditor] = useState(null)
-  let recipients
-
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
       container: '#email-editor',
@@ -25,7 +32,8 @@ export const DnDEnditor = () => {
       pluginsOpts: {
         [grapesjsMJML]: {}
       },
-      height: '508px'
+      height: '508px',
+      outerWidth: '100%'
     })
 
     Mjmleditor.Components.clear()
@@ -55,11 +63,11 @@ export const DnDEnditor = () => {
   }
 
   const handleSend = async () => {
+    setButtonText(<PuffLoader css={LoaderCss} size={36} loading color='white' />)
     const formData = new window.FormData()
     if (!mjml) {
       await getMjml()
     }
-    console.log(mjml)
     if (subject === '') {
       setError('No subject')
     } else {
@@ -67,13 +75,22 @@ export const DnDEnditor = () => {
       formData.append('sender_name', 'Mark')
       formData.append('sender_email', 'mark@gmail.com')
       formData.append('subject', subject)
-      formData.append('recipients', recipients)
+      formData.append('recipients', recipients, recipients.name)
       formData.append('body_text', 'Hello world')
       formData.append('body_mjml', mjml)
+      formData.append('aws_region', 'ap-south-1')
+
       window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send', {
         method: 'POST',
+        headers: new window.Headers({
+          Authorization: 'Bearer ' + token
+        }),
         body: formData
       }).then((res) => {
+        setButtonText('Send')
+        if (res.status !== 200) {
+          setError('Sending Error')
+        }
         return res.json()
       }).then((data) => {
         console.log(data)
@@ -93,27 +110,29 @@ export const DnDEnditor = () => {
     }
   }
 
-  if (location.state === undefined || location.state === null) {
-    return <Redirect to='/csv' />
-  } else {
-    recipients = location.state.recipients
-    console.log(recipients)
-  }
-
   return (
     <div>
+      {
+        ((window.localStorage.getItem('token') === null) ||
+        (window.localStorage.getItem('token') === undefined)) &&
+          <Redirect to='/login' />
+      }
+      {
+        (location.state.recipients === null || location.state.recipients === undefined) &&
+          <Redirect to='/csv' />
+      }
       <Header />
       <div className={modalOpen ? 'modalOpen' : 'modalClose'}>
         <div className='modal-content'>
           <span onClick={handleTest} className='close'>&times;</span>
-          <RecipientInput subject={subject} mjml={mjml} />
+          <RecipientInput subject={subject} mjml={mjml} recipients={recipients} />
         </div>
       </div>
       <div className='send-body'>
         <input onChange={handleChange} type='text' placeholder='Subject' className='subject' />
         {/* <button onClick={handlePreview}>Preview</button> */}
         <button onClick={handleTest} className='send' style={{ marginRight: '10px' }}>Test</button>
-        <button onClick={handleSend} className='send'>Send</button>
+        <button onClick={handleSend} className='send'>{buttonText}</button>
         {error && <p className='error' style={{ marginTop: '10px' }}>{error}</p>}
       </div>
       <div id='email-editor' />

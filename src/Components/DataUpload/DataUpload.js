@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Header from '../Header/Header'
 // import CSVReader from 'react-csv-reader'
 import './DataUpload.css'
-import { useHistory } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 
 const DataUpload = () => {
   const history = useHistory()
@@ -57,6 +57,11 @@ const DataUpload = () => {
 
   return (
     <div>
+      {
+        ((window.localStorage.getItem('token') === null) ||
+        (window.localStorage.getItem('token') === undefined)) &&
+          <Redirect to='/login' />
+      }
       <Header />
       <div className='container'>
         <input
