@@ -4,7 +4,8 @@
 }
 
 .upload-body {
-  height: calc(100% - 84px);
+  align-items: center;
+  height: calc(100vh - 80px);
   background-color: black;
   padding-left: 50px;
   padding-top: 50px;
@@ -15,8 +16,35 @@
   font-family: 'Monospace-bold', sans-serif;
 }
 
+.upload-content h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.upload-content h4 {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  font-weight: 300;
+}
+
+.upload-box {
+	background-color: #eee;
+  margin: 0 30px;
+  border: 2px rgb(9, 144, 255) dashed;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.upload-box:hover {
+  border: 2px rgb(9, 144, 255) solid;
+}
+
 .upload-container {
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  justify-content: center;
+  align-items: center;
   width: 33%;
   margin: 10px auto;
   background-color: white;
@@ -25,36 +53,9 @@
   padding: 40px 0;
 }
 
-.upload-content h2 {
-  font-size: 200%;
-  margin-bottom: 20px;
-}
-
-.csv-input {
-  text-decoration: none;
-  padding: 10px;
-  display: block;
-  margin: 15px auto;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.csv-reader-input {
-  width: 200%;
-  padding: 30px;
-}
-
-.csv-label {
-  font-size: 150%;
-  margin-bottom: 10px;
-  font-family: 'Metropolis-bold', sans-serif;
-  font-weight: 300;
-}
-
-.upload-container p {
-  padding-top: 10px;
-  color: #666;
-  font-family: 'Metropolis-regular', sans-serif;
+.upload-container h3 {
+  font-size: 1.5rem;
+  font-family: 'Monospace-bold', sans-serif;
 }
 
 .next-button {
@@ -73,4 +74,123 @@
 
 button:disabled {
   color: #ddd;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: white;
+  display: inline-block;
+  outline: none;
+	cursor: pointer;
+  max-width: 80%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+}
+
+.js .inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.no-js .inputfile + label {
+  display: none;
+}
+
+.inputfile + label svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  margin-top: -0.25em;
+  margin-right: 0.25em;
+}
+
+span {
+  margin-bottom: 10px;
+}
+
+.inputfile-4 + label {
+  color: rgb(12, 152, 233);
+}
+
+.inputfile-4 + label figure {
+  width: 100px;
+  height: 100px;
+  display: block;
+  padding: 20px 20px 10px 20px;
+  margin: 0 auto;
+}
+
+.inputfile-4 + label svg {
+  width: 100%;
+  height: 100%;
+  fill: #f1e5e6;
+}
+
+@media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
+  .upload-content {
+    padding-top: 50px;
+    padding-left: 40px;
+    margin-bottom: 40px;
+  }
+
+  .upload-body {
+    padding-top: 0px;
+    padding-left: 10px;
+  }
+
+  .upload-container {
+    width: 50%;
+    margin-top: 0px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .upload-content {
+    padding-top: 50px;
+    padding-left: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .upload-body {
+    padding-top: 0px;
+    padding-left: 10px;
+  }
+
+  .upload-container {
+    width: 66%;
+    margin-top: 0px;
+  }
+
+  .upload-container h3 {
+    font-size: 1.4rem;
+  }
+
+  .upload-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .upload-content h4 {
+    font-size: 1.2rem;
+  }
 }

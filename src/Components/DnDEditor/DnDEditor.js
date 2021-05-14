@@ -50,10 +50,6 @@ export const DnDEnditor = () => {
     setSubject(event.target.value)
   }
 
-  // const handlePreview = () => {
-
-  // }
-
   const getMjml = () => {
     if (editor.getHtml() !== undefined && editor.getHtml() !== null) {
       setMjml(editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
@@ -91,6 +87,7 @@ export const DnDEnditor = () => {
         if (res.status !== 200) {
           setError('Sending Error')
         }
+        console.log(res)
         return res.json()
       }).then((data) => {
         console.log(data)
