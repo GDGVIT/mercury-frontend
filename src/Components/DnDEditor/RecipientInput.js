@@ -15,8 +15,10 @@ const RecipientInput = (props) => {
   const token = window.localStorage.getItem('token')
 
   const handleTest = () => {
-    const { subject, mjml, recipients } = props
-    setButtonText(<PuffLoader css={LoaderCss} size={36} loading color='white' />)
+    const { subject, mjml, recipients, setModalOpen } = props
+    console.log(mjml)
+    setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
+
     const formData = new window.FormData()
     formData.append('sender_name', 'Sricharan')
     formData.append('sender_email', 'charan1952001@gmail.com')
@@ -35,7 +37,9 @@ const RecipientInput = (props) => {
       body: formData
     }).then((res) => {
       setButtonText('Send Test Mail')
-      if (res.status !== 200) {
+      if (res.status === 200) {
+        setModalOpen(false)
+      } else {
         setError('Sending Error')
       }
       console.log(res)
@@ -116,7 +120,7 @@ const RecipientInput = (props) => {
         </div>
       ))}
       <input
-        className={'input ' + (error && ' has-error')}
+        className={'recipients-input ' + (error && ' has-error')}
         value={value}
         placeholder='Type or paste email addresses and press `Enter`...'
         onKeyDown={handleKeyDown}

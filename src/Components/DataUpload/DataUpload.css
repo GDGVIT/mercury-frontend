@@ -5,9 +5,8 @@
 
 .upload-body {
   align-items: center;
-  height: calc(100vh - 80px);
+  height: calc(100% - 85px);
   background-color: black;
-  padding-left: 50px;
   padding-top: 50px;
 }
 
@@ -28,11 +27,10 @@
 }
 
 .upload-box {
-	background-color: #eee;
-  margin: 0 30px;
+  background-color: #eee;
+  margin: 10px 30px;
   border: 2px rgb(9, 144, 255) dashed;
   border-radius: 10px;
-  margin-top: 10px;
 }
 
 .upload-box:hover {
@@ -77,12 +75,12 @@ button:disabled {
 }
 
 .inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .inputfile + label {
@@ -91,14 +89,10 @@ button:disabled {
   color: white;
   display: inline-block;
   outline: none;
-	cursor: pointer;
+  cursor: pointer;
   max-width: 80%;
-  font-size: 1.25rem;
-  font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
-  cursor: pointer;
-  display: inline-block;
   overflow: hidden;
   padding: 0.625rem 1.25rem;
 }
@@ -110,10 +104,6 @@ button:disabled {
   overflow: hidden;
   position: absolute;
   z-index: -1;
-}
-
-.no-js .inputfile + label {
-  display: none;
 }
 
 .inputfile + label svg {
@@ -147,39 +137,41 @@ span {
   fill: #f1e5e6;
 }
 
+.no-js .inputfile + label {
+  display: none;
+}
+
 @media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
   .upload-content {
     padding-top: 50px;
-    padding-left: 40px;
+    padding-left: 50px;
     margin-bottom: 40px;
   }
 
   .upload-body {
-    padding-top: 0px;
-    padding-left: 10px;
+    padding-top: 0;
   }
 
   .upload-container {
     width: 50%;
-    margin-top: 0px;
+    margin-top: 0;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .upload-content {
     padding-top: 50px;
-    padding-left: 20px;
+    text-align: center;
     margin-bottom: 40px;
   }
-  
+
   .upload-body {
-    padding-top: 0px;
-    padding-left: 10px;
+    padding-top: 0;
   }
 
   .upload-container {
-    width: 66%;
-    margin-top: 0px;
+    width: 80%;
+    margin-top: 0;
   }
 
   .upload-container h3 {

@@ -5,7 +5,7 @@
 }
 
 .send-body {
-  display: block;
+  display: flex;
   width: 70%;
   margin: 20px auto;
 }
@@ -36,8 +36,17 @@
   padding: 7px;
   border: 1px solid black;
   border-radius: 20px;
-  outline: none;
   font-size: 13px;
+  -webkit-appearance: none;
+}
+
+.subject:focus {
+  border-color: cornflowerblue;
+  outline: none;
+}
+
+.subject .has-error {
+  border: 1px solid tomato;
 }
 
 .modalClose {
@@ -91,7 +100,7 @@
   cursor: pointer;
 }
 
-.input {
+.recipients-input {
   width: 100%;
   height: 45px;
   padding: 0 1rem;
@@ -104,12 +113,12 @@
   -webkit-appearance: none;
 }
 
-.input:focus {
+.recipients-input:focus {
   border-color: cornflowerblue;
   outline: none;
 }
 
-.input.has-error {
+.recipients-input.has-error {
   border-color: tomato;
 }
 
@@ -158,4 +167,98 @@
   border: none;
   border-radius: 15px;
   cursor: pointer;
+}
+.gjs-pn-btn {
+  margin-bottom: 0;
+}
+
+@media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
+  .non-editor {
+    height: 15%;
+  }
+
+  .send-body {
+    display: block;
+    width: 80%;
+  }
+
+  .subject {
+    width: 100%;
+  }
+
+  .send-btn-group {
+    margin: 15px 0px;
+    text-align: center;
+  }
+
+  .gjs-editor {
+    height: 85vh;
+    max-width: 100vw;
+    overflow: hidden;
+  }
+
+  .gjs-pn-views,
+  .gjs-pn-views-container {
+    width: 20%;
+  }
+
+  .gjs-pn-options {
+    width: 25%;
+    right: 23%
+  }
+
+  .gjs-pn-btn {
+    min-height: 10px;
+    min-width: 10px;
+    font-size: small;
+  }
+
+  .gjs-block {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .non-editor {
+    height: 33%;
+  }
+
+  .send-body {
+    display: block;
+    width: 80%;
+  }
+
+  .subject {
+    width: 100%;
+  }
+
+  .send-btn-group {
+    margin: 15px 0px;
+    text-align: center;
+  }
+
+  .gjs-editor {
+    height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+  }
+
+  .gjs-pn-views,
+  .gjs-pn-views-container {
+    width: 25%;
+  }
+
+  .gjs-pn-options {
+    right: 25%
+  }
+
+  .gjs-pn-btn {
+    min-height: 5px;
+    min-width: 5px;
+    font-size: x-small;
+  }
+
+  .gjs-block {
+    width: 100%;
+  }
 }

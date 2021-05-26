@@ -23,7 +23,7 @@ const DataUpload = () => {
   }
 
   return (
-    <div style={{ maxHeight: '100vh' }}>
+    <div style={{ maxHeight: '100vh', height: '100vh' }}>
       {
         ((window.localStorage.getItem('token') === null) ||
         (window.localStorage.getItem('token') === undefined)) &&

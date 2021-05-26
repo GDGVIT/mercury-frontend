@@ -99,7 +99,7 @@ const Login = () => {
             <button type='submit' onClick={handleLogin} disabled={buttonDisable}>{buttonText}</button>
           </div>
         </div>
-        <img src={login} className='login-background' />
+        <img src={login} alt='login' className='login-background' />
       </div>
     </div>
   )

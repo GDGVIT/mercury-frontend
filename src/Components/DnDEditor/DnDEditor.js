@@ -13,7 +13,7 @@ export const DnDEnditor = () => {
   const location = useLocation()
   const [subject, setSubject] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(false)
   const [mjml, setMjml] = useState(null)
   const [buttonText, setButtonText] = useState('Send')
   const token = window.localStorage.getItem('token')
@@ -25,17 +25,16 @@ export const DnDEnditor = () => {
   const [editor, setEditor] = useState(null)
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
-      container: '#email-editor',
+      container: '#gjs',
       fromElement: true,
       avoidInlineStyle: false,
       plugins: [grapesjsMJML],
       pluginsOpts: {
         [grapesjsMJML]: {}
       },
-      height: '508px',
-      outerWidth: '100%'
+      height: '80%'
     })
-
+    console.log(Mjmleditor)
     Mjmleditor.Components.clear()
     Mjmleditor.addComponents(`
       <mjml>
@@ -59,17 +58,17 @@ export const DnDEnditor = () => {
   }
 
   const handleSend = async () => {
-    setButtonText(<PuffLoader css={LoaderCss} size={36} loading color='white' />)
+    setButtonText(<PuffLoader css={LoaderCss} size={12} loading color='white' />)
     const formData = new window.FormData()
     if (!mjml) {
       await getMjml()
     }
     if (subject === '') {
-      setError('No subject')
+      setError(true)
     } else {
-      setError(null)
-      formData.append('sender_name', 'Mark')
-      formData.append('sender_email', 'mark@gmail.com')
+      setError(false)
+      formData.append('sender_name', 'Sricharan Ramesh')
+      formData.append('sender_email', 'charan1952001@gmail.com')
       formData.append('subject', subject)
       formData.append('recipients', recipients, recipients.name)
       formData.append('body_text', 'Hello world')
@@ -100,15 +99,15 @@ export const DnDEnditor = () => {
       await getMjml()
     }
     if (subject === '') {
-      setError('No subject')
+      setError(true)
     } else {
-      setError(null)
+      setError(false)
       setModalOpen(!modalOpen)
     }
   }
 
   return (
-    <div>
+    <div style={{ height: '100vh', maxHeight: '100vh' }}>
       {
         ((window.localStorage.getItem('token') === null) ||
         (window.localStorage.getItem('token') === undefined)) &&
@@ -118,21 +117,26 @@ export const DnDEnditor = () => {
         (location.state.recipients === null || location.state.recipients === undefined) &&
           <Redirect to='/csv' />
       }
-      <Header />
-      <div className={modalOpen ? 'modalOpen' : 'modalClose'}>
-        <div className='modal-content'>
-          <span onClick={handleTest} className='close'>&times;</span>
-          <RecipientInput subject={subject} mjml={mjml} recipients={recipients} />
+      <div className='non-editor'>
+        <Header />
+        <div className={modalOpen ? 'modalOpen' : 'modalClose'}>
+          <div className='modal-content'>
+            <span onClick={handleTest} className='close'>&times;</span>
+            {
+              modalOpen &&
+                <RecipientInput subject={subject} mjml={mjml} recipients={recipients} setModalOpen={setModalOpen} />
+            }
+          </div>
+        </div>
+        <div className='send-body'>
+          <input onChange={handleChange} type='text' placeholder='Subject' className={'subject ' + (error && ' has-error')} />
+          <div className='send-btn-group'>
+            <button onClick={handleTest} className='send' style={{ marginRight: '10px' }}>Test</button>
+            <button onClick={handleSend} className='send'>{buttonText}</button>
+          </div>
         </div>
       </div>
-      <div className='send-body'>
-        <input onChange={handleChange} type='text' placeholder='Subject' className='subject' />
-        {/* <button onClick={handlePreview}>Preview</button> */}
-        <button onClick={handleTest} className='send' style={{ marginRight: '10px' }}>Test</button>
-        <button onClick={handleSend} className='send'>{buttonText}</button>
-        {error && <p className='error' style={{ marginTop: '10px' }}>{error}</p>}
-      </div>
-      <div id='email-editor' />
+      <div id='gjs' className='gjs' style={{ height: '0px' }} />
     </div>
   )
 }

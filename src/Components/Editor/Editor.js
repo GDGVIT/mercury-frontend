@@ -215,7 +215,6 @@ const dragNDropFileUploadPlugin = createDragNDropUploadPlugin({
 })
 
 const ContentEditor = () => {
-  let headers
   const location = useLocation()
   const ref = useRef(null)
   const history = useHistory()
@@ -246,7 +245,7 @@ const ContentEditor = () => {
   }, [])
 
   const onSearchChange = useCallback(({ value }) => {
-    setSuggestions(defaultSuggestionsFilter(value, headers))
+    setSuggestions(defaultSuggestionsFilter(value))
   }, [])
 
   const handleKeyCommand = (command, editorState) => {
@@ -260,8 +259,6 @@ const ContentEditor = () => {
 
   if (location.state === undefined || location.state === null) {
     return <Redirect to='/csv' />
-  } else {
-    headers = location.state.headers
   }
 
   const toggleColor = (toggledColor) => {
