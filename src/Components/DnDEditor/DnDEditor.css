@@ -168,6 +168,7 @@
   border-radius: 15px;
   cursor: pointer;
 }
+
 .gjs-pn-btn {
   margin-bottom: 0;
 }
@@ -187,7 +188,7 @@
   }
 
   .send-btn-group {
-    margin: 15px 0px;
+    margin: 15px 0;
     text-align: center;
   }
 
@@ -204,7 +205,7 @@
 
   .gjs-pn-options {
     width: 25%;
-    right: 23%
+    right: 23%;
   }
 
   .gjs-pn-btn {
@@ -233,7 +234,7 @@
   }
 
   .send-btn-group {
-    margin: 15px 0px;
+    margin: 15px 0;
     text-align: center;
   }
 
@@ -249,7 +250,7 @@
   }
 
   .gjs-pn-options {
-    right: 25%
+    right: 25%;
   }
 
   .gjs-pn-btn {

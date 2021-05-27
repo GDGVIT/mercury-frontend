@@ -45,7 +45,6 @@ a:visited {
   margin-left: 50px;
 }
 
-
 .buttons a {
   text-decoration: none;
   text-align: center;
@@ -167,7 +166,6 @@ a:visited {
 @media only screen
   and (max-device-width: 812px)
   and (-webkit-min-device-pixel-ratio: 3) {
-  
   .title {
     width: 100%;
     margin: 5px 15px;
