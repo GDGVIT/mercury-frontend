@@ -25,6 +25,12 @@ const Login = () => {
     setCredentials(cred)
   }
 
+  const handleEnter = (event) => {
+    if (event.key === 'Enter') {
+      handleLogin()
+    }
+  }
+
   const handleLogin = () => {
     setButtonDisable(true)
     setButtonText(<PuffLoader css={LoaderCss} size={36} loading color='white' />)
@@ -84,6 +90,7 @@ const Login = () => {
               name='password'
               className='text-input'
               placeholder='Password'
+              onKeyPress={handleEnter}
               onChange={handleChange}
             />
             <div>
@@ -96,7 +103,13 @@ const Login = () => {
               />
               <label className='showPassword' htmlFor='showPassword'>Show Password</label>
             </div>
-            <button type='submit' onClick={handleLogin} disabled={buttonDisable}>{buttonText}</button>
+            <button
+              type='submit'
+              onClick={handleLogin}
+              disabled={buttonDisable}
+            >
+              {buttonText}
+            </button>
           </div>
         </div>
         <img src={login} alt='login' className='login-background' />

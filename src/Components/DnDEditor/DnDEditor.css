@@ -169,15 +169,17 @@
   cursor: pointer;
 }
 
+.gjs-editor {
+  height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
 .gjs-pn-btn {
   margin-bottom: 0;
 }
 
 @media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
-  .non-editor {
-    height: 15%;
-  }
-
   .send-body {
     display: block;
     width: 80%;
@@ -193,7 +195,6 @@
   }
 
   .gjs-editor {
-    height: 85vh;
     max-width: 100vw;
     overflow: hidden;
   }
@@ -220,9 +221,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .non-editor {
-    height: 33%;
-  }
 
   .send-body {
     display: block;

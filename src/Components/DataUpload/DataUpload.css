@@ -12,6 +12,7 @@
 
 .upload-content {
   color: white;
+  padding-left: 50px;
   font-family: 'Monospace-bold', sans-serif;
 }
 
@@ -161,6 +162,7 @@ span {
 @media only screen and (max-width: 768px) {
   .upload-content {
     padding-top: 50px;
+    padding-left: 0;
     text-align: center;
     margin-bottom: 40px;
   }

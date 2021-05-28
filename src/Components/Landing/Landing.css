@@ -35,7 +35,7 @@ a:visited {
 
 .body {
   position: relative;
-  height: calc(100% - 84px);
+  height: calc(100% - 85px);
   overflow: hidden;
 }
 
@@ -163,9 +163,7 @@ a:visited {
   }
 }
 
-@media only screen
-  and (max-device-width: 812px)
-  and (-webkit-min-device-pixel-ratio: 3) {
+@media only screen and (max-device-width: 768px) {
   .title {
     width: 100%;
     margin: 5px 15px;
