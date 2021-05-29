@@ -17,7 +17,6 @@ const Register = () => {
   }
 
   const handleRegister = async () => {
-    console.log(credentials)
     if (credentials.password1 === credentials.password2) {
       const cred = {
         username: credentials.username,
@@ -29,7 +28,6 @@ const Register = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cred)
       }).then((res) => {
-        console.log(res)
         if (res.status === 200) {
           history.push('/csv')
         } else {

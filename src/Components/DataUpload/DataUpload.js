@@ -37,7 +37,7 @@ const DataUpload = () => {
         </div>
         <div className='upload-container'>
           <div style={{ outline: 'none', width: '100%' }}>
-            <h3>Upload files here</h3>
+            <h3>Click to Upload</h3>
             <div className='upload-box'>
               <input
                 type='file'
