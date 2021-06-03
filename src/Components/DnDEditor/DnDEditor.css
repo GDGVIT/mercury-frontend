@@ -167,7 +167,7 @@
   cursor: pointer;
 }
 
-svg {
+.message-sent svg {
   width: 100px;
   display: block;
   margin: 40px auto 0;
@@ -179,19 +179,20 @@ svg {
 }
 
 .path.circle {
-  -webkit-animation: dash .9s ease-in-out;
-  animation: dash .9s ease-in-out;
+  -webkit-animation: dash 0.9s ease-in-out;
+  animation: dash 0.9s ease-in-out;
 }
 
 .path.line {
   stroke-dashoffset: 1000;
-  -webkit-animation: dash .9s .35s ease-in-out forwards;
-  animation: dash .9s .35s ease-in-out forwards;
+  -webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
+  animation: dash 0.9s 0.35s ease-in-out forwards;
 }
+
 .path.check {
   stroke-dashoffset: -100;
-  -webkit-animation: dash-check .9s .35s ease-in-out forwards;
-  animation: dash-check .9s .35s ease-in-out forwards;
+  -webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
+  animation: dash-check 0.9s 0.35s ease-in-out forwards;
 }
 
 p {
@@ -199,18 +200,20 @@ p {
   margin: 20px 0 60px;
   font-size: 1.25em;
 }
+
 p.success {
-  color: #73AF55;
-}
-p.error {
-  color: #D06079;
+  color: #73af55;
 }
 
+p.error {
+  color: #d06079;
+}
 
 @-webkit-keyframes dash {
   0% {
     stroke-dashoffset: 1000;
   }
+
   100% {
     stroke-dashoffset: 0;
   }
@@ -220,6 +223,7 @@ p.error {
   0% {
     stroke-dashoffset: 1000;
   }
+
   100% {
     stroke-dashoffset: 0;
   }
@@ -229,6 +233,7 @@ p.error {
   0% {
     stroke-dashoffset: -100;
   }
+
   100% {
     stroke-dashoffset: 900;
   }
@@ -238,6 +243,7 @@ p.error {
   0% {
     stroke-dashoffset: -100;
   }
+
   100% {
     stroke-dashoffset: 900;
   }
@@ -307,7 +313,6 @@ p.error {
 }
 
 @media only screen and (max-width: 768px) {
-
   .send-body {
     display: block;
     width: 80%;

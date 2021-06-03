@@ -10,6 +10,32 @@ import { PuffLoader } from 'react-spinners'
 import { css } from '@emotion/core'
 import './DnDEditor.css'
 
+class EmailSentMessage extends React.Component {
+  render () {
+    if (!this.props.error) {
+      return (
+        <div className='message-sent'>
+          <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
+            <circle className='path circle' fill='none' stroke='#73AF55' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+            <polyline className='path check' fill='none' stroke='#73AF55' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' points='100.2,40.2 51.5,88.8 29.8,67.5 ' />
+          </svg>
+          <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent successfullly!</h3>
+        </div>
+      )
+    }
+    return (
+      <div className='message-sent'>
+        <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
+          <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
+          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
+        </svg>
+        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent unsuccessfullly</h3>
+      </div>
+    )
+  }
+}
+
 export const DnDEnditor = () => {
   const location = useLocation()
   const [subject, setSubject] = useState('')
@@ -152,26 +178,7 @@ export const DnDEnditor = () => {
         <div className={successModalOpen ? 'modalOpen' : 'modalClose'}>
           <div className='modal-content'>
             <span onClick={() => setSuccessModalOpen(false)} className='close'>&times;</span>
-            {
-              sendError
-                ?
-                  <div>
-                    <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-                      <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-                      <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
-                      <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
-                    </svg>
-                    <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent unsuccessfullly</h3>
-                  </div>
-                :
-                  <div>
-                    <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-                      <circle className='path circle' fill='none' stroke='#73AF55' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-                      <polyline className='path check' fill='none' stroke='#73AF55' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' points='100.2,40.2 51.5,88.8 29.8,67.5 ' />
-                    </svg>
-                    <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent successfullly!</h3>
-                  </div>
-            }
+            <EmailSentMessage error={sendError} />
           </div>
         </div>
         <div className='send-body'>
