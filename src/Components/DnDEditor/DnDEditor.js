@@ -38,6 +38,7 @@ class EmailSentMessage extends React.Component {
 
 export const DnDEnditor = () => {
   const location = useLocation()
+  const handleRefreshToken = location.state.handleRefreshToken
   const [subject, setSubject] = useState('')
   const [recipientModalOpen, setRecipientModalOpen] = useState(false)
   const [successModalOpen, setSuccessModalOpen] = useState(false)
@@ -45,7 +46,7 @@ export const DnDEnditor = () => {
   const [sendError, setSendError] = useState(false)
   const [mjml, setMjml] = useState(null)
   const [buttonText, setButtonText] = useState('Send')
-  const token = window.localStorage.getItem('token')
+  let token = window.localStorage.getItem('token')
   const LoaderCss = css`
     display: block;
     margin: 0 10px;
@@ -70,6 +71,7 @@ export const DnDEnditor = () => {
         </mj-body>
       </mjml>
     `)
+    console.log(Mjmleditor)
     setEditor(Mjmleditor)
   }, [])
 
@@ -88,11 +90,16 @@ export const DnDEnditor = () => {
   }
 
   const handleSend = async () => {
+    const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
     if (!mjml) {
       await getMjml()
     }
     if (subject === '') {
       setError(true)
+    }
+    if (new Date().getTime() > accessExpirationTime) {
+      await handleRefreshToken()
+      token = window.localStorage.getItem('token')
     } else {
       setButtonText(<PuffLoader css={LoaderCss} size={11.5} loading color='white' />)
       const formData = new window.FormData()
@@ -150,7 +157,9 @@ export const DnDEnditor = () => {
     <div style={{ height: '100vh', maxHeight: '100vh' }}>
       {
         ((window.localStorage.getItem('token') === null) ||
-        (window.localStorage.getItem('token') === undefined)) &&
+        (window.localStorage.getItem('token') === undefined) ||
+        (new Date().getTime() > window.localStorage.getItem('expirationDate') &&
+        window.localStorage.removeItem('token'))) &&
           <Redirect to='/login' />
       }
       {
@@ -165,6 +174,7 @@ export const DnDEnditor = () => {
             {
               recipientModalOpen &&
                 <RecipientInput
+                  handleRefreshToken={handleRefreshToken}
                   subject={subject}
                   mjml={mjml}
                   recipients={recipients}

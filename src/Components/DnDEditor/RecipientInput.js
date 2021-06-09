@@ -12,9 +12,14 @@ const RecipientInput = (props) => {
     display: block;
     margin: 0 auto;
   `
-  const token = window.localStorage.getItem('token')
+  let token = window.localStorage.getItem('token')
 
-  const handleTest = () => {
+  const handleTest = async () => {
+    const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
+    if (new Date().getTime() > accessExpirationTime) {
+      await props.handleRefreshToken()
+      token = window.localStorage.getItem('token')
+    }
     const { subject, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, setSendError } = props
     setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
 

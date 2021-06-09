@@ -251,10 +251,19 @@ p.error {
 
 /* editor */
 
-.gjs-editor {
+.gjs .gjs-editor {
   height: 100vh;
   max-width: 100vw;
   overflow: hidden;
+}
+
+.gjs-mdl-container {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.gjs-mdl-dialog {
+  height: 50vh;
 }
 
 .gjs-pn-btn {
@@ -284,6 +293,10 @@ p.error {
   .gjs-frame {
     left: -10%;
     width: 90%;
+  }
+
+  .gjs-mdl-dialog {
+    height: 30vh;
   }
 
   div[data-gjs-type="mj-section"] {
@@ -331,6 +344,10 @@ p.error {
     height: 100vh;
     max-width: 100vw;
     overflow: hidden;
+  }
+
+  .gjs-mdl-dialog {
+    height: 60vh;
   }
 
   .gjs-pn-views,
