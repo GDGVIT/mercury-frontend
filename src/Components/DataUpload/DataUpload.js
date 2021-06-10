@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import Header from '../Header/Header'
 import './DataUpload.css'
-import { Redirect, useHistory, useLocation } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 
 const DataUpload = () => {
   const history = useHistory()
-  const location = useLocation()
   const [label, setLabel] = useState('Choose a file...')
   const [recipients, setRecipients] = useState([])
   const [buttonBool, setButtonBool] = useState(false)
@@ -20,8 +19,7 @@ const DataUpload = () => {
     history.push({
       pathname: '/dnd',
       state: {
-        recipients,
-        handleRefreshToken: location.state.handleRefreshToken
+        recipients
       }
     })
   }
@@ -31,7 +29,7 @@ const DataUpload = () => {
       {
         ((window.localStorage.getItem('token') === null) ||
         (window.localStorage.getItem('token') === undefined) ||
-        (new Date().getTime() > window.localStorage.getItem('expirationDate') &&
+        (new Date().getTime() > window.localStorage.getItem('accessExpirationTime') &&
         window.localStorage.removeItem('token'))) &&
           <Redirect to='/login' />
       }

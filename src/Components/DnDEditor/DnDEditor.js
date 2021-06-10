@@ -38,7 +38,6 @@ class EmailSentMessage extends React.Component {
 
 export const DnDEnditor = () => {
   const location = useLocation()
-  const handleRefreshToken = location.state.handleRefreshToken
   const [subject, setSubject] = useState('')
   const [recipientModalOpen, setRecipientModalOpen] = useState(false)
   const [successModalOpen, setSuccessModalOpen] = useState(false)
@@ -46,13 +45,14 @@ export const DnDEnditor = () => {
   const [sendError, setSendError] = useState(false)
   const [mjml, setMjml] = useState(null)
   const [buttonText, setButtonText] = useState('Send')
-  let token = window.localStorage.getItem('token')
+  const token = window.localStorage.getItem('token')
   const LoaderCss = css`
     display: block;
     margin: 0 10px;
   `
   const recipients = location.state.recipients
   const [editor, setEditor] = useState(null)
+
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
       container: '#gjs',
@@ -62,8 +62,44 @@ export const DnDEnditor = () => {
       pluginsOpts: {
         [grapesjsMJML]: {}
       },
-      height: '80%'
+      height: '80%',
+      assetManager: {
+        storageType: '',
+        storeOnChange: true,
+        storeAfterUpload: true,
+        assets: [],
+        uploadFile: (e) => {
+          const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
+          const imagesFormData = new window.FormData()
+          for (const i in files) {
+            imagesFormData.append('image', files[i])
+          }
+          window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
+            method: 'POST',
+            headers: new window.Headers({
+              Authorization: 'Bearer ' + token
+            }),
+            body: imagesFormData,
+            contentType: false,
+            crossDomain: true,
+            dataType: 'json',
+            mimeType: 'multipart/form-data',
+            processData: false
+          }).then(res => {
+            console.log(res)
+            if (res.status === 200) {
+              return res.json()
+            }
+          }).then(data => {
+            console.log(data)
+            data.data.forEach(image => {
+              Mjmleditor.AssetManager.add(image)
+            })
+          })
+        }
+      }
     })
+
     Mjmleditor.Components.clear()
     Mjmleditor.addComponents(`
       <mjml>
@@ -71,9 +107,9 @@ export const DnDEnditor = () => {
         </mj-body>
       </mjml>
     `)
-    console.log(Mjmleditor)
+
     setEditor(Mjmleditor)
-  }, [])
+  }, [token])
 
   const handleChange = (event) => {
     setError(false)
@@ -98,8 +134,7 @@ export const DnDEnditor = () => {
       setError(true)
     }
     if (new Date().getTime() > accessExpirationTime) {
-      await handleRefreshToken()
-      token = window.localStorage.getItem('token')
+      window.localStorage.removeItem('token')
     } else {
       setButtonText(<PuffLoader css={LoaderCss} size={11.5} loading color='white' />)
       const formData = new window.FormData()
@@ -158,7 +193,7 @@ export const DnDEnditor = () => {
       {
         ((window.localStorage.getItem('token') === null) ||
         (window.localStorage.getItem('token') === undefined) ||
-        (new Date().getTime() > window.localStorage.getItem('expirationDate') &&
+        (new Date().getTime() > window.localStorage.getItem('accessExpirationTime') &&
         window.localStorage.removeItem('token'))) &&
           <Redirect to='/login' />
       }
@@ -174,7 +209,6 @@ export const DnDEnditor = () => {
             {
               recipientModalOpen &&
                 <RecipientInput
-                  handleRefreshToken={handleRefreshToken}
                   subject={subject}
                   mjml={mjml}
                   recipients={recipients}

@@ -31,30 +31,31 @@ const Login = () => {
     }
   }
 
-  const handleRefreshToken = () => {
-    const refresh = window.localStorage.getItem('refresh')
-    const refreshExpirationTime = window.getItem('refreshExpirationTime')
-    if (new Date().getTime() > refreshExpirationTime) {
-      window.localStorage.clear()
-    } else {
-      window.fetch('https://mercury-mailer-dsc.herokuapp.com/user/login/refresh', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: { refresh }
-      }).then((res) => {
-        if (res.status === 200) {
-          res.json()
-        }
-      }).then((data) => {
-        const accessExpirationTime = new Date().getTime() + 1500000
-        window.localStorage.setItem('token', data.access)
-        window.localStorage.setItem('accessExpirationTime', accessExpirationTime)
-      }).catch((error) => {
-        console.error(error)
-        window.localStorage.clear()
-      })
-    }
-  }
+  // const handleRefreshToken = () => {
+  //   const refresh = window.localStorage.getItem('refresh')
+  //   const refreshExpirationTime = window.getItem('refreshExpirationTime')
+  //   if (new Date().getTime() > refreshExpirationTime) {
+  //     window.localStorage.clear()
+  //   } else {
+  //     window.fetch('https://mercury-mailer-dsc.herokuapp.com/user/login/refresh', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: { refresh }
+  //     }).then((res) => {
+  //       if (res.status === 200) {
+  //         res.json()
+  //       }
+  //     }).then((data) => {
+  //       const accessExpirationTime = new Date().getTime() + 1500000
+  //       console.log(new Date().getTime(), accessExpirationTime)
+  //       window.localStorage.setItem('token', data.access)
+  //       window.localStorage.setItem('accessExpirationTime', accessExpirationTime)
+  //     }).catch((error) => {
+  //       console.error(error)
+  //       window.localStorage.clear()
+  //     })
+  //   }
+  // }
 
   const handleLogin = () => {
     setButtonDisable(true)
@@ -71,21 +72,17 @@ const Login = () => {
       }
       return res.json()
     }).then(data => {
-      try {
-        const now = new Date()
-        if (data !== undefined && data !== null) {
-          window.localStorage.setItem('token', data.access)
-          window.localStorage.setItem('refresh', data.refresh)
-          window.localStorage.setItem('accessExpirationTime', now.getTime() + 1500000)
-          window.localStorage.setItem('refreshExpirationTime', now.getTime() + 86400000)
-          history.push({
-            pathname: '/csv',
-            state: { handleRefreshToken }
-          })
-        }
-      } catch (err) {
-        console.error(err)
-        setErrorMessage('Login Error')
+      const now = new Date()
+      if (data !== undefined && data !== null) {
+        console.log(now.getTime(), now.getTime() + 1500000)
+        window.localStorage.setItem('token', data.access)
+        // window.localStorage.setItem('refresh', data.refresh)
+        window.localStorage.setItem('accessExpirationTime', now.getTime() + 1500000)
+        // window.localStorage.setItem('refreshExpirationTime', now.getTime() + 86400000)
+        history.push({
+          pathname: '/csv'
+          // state: { handleRefreshToken }
+        })
       }
     }).catch(err => {
       console.error(err)
