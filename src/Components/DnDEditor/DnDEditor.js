@@ -72,7 +72,7 @@ export const DnDEnditor = () => {
           const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
           const imagesFormData = new window.FormData()
           for (const i in files) {
-            imagesFormData.append('image', files[i])
+            imagesFormData.append('image', files[i], files[i].name)
           }
           window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
             method: 'POST',
@@ -86,12 +86,10 @@ export const DnDEnditor = () => {
             mimeType: 'multipart/form-data',
             processData: false
           }).then(res => {
-            console.log(res)
             if (res.status === 200) {
               return res.json()
             }
           }).then(data => {
-            console.log(data)
             data.data.forEach(image => {
               Mjmleditor.AssetManager.add(image)
             })
@@ -163,7 +161,6 @@ export const DnDEnditor = () => {
         }
         return res.json()
       }).then((data) => {
-        console.log(data)
         editor.Components.clear()
         editor.addComponents(`
           <mjml>
