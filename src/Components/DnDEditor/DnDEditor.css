@@ -296,7 +296,7 @@ p.error {
   }
 
   .gjs-mdl-dialog {
-    height: 30vh;
+    height: 50vh;
   }
 
   div[data-gjs-type="mj-section"] {

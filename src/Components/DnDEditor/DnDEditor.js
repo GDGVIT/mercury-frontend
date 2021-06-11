@@ -71,8 +71,10 @@ export const DnDEnditor = () => {
         uploadFile: (e) => {
           const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
           const imagesFormData = new window.FormData()
-          for (const i in files) {
-            imagesFormData.append('image', files[i], files[i].name)
+          for (let i = 0; i < files.length; i++) {
+            const fileName = files[i].name.replace(/\.[^/.]+$/, '')
+            imagesFormData.append('image', files[i])
+            imagesFormData.append('file_name', fileName)
           }
           window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
             method: 'POST',
@@ -223,7 +225,13 @@ export const DnDEnditor = () => {
           </div>
         </div>
         <div className='send-body'>
-          <input onChange={handleChange} type='text' placeholder='Subject' className={'subject ' + (error && 'has-error')} />
+          <input
+            type='text'
+            onChange={handleChange}
+            value={subject}
+            placeholder='Subject'
+            className={'subject ' + (error && 'has-error')}
+          />
           <div className='send-btn-group'>
             <button onClick={handleTest} className='send' style={{ marginRight: '10px' }}>Test</button>
             <button onClick={handleSend} className='send'>{buttonText}</button>

@@ -74,7 +74,6 @@ const Login = () => {
     }).then(data => {
       const now = new Date()
       if (data !== undefined && data !== null) {
-        console.log(now.getTime(), now.getTime() + 1500000)
         window.localStorage.setItem('token', data.access)
         // window.localStorage.setItem('refresh', data.refresh)
         window.localStorage.setItem('accessExpirationTime', now.getTime() + 1500000)
