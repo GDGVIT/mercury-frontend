@@ -134,51 +134,43 @@ const DnDEnditor = () => {
 
   const handleSend = async () => {
     const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
-    if (!mjml) {
-      await getMjml()
-    }
-    if (subject === '') {
-      setError(true)
-    }
     if (new Date().getTime() > accessExpirationTime) {
       window.localStorage.removeItem('token')
+    }
+    if (mjml === '<mjml><mj-body></mj-body></mjml>') {
+      await getMjml()
+      if (subject === '') {
+        setError(true)
+      }
     } else {
-      setButtonText(<PuffLoader css={LoaderCss} size={11.5} loading color='white' />)
-      const formData = new window.FormData()
-      setError(false)
-      formData.append('sender_name', 'Sricharan Ramesh')
-      formData.append('sender_email', 'charan1952001@gmail.com')
-      formData.append('subject', subject)
-      formData.append('recipients', recipients, recipients.name)
-      formData.append('body_text', 'Hello world')
-      formData.append('body_mjml', mjml)
-      formData.append('aws_region', 'ap-south-1')
+      if (!error) {
+        setButtonText(<PuffLoader css={LoaderCss} size={11.5} loading color='white' />)
+        const formData = new window.FormData()
+        setError(false)
+        formData.append('sender_name', 'Sricharan Ramesh')
+        formData.append('sender_email', 'charan1952001@gmail.com')
+        formData.append('subject', subject)
+        formData.append('recipients', recipients, recipients.name)
+        formData.append('body_text', 'Hello world')
+        formData.append('body_mjml', mjml)
+        formData.append('aws_region', 'ap-south-1')
 
-      window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send', {
-        method: 'POST',
-        headers: new window.Headers({
-          Authorization: 'Bearer ' + token
-        }),
-        body: formData
-      }).then((res) => {
-        setButtonText('Send')
-        setSuccessModalOpen(true)
-        if (res.status !== 200) {
-          setSendError(true)
-        } else {
-          setSendError(false)
-        }
-        return res.json()
-      }).then((data) => {
-        editor.Components.clear()
-        editor.addComponents(`
-          <mjml>
-            <mj-body>
-            </mj-body>
-          </mjml>
-        `)
-        setSubject('')
-      })
+        window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send', {
+          method: 'POST',
+          headers: new window.Headers({
+            Authorization: 'Bearer ' + token
+          }),
+          body: formData
+        }).then((res) => {
+          setButtonText('Send')
+          setSuccessModalOpen(true)
+          if (res.status !== 200) {
+            setSendError(true)
+          } else {
+            setSendError(false)
+          }
+        })
+      }
     }
   }
 

@@ -24,7 +24,7 @@ function App () {
           <Route exact path='/csv'>
             <DataUpload />
           </Route>
-          <Route path='/dnd'>
+          <Route exact path='/dnd'>
             <DnDEnditor />
           </Route>
           <Route path='/'>
