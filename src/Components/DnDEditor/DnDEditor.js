@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation, Redirect } from 'react-router-dom'
+import { useLocation, Redirect, useHistory } from 'react-router-dom'
 import 'grapesjs/dist/css/grapes.min.css'
 import grapesjs from 'grapesjs'
 import grapesjsTouch from 'grapesjs-touch'
@@ -36,7 +36,7 @@ class EmailSentMessage extends React.Component {
   }
 }
 
-export const DnDEnditor = () => {
+const DnDEnditor = () => {
   const location = useLocation()
   const [subject, setSubject] = useState('')
   const [recipientModalOpen, setRecipientModalOpen] = useState(false)
@@ -52,6 +52,7 @@ export const DnDEnditor = () => {
   `
   const recipients = location.state.recipients
   const [editor, setEditor] = useState(null)
+  const history = useHistory()
 
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
@@ -101,12 +102,18 @@ export const DnDEnditor = () => {
     })
 
     Mjmleditor.Components.clear()
-    Mjmleditor.addComponents(`
-      <mjml>
-        <mj-body>
-        </mj-body>
-      </mjml>
-    `)
+    if ((window.localStorage.getItem('mjml') === null || window.localStorage.getItem('mjml') === undefined) &&
+    (window.localStorage.getItem('subject') === null || window.localStorage.getItem('subject') === undefined)) {
+      Mjmleditor.addComponents(`
+        <mjml>
+          <mj-body>
+          </mj-body>
+        </mjml>
+      `)
+    } else {
+      Mjmleditor.addComponents(window.localStorage.getItem('mjml'))
+      setSubject(window.localStorage.getItem('subject'))
+    }
 
     setEditor(Mjmleditor)
   }, [token])
@@ -175,6 +182,12 @@ export const DnDEnditor = () => {
     }
   }
 
+  const handleChangeCSV = () => {
+    window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
+    window.localStorage.setItem('subject', subject)
+    history.push('/csv')
+  }
+
   const handleTest = async () => {
     if (!mjml) {
       await getMjml()
@@ -233,6 +246,7 @@ export const DnDEnditor = () => {
             className={'subject ' + (error && 'has-error')}
           />
           <div className='send-btn-group'>
+            <button onClick={handleChangeCSV} className='send' style={{ marginRight: '10px' }}>Change CSV</button>
             <button onClick={handleTest} className='send' style={{ marginRight: '10px' }}>Test</button>
             <button onClick={handleSend} className='send'>{buttonText}</button>
           </div>
