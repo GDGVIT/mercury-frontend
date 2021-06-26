@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+}
+
+.body {
+  position: relative;
+  height: calc(100% - 85px);
+  overflow: hidden;
+}
+
+.home-body {
+  padding-top: 50px;
+  width: 100vw;
+  margin-left: 50px;
+  text-align: start;
+}
+
+.home-body h1 {
+  font-size: 400%;
+  font-weight: 300;
+  font-family: 'Metropolis-bold', sans-serif;
+  width: 67%;
+  margin: 50px 30px;
+}
+
+.home-body p {
+  margin: 20px 30px;
+  font-size: 150%;
+  font-weight: 200;
+  font-family: 'Metropolis', sans-serif;
+  width: 50%;
+  text-align: start;
+}
+
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  padding-top: 70px;
+  margin-left: 40px;
+}
+
+
+.home-buttons a {
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 60px;
+  font-size: 1.5em;
+  font-family: 'Metropolis-bold', sans-serif;
+  margin-top: 30px;
+  border-radius: 5px;
+  width: 100%;
+  border: 2px solid #4285f4;
+}
+
+.home {
+  display: block;
+  position: absolute;
+  right: 5%;
+  bottom: 10%;
+  width: 45%;
+}
+
+@media only screen and (min-device-width: 767px)  and (max-width: 1024px) {
+  .body {
+    min-height: 930px;
+    overflow: hidden;
+  }
+
+  .home-body {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  .home-body h1 {
+    width: 100%;
+    padding-top: 50px;
+    margin: 50px 0;
+    font-size: 300%;
+    text-align: center;
+  }
+
+  .home-body p {
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
+  }
+
+  .home-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    padding: 0 50px;
+    max-width: 750px;
+    margin: auto;
+    margin-top: 50px;
+  }
+
+  .home {
+    position: absolute;
+    bottom: 12%;
+    right: 20%;
+    width: 60%;
+  }
+}
+
+@media only screen and (max-device-width: 767px) {
+  .body {
+    overflow: scroll;
+  }
+
+  .title {
+    width: 100%;
+    margin: 5px 15px;
+  }
+
+  .home-body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .home-body p {
+    width: 100%;
+    margin: 0;
+    padding: 10px 10%;
+    text-align: center;
+  }
+
+  .home-body h1 {
+    padding: 0;
+    width: 100%;
+    padding-top: 30px;
+    margin: 30px 0;
+    font-size: 250%;
+    text-align: center;
+  }
+
+  .home-buttons {
+    padding-top: 10px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 30px;
+    width: 75%;
+  }
+
+  .home-buttons a {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .home {
+    display: none;
+  }
+}

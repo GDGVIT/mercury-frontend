@@ -53,7 +53,7 @@ const Login = () => {
         window.localStorage.setItem('accessExpirationTime', now.getTime() + 1500000)
         // window.localStorage.setItem('refreshExpirationTime', now.getTime() + 86400000)
         history.push({
-          pathname: '/csv'
+          pathname: '/home'
           // state: { handleRefreshToken }
         })
       }
