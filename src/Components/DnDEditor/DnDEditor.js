@@ -52,6 +52,7 @@ export const DnDEnditor = () => {
   `
   const recipients = location.state.recipients
   const [editor, setEditor] = useState(null)
+
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
       container: '#gjs',
@@ -61,8 +62,44 @@ export const DnDEnditor = () => {
       pluginsOpts: {
         [grapesjsMJML]: {}
       },
-      height: '80%'
+      height: '80%',
+      assetManager: {
+        storageType: '',
+        storeOnChange: true,
+        storeAfterUpload: true,
+        assets: [],
+        uploadFile: (e) => {
+          const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
+          const imagesFormData = new window.FormData()
+          for (let i = 0; i < files.length; i++) {
+            const fileName = files[i].name.replace(/\.[^/.]+$/, '')
+            imagesFormData.append('image', files[i])
+            imagesFormData.append('file_name', fileName)
+          }
+          window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
+            method: 'POST',
+            headers: new window.Headers({
+              Authorization: 'Bearer ' + token
+            }),
+            body: imagesFormData,
+            contentType: false,
+            crossDomain: true,
+            dataType: 'json',
+            mimeType: 'multipart/form-data',
+            processData: false
+          }).then(res => {
+            if (res.status === 200) {
+              return res.json()
+            }
+          }).then(data => {
+            data.data.forEach(image => {
+              Mjmleditor.AssetManager.add(image)
+            })
+          })
+        }
+      }
     })
+
     Mjmleditor.Components.clear()
     Mjmleditor.addComponents(`
       <mjml>
@@ -70,8 +107,9 @@ export const DnDEnditor = () => {
         </mj-body>
       </mjml>
     `)
+
     setEditor(Mjmleditor)
-  }, [])
+  }, [token])
 
   const handleChange = (event) => {
     setError(false)
@@ -88,11 +126,15 @@ export const DnDEnditor = () => {
   }
 
   const handleSend = async () => {
+    const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
     if (!mjml) {
       await getMjml()
     }
     if (subject === '') {
       setError(true)
+    }
+    if (new Date().getTime() > accessExpirationTime) {
+      window.localStorage.removeItem('token')
     } else {
       setButtonText(<PuffLoader css={LoaderCss} size={11.5} loading color='white' />)
       const formData = new window.FormData()
@@ -121,7 +163,6 @@ export const DnDEnditor = () => {
         }
         return res.json()
       }).then((data) => {
-        console.log(data)
         editor.Components.clear()
         editor.addComponents(`
           <mjml>
@@ -150,7 +191,9 @@ export const DnDEnditor = () => {
     <div style={{ height: '100vh', maxHeight: '100vh' }}>
       {
         ((window.localStorage.getItem('token') === null) ||
-        (window.localStorage.getItem('token') === undefined)) &&
+        (window.localStorage.getItem('token') === undefined) ||
+        (new Date().getTime() > window.localStorage.getItem('accessExpirationTime') &&
+        window.localStorage.removeItem('token'))) &&
           <Redirect to='/login' />
       }
       {
@@ -182,7 +225,13 @@ export const DnDEnditor = () => {
           </div>
         </div>
         <div className='send-body'>
-          <input onChange={handleChange} type='text' placeholder='Subject' className={'subject ' + (error && 'has-error')} />
+          <input
+            type='text'
+            onChange={handleChange}
+            value={subject}
+            placeholder='Subject'
+            className={'subject ' + (error && 'has-error')}
+          />
           <div className='send-btn-group'>
             <button onClick={handleTest} className='send' style={{ marginRight: '10px' }}>Test</button>
             <button onClick={handleSend} className='send'>{buttonText}</button>

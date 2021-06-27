@@ -18,7 +18,9 @@ const DataUpload = () => {
   const handleNext = () => {
     history.push({
       pathname: '/dnd',
-      state: { recipients }
+      state: {
+        recipients
+      }
     })
   }
 
@@ -26,7 +28,9 @@ const DataUpload = () => {
     <div style={{ maxHeight: '100vh', height: '100vh' }}>
       {
         ((window.localStorage.getItem('token') === null) ||
-        (window.localStorage.getItem('token') === undefined)) &&
+        (window.localStorage.getItem('token') === undefined) ||
+        (new Date().getTime() > window.localStorage.getItem('accessExpirationTime') &&
+        window.localStorage.removeItem('token'))) &&
           <Redirect to='/login' />
       }
       <Header />

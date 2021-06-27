@@ -13,8 +13,14 @@ const RecipientInput = (props) => {
     margin: 0 auto;
   `
   const token = window.localStorage.getItem('token')
+  const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
 
-  const handleTest = () => {
+  const handleTest = async () => {
+    if (new Date().getTime() > accessExpirationTime) {
+      // await props.handleRefreshToken()
+      console.log('Login again')
+      window.localStorage.removeItem('token')
+    }
     const { subject, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, setSendError } = props
     setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
 
@@ -35,6 +41,7 @@ const RecipientInput = (props) => {
       }),
       body: formData
     }).then((res) => {
+      console.log(res)
       setButtonText('Send Test Mail')
       setRecipientModalOpen(false)
       setSuccessModalOpen(true)
@@ -43,6 +50,8 @@ const RecipientInput = (props) => {
       } else {
         setSendError(true)
       }
+    }).catch((err) => {
+      console.error(err)
     })
   }
 
