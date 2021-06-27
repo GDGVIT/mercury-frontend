@@ -3,7 +3,7 @@
 	<img src="https://user-images.githubusercontent.com/30529572/92081025-fabe6f00-edb1-11ea-9169-4a8a61a5dd45.png" alt="DSC VIT"/>
 </a>
 	<h2 align="center"> Mercury Mailer </h2>
-	<h4 align="center"> Website for sending emails easily with beautiful templates in bulk <h4>
+	<h4 align="center"> Webapp for easily sending bulk emails with beautiful templates <h4>
 </p>
 
 ---
@@ -15,19 +15,19 @@
 
 
 ## Features
-- [ ]  Seperate links for sending static mails and dynamic mails
-- [ ]  Input for CSV file containing email IDs and related indformation
-- [ ]  UI to input email subject, images, and email body
-- [ ]  Rich-Text Editor for entering content
-- [ ]  Sending MJML template code to Backend
-- [ ]  UI to change footer content
-- [ ]  Preview of the email
+- [x]  Input for CSV file containing email IDs and related indformation
+- [x]  UI to input email subject, images, and email body
+- [x]  GrapesJS Editor for entering content
+- [x]  Sending subject, CSV file, and MJML code to Backend for bulk mail
+- [x]  Sending subject, CSV file, and MJML code to Backend for test mail
+- [x]  Preview of the email in the editor
 
 <br>
 
 ## Dependencies
- - Draft.js
- - react-csv-reader
+ - grapesjs
+ - grapesjs-mjml
+ - react-spinners
 
 
 ## Running
