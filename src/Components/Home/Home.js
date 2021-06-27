@@ -1,11 +1,35 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import './Home.css'
 import Header from '../Header/Header'
-import Home from '../../assets/home.svg'
+import HomeSvg from '../../assets/home.svg'
 
-const Landing = () => {
+const Home = () => {
+  const handleDownload = () => {
+    window.fetch({
+      method: 'GET',
+      url: 'https://mercury-mailer-dsc.herokuapp.com/download',
+      responseType: 'arraybuffer'
+    }).then((response) => response.blob()).then((blob) => {
+      const url = window.URL.createObjectURL(new window.Blob([blob]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'Recipients.csv')
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+    })
+  }
+
   return (
     <div style={{ height: '100vh' }}>
+      {
+        ((window.localStorage.getItem('token') === null) ||
+        (window.localStorage.getItem('token') === undefined) ||
+        (new Date().getTime() > window.localStorage.getItem('accessExpirationTime') &&
+        window.localStorage.removeItem('token'))) &&
+          <Redirect to='/login' />
+      }
       <Header />
       <div className='body'>
         <div className='home-body'>
@@ -13,14 +37,16 @@ const Landing = () => {
           <p>1. Upload the list of emails in a CSV file.</p>
           <p>2. Design a personalised email template to send.</p>
           <p>3. Send emails in bulk effortlessly!</p>
+
           <div className='home-buttons'>
-            <a href='/csv' style={{ background: '#4285F4', color: 'white' }}>Get Started</a>
+            <button onClick={handleDownload}>Download CSV Template</button>
+            <a href='/csv'>Get Started</a>
           </div>
         </div>
-        <img alt='desktop' className='home' src={Home} />
+        <img alt='desktop' className='home' src={HomeSvg} />
       </div>
     </div>
   )
 }
 
-export default Landing
+export default Home

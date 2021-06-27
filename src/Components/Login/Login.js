@@ -71,7 +71,7 @@ const Login = () => {
     <div style={{ height: '100vh' }}>
       {
         (window.localStorage.getItem('token') !== undefined && window.localStorage.getItem('token') !== null) &&
-        history.push('/csv')
+        history.push('/home')
       }
       <Header />
       <div className='login'>
