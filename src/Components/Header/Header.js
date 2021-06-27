@@ -1,10 +1,11 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 import '../Landing/Landing.css'
 import logo from '../../assets/logo.svg'
 
 const Header = () => {
   const history = useHistory()
+  const location = useLocation()
 
   const handleClick = () => {
     window.localStorage.clear()
@@ -18,6 +19,7 @@ const Header = () => {
       </a>
       {
         (window.localStorage.getItem('token') !== null && window.localStorage.getItem('token') !== undefined) &&
+        (location.pathname !== '/' && location.pathname !== '/login') &&
           <div onClick={handleClick} className='logout'>Logout</div>
       }
     </div>

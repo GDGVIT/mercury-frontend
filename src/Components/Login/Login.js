@@ -57,7 +57,7 @@ const Login = () => {
         const now = new Date()
         if (data !== undefined && data !== null) {
           window.localStorage.setItem('token', data.access)
-          window.localStorage.setItem('accessExpirationTime', now.getTime() + 1500000)
+          window.localStorage.setItem('accessExpirationTime', now.getTime() + 86400000)
           history.push({
             pathname: '/home'
           })
