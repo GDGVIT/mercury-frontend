@@ -11,7 +11,7 @@ const Login = () => {
   const [visible, setVisible] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [buttonText, setButtonText] = useState('LOGIN')
-  const [buttonDisable, setButtonDisable] = useState(false)
+  const [buttonDisable, setButtonDisable] = useState(true)
   const history = useHistory()
   const LoaderCss = css`
     display: block;
@@ -23,44 +23,52 @@ const Login = () => {
     const cred = credentials
     cred[event.target.name] = event.target.value
     setCredentials(cred)
+    if (cred.username !== '' && cred.password !== '') {
+      setButtonDisable(false)
+    } else {
+      setButtonDisable(true)
+    }
   }
 
   const handleEnter = (event) => {
-    if (event.key === 'Enter') {
+    if (event.target.name === 'password' && event.key === 'Enter') {
       handleLogin()
     }
   }
 
   const handleLogin = () => {
-    setButtonDisable(true)
-    setButtonText(<PuffLoader css={LoaderCss} size={36} loading color='white' />)
-    window.fetch('https://mercury-mailer-dsc.herokuapp.com/user/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials)
-    }).then((res) => {
-      if (res.status !== 200) {
-        setButtonText('LOGIN')
-        setButtonDisable(false)
-        setErrorMessage('Login Error')
-      }
-      return res.json()
-    }).then(data => {
-      const now = new Date()
-      if (data !== undefined && data !== null) {
-        window.localStorage.setItem('token', data.access)
-        // window.localStorage.setItem('refresh', data.refresh)
-        window.localStorage.setItem('accessExpirationTime', now.getTime() + 1500000)
-        // window.localStorage.setItem('refreshExpirationTime', now.getTime() + 86400000)
-        history.push({
-          pathname: '/home'
-          // state: { handleRefreshToken }
-        })
-      }
-    }).catch(err => {
-      console.error(err)
-      setErrorMessage('Login Error')
-    })
+    if (credentials.username !== '' && credentials.password !== '') {
+      setButtonDisable(true)
+      setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
+      window.fetch('https://mercury-mailer-dsc.herokuapp.com/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials)
+      }).then((res) => {
+        if (res.status !== 200) {
+          setButtonText('LOGIN')
+          setButtonDisable(false)
+          setErrorMessage('Login Error')
+          throw new Error('Invalid Credentials')
+        } else {
+          return res.json()
+        }
+      }).then(data => {
+        const now = new Date()
+        if (data !== undefined && data !== null) {
+          window.localStorage.setItem('token', data.access)
+          window.localStorage.setItem('accessExpirationTime', now.getTime() + 1500000)
+          history.push({
+            pathname: '/home'
+          })
+        }
+      }).catch(err => {
+        console.error(err)
+        setErrorMessage(err.message)
+      })
+    } else {
+      setErrorMessage('Enter Credentials')
+    }
   }
 
   const handleClick = () => {

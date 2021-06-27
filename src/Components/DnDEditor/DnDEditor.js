@@ -238,8 +238,8 @@ const DnDEnditor = () => {
             className={'subject ' + (error && 'has-error')}
           />
           <div className='send-btn-group'>
-            <button onClick={handleChangeCSV} className='send' style={{ marginRight: '10px' }}>Change CSV</button>
-            <button onClick={handleTest} className='send' style={{ marginRight: '10px' }}>Test</button>
+            <button onClick={handleChangeCSV} className='csv'>Change CSV</button>
+            <button onClick={handleTest} className='send test'>Test</button>
             <button onClick={handleSend} className='send'>{buttonText}</button>
           </div>
         </div>

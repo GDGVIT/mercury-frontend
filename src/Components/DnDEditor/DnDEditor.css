@@ -6,39 +6,22 @@
 
 .send-body {
   display: flex;
-  width: 70%;
+  flex-direction: column;
+  width: 60%;
   margin: 20px auto;
 }
 
-.send {
-  margin-top: 2px;
-  width: fit-content;
-  background: #4285f4;
-  color: white;
-  font-size: 13px;
-  padding: 7px 15px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
-.send:disabled {
-  background: #4285f4;
-  color: white;
-  font-size: 13px;
-  padding: 7px 15px;
-  border: none;
-  border-radius: 15px;
-  cursor: default;
-}
-
 .subject {
-  width: 70%;
-  margin-right: 10px;
-  padding: 7px;
+  padding: 10px;
+  width: 100%;
   border: 1px solid black;
-  border-radius: 20px;
-  font-size: 13px;
+  border-radius: 15px;
+  font-family: 'Roboto-regular', sans-serif;
+  font-weight: 200;
+  font-size: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  outline: none;
   -webkit-appearance: none;
 }
 
@@ -49,6 +32,47 @@
 
 .subject.has-error {
   border: 2px solid tomato;
+}
+
+.send-btn-group {
+  text-align: center;
+}
+
+.csv {
+  margin-top: 2px;
+  width: fit-content;
+  background: #4285f4;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 35px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Metropolis', sans-serif;
+}
+
+.send {
+  margin-top: 2px;
+  width: fit-content;
+  background: #4285f4;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 35px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Metropolis', sans-serif;
+}
+
+.test {
+  margin-right: 10px;
+}
+
+.send:disabled {
+  background: #4285f4;
+  color: white;
+  cursor: default;
 }
 
 /* modal */
@@ -195,17 +219,10 @@
   animation: dash-check 0.9s 0.35s ease-in-out forwards;
 }
 
-p {
+.error {
   text-align: center;
   margin: 20px 0 60px;
   font-size: 1.25em;
-}
-
-p.success {
-  color: #73af55;
-}
-
-p.error {
   color: #d06079;
 }
 
@@ -333,11 +350,31 @@ p.error {
 
   .subject {
     width: 100%;
+    margin-bottom: 10px;
   }
 
   .send-btn-group {
-    margin: 15px 0;
+    margin: 10px 0;
     text-align: center;
+  }
+
+  .csv {
+    width: 70%;
+    background: #4285f4;
+    color: white;
+    font-size: 1rem;
+    padding: 7px 35px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .send {
+    width: calc(35% - 5px);
+    font-size: 1rem;
+    padding: 7px 5%;
+    border: none;
+    cursor: pointer;
+    margin-top: 5px;
   }
 
   .gjs-editor {
