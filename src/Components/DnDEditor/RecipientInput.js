@@ -43,15 +43,24 @@ const RecipientInput = (props) => {
     }).then((res) => {
       console.log(res)
       setButtonText('Send Test Mail')
-      setRecipientModalOpen(false)
-      setSuccessModalOpen(true)
-      if (res.status === 200) {
-        setSendError(false)
-      } else {
+      if (res.status !== 200) {
         setSendError(true)
       }
-    }).catch((err) => {
+      return res.json()
+    }).then(data => {
+      console.log(data)
+      if (data[1] === undefined || data[1].substring(0, 10) !== 'Email sent!') {
+        setSendError(true)
+      } else {
+        setSendError(false)
+      }
+      setRecipientModalOpen(false)
+      setSuccessModalOpen(true)
+    }).catch(err => {
       console.error(err)
+      setSendError(true)
+      setRecipientModalOpen(false)
+      setSuccessModalOpen(true)
     })
   }
 

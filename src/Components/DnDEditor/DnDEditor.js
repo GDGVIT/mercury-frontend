@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, Redirect, useHistory } from 'react-router-dom'
-import 'grapesjs/dist/css/grapes.min.css'
 import grapesjs from 'grapesjs'
 import grapesjsTouch from 'grapesjs-touch'
 import grapesjsMJML from 'grapesjs-mjml'
@@ -8,32 +7,31 @@ import Header from '../Header/Header'
 import RecipientInput from './RecipientInput'
 import { PuffLoader } from 'react-spinners'
 import { css } from '@emotion/core'
+import 'grapesjs/dist/css/grapes.min.css'
 import './DnDEditor.css'
 
-class EmailSentMessage extends React.Component {
-  render () {
-    if (!this.props.error) {
-      return (
-        <div className='message-sent'>
-          <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-            <circle className='path circle' fill='none' stroke='#73AF55' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-            <polyline className='path check' fill='none' stroke='#73AF55' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' points='100.2,40.2 51.5,88.8 29.8,67.5 ' />
-          </svg>
-          <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent successfullly!</h3>
-        </div>
-      )
-    }
+const EmailSentMessage = (props) => {
+  if (!props.error) {
     return (
       <div className='message-sent'>
         <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-          <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
-          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
+          <circle className='path circle' fill='none' stroke='#73AF55' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+          <polyline className='path check' fill='none' stroke='#73AF55' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' points='100.2,40.2 51.5,88.8 29.8,67.5 ' />
         </svg>
-        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent unsuccessfullly</h3>
+        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent successfullly!</h3>
       </div>
     )
   }
+  return (
+    <div className='message-sent'>
+      <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
+        <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+        <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
+        <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
+      </svg>
+      <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent unsuccessfullly</h3>
+    </div>
+  )
 }
 
 const DnDEnditor = () => {
@@ -101,6 +99,12 @@ const DnDEnditor = () => {
       }
     })
 
+    // Mjmleditor.on('asset:upload:start', () => {
+    // })
+
+    // Mjmleditor.on('asset:upload:end', () => {
+    // })
+
     Mjmleditor.Components.clear()
     if ((window.localStorage.getItem('mjml') === null || window.localStorage.getItem('mjml') === undefined) &&
     (window.localStorage.getItem('subject') === null || window.localStorage.getItem('subject') === undefined)) {
@@ -134,17 +138,23 @@ const DnDEnditor = () => {
 
   const handleSend = async () => {
     const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
+    const emptyMjml = `<mjml><mj-body>
+    </mj-body></mjml>`
+    console.log(emptyMjml)
+    console.log(mjml)
+
     if (new Date().getTime() > accessExpirationTime) {
       window.localStorage.removeItem('token')
-    }
-    if (mjml === '<mjml><mj-body></mj-body></mjml>') {
+    } else if (mjml === emptyMjml || !mjml) {
       await getMjml()
       if (subject === '') {
         setError(true)
+        setSendError(true)
       }
     } else {
+      setSendError(false)
       if (!error) {
-        setButtonText(<PuffLoader css={LoaderCss} size={11.5} loading color='white' />)
+        setButtonText(<PuffLoader css={LoaderCss} size={12} loading color='white' />)
         const formData = new window.FormData()
         setError(false)
         formData.append('sender_name', 'Sricharan Ramesh')
@@ -152,8 +162,6 @@ const DnDEnditor = () => {
         formData.append('subject', subject)
         formData.append('recipients', recipients, recipients.name)
         formData.append('body_text', 'Hello world')
-        formData.append('body_mjml', mjml)
-        formData.append('aws_region', 'ap-south-1')
 
         window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send', {
           method: 'POST',
@@ -163,12 +171,23 @@ const DnDEnditor = () => {
           body: formData
         }).then((res) => {
           setButtonText('Send')
-          setSuccessModalOpen(true)
+          console.log(res)
           if (res.status !== 200) {
+            setSendError(true)
+          }
+          return res.json()
+        }).then(data => {
+          console.log(data)
+          if (data[1] === undefined || data[1].substring(0, 10) !== 'Email sent!') {
             setSendError(true)
           } else {
             setSendError(false)
           }
+          setSuccessModalOpen(true)
+        }).catch(err => {
+          console.error(err)
+          setSuccessModalOpen(true)
+          setSendError(true)
         })
       }
     }
