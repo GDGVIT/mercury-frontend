@@ -49,7 +49,7 @@ const RecipientInput = (props) => {
       return res.json()
     }).then(data => {
       console.log(data)
-      if (data[1] === undefined || data[1].substring(0, 10) !== 'Email sent!') {
+      if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
         setSendError(true)
       } else {
         setSendError(false)

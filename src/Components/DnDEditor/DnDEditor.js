@@ -4,9 +4,8 @@ import grapesjs from 'grapesjs'
 import grapesjsTouch from 'grapesjs-touch'
 import grapesjsMJML from 'grapesjs-mjml'
 import Header from '../Header/Header'
+import Confirm from './Confirm'
 import RecipientInput from './RecipientInput'
-import { PuffLoader } from 'react-spinners'
-import { css } from '@emotion/core'
 import 'grapesjs/dist/css/grapes.min.css'
 import './DnDEditor.css'
 
@@ -39,15 +38,11 @@ const DnDEnditor = () => {
   const [subject, setSubject] = useState('')
   const [recipientModalOpen, setRecipientModalOpen] = useState(false)
   const [successModalOpen, setSuccessModalOpen] = useState(false)
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false)
   const [error, setError] = useState(false)
   const [sendError, setSendError] = useState(false)
   const [mjml, setMjml] = useState(null)
-  const [buttonText, setButtonText] = useState('Send')
   const token = window.localStorage.getItem('token')
-  const LoaderCss = css`
-    display: block;
-    margin: 0 10px;
-  `
   const recipients = location.state.recipients
   const [editor, setEditor] = useState(null)
   const history = useHistory()
@@ -98,16 +93,13 @@ const DnDEnditor = () => {
         }
       }
     })
-
-    // Mjmleditor.on('asset:upload:start', () => {
-    // })
-
-    // Mjmleditor.on('asset:upload:end', () => {
-    // })
-
     Mjmleditor.Components.clear()
-    if ((window.localStorage.getItem('mjml') === null || window.localStorage.getItem('mjml') === undefined) &&
-    (window.localStorage.getItem('subject') === null || window.localStorage.getItem('subject') === undefined)) {
+
+    const localMjml = window.localStorage.getItem('mjml')
+    const localSubject = window.localStorage.getItem('subject')
+
+    if ((localMjml === null || localMjml === undefined) &&
+    (localSubject === null || localSubject === undefined)) {
       Mjmleditor.addComponents(`
         <mjml>
           <mj-body>
@@ -137,31 +129,24 @@ const DnDEnditor = () => {
   }
 
   const handleSend = async () => {
+    window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
+    window.localStorage.setItem('subject', subject)
     const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
-    const emptyMjml = `<mjml><mj-body>
-    </mj-body></mjml>`
-    console.log(emptyMjml)
-    console.log(mjml)
 
     if (new Date().getTime() > accessExpirationTime) {
       window.localStorage.removeItem('token')
-    } else if (mjml === emptyMjml || !mjml) {
-      await getMjml()
-      if (subject === '') {
-        setError(true)
-        setSendError(true)
-      }
     } else {
       setSendError(false)
       if (!error) {
-        setButtonText(<PuffLoader css={LoaderCss} size={12} loading color='white' />)
         const formData = new window.FormData()
         setError(false)
         formData.append('sender_name', 'Sricharan Ramesh')
         formData.append('sender_email', 'charan1952001@gmail.com')
         formData.append('subject', subject)
         formData.append('recipients', recipients, recipients.name)
+        formData.append('body_mjml', mjml)
         formData.append('body_text', 'Hello world')
+        formData.append('aws_region', 'ap-south-1')
 
         window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send', {
           method: 'POST',
@@ -170,15 +155,14 @@ const DnDEnditor = () => {
           }),
           body: formData
         }).then((res) => {
-          setButtonText('Send')
-          console.log(res)
+          setConfirmModalOpen(false)
           if (res.status !== 200) {
             setSendError(true)
           }
           return res.json()
         }).then(data => {
           console.log(data)
-          if (data[1] === undefined || data[1].substring(0, 10) !== 'Email sent!') {
+          if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
             setSendError(true)
           } else {
             setSendError(false)
@@ -199,6 +183,21 @@ const DnDEnditor = () => {
     history.push('/csv')
   }
 
+  const handleConfirm = async () => {
+    const emptyMjml = `<mjml><mj-body>
+    </mj-body></mjml>`
+
+    if (mjml === emptyMjml || !mjml) {
+      await getMjml()
+      if (subject === '') {
+        setError(true)
+      }
+    } else {
+      setError(false)
+      setConfirmModalOpen(true)
+    }
+  }
+
   const handleTest = async () => {
     if (!mjml) {
       await getMjml()
@@ -206,6 +205,8 @@ const DnDEnditor = () => {
     if (subject === '') {
       setError(true)
     } else {
+      window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
+      window.localStorage.setItem('subject', subject)
       await setSendError(false)
       setRecipientModalOpen(!recipientModalOpen)
     }
@@ -242,6 +243,15 @@ const DnDEnditor = () => {
             }
           </div>
         </div>
+        <div className={confirmModalOpen ? 'modalOpen' : 'modalClose'}>
+          <div className='modal-content'>
+            <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
+            {
+              confirmModalOpen &&
+                <Confirm handleSend={handleSend} setConfirmModal={setConfirmModalOpen} />
+            }
+          </div>
+        </div>
         <div className={successModalOpen ? 'modalOpen' : 'modalClose'}>
           <div className='modal-content'>
             <span onClick={() => setSuccessModalOpen(false)} className='close'>&times;</span>
@@ -259,7 +269,7 @@ const DnDEnditor = () => {
           <div className='send-btn-group'>
             <button onClick={handleChangeCSV} className='csv'>Change CSV</button>
             <button onClick={handleTest} className='send test'>Test</button>
-            <button onClick={handleSend} className='send'>{buttonText}</button>
+            <button onClick={handleConfirm} className='send'>Send</button>
           </div>
         </div>
       </div>
