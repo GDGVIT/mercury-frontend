@@ -114,6 +114,10 @@
   border-radius: 30px;
 }
 
+.modal-content.confirm {
+  width: 40%;
+}
+
 .close {
   color: #aaa;
   float: right;

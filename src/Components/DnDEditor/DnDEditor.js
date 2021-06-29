@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useLocation, Redirect, useHistory } from 'react-router-dom'
 import grapesjs from 'grapesjs'
 import grapesjsTouch from 'grapesjs-touch'
@@ -10,7 +10,7 @@ import 'grapesjs/dist/css/grapes.min.css'
 import './DnDEditor.css'
 
 const EmailSentMessage = (props) => {
-  if (!props.error) {
+  if (props.error === 0) {
     return (
       <div className='message-sent'>
         <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
@@ -18,6 +18,17 @@ const EmailSentMessage = (props) => {
           <polyline className='path check' fill='none' stroke='#73AF55' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' points='100.2,40.2 51.5,88.8 29.8,67.5 ' />
         </svg>
         <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent successfullly!</h3>
+      </div>
+    )
+  } else if (props.error === 1) {
+    return (
+      <div className='message-sent'>
+        <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
+          <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
+          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
+        </svg>
+        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails not sent successfullly</h3>
       </div>
     )
   }
@@ -28,7 +39,7 @@ const EmailSentMessage = (props) => {
         <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
         <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
       </svg>
-      <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent unsuccessfullly</h3>
+      <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Email cannot be empty</h3>
     </div>
   )
 }
@@ -40,12 +51,13 @@ const DnDEnditor = () => {
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [confirmModalOpen, setConfirmModalOpen] = useState(false)
   const [error, setError] = useState(false)
-  const [sendError, setSendError] = useState(false)
-  const [mjml, setMjml] = useState(null)
+  const sendError = useRef(2)
+  const mjml = useRef(null)
   const token = window.localStorage.getItem('token')
   const recipients = location.state.recipients
   const [editor, setEditor] = useState(null)
   const history = useHistory()
+  const emptyMjml = '<mjml><mj-body></mj-body></mjml>'
 
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
@@ -106,13 +118,19 @@ const DnDEnditor = () => {
           </mj-body>
         </mjml>
       `)
+      mjml.current = `
+      <mjml>
+        <mj-body>
+        </mj-body>
+      </mjml>
+    `
     } else {
       Mjmleditor.addComponents(window.localStorage.getItem('mjml'))
       setSubject(window.localStorage.getItem('subject'))
     }
 
     setEditor(Mjmleditor)
-  }, [token])
+  }, [token, mjml])
 
   const handleChange = (event) => {
     setError(false)
@@ -124,7 +142,7 @@ const DnDEnditor = () => {
 
   const getMjml = () => {
     if (editor.getHtml() !== undefined && editor.getHtml() !== null) {
-      setMjml(editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
+      mjml.current = editor.getHtml().replaceAll(/ id="([^"]+)"/g, '')
     }
   }
 
@@ -136,7 +154,7 @@ const DnDEnditor = () => {
     if (new Date().getTime() > accessExpirationTime) {
       window.localStorage.removeItem('token')
     } else {
-      setSendError(false)
+      sendError.current = 0
       if (!error) {
         const formData = new window.FormData()
         setError(false)
@@ -144,7 +162,7 @@ const DnDEnditor = () => {
         formData.append('sender_email', 'charan1952001@gmail.com')
         formData.append('subject', subject)
         formData.append('recipients', recipients, recipients.name)
-        formData.append('body_mjml', mjml)
+        formData.append('body_mjml', mjml.current)
         formData.append('body_text', 'Hello world')
         formData.append('aws_region', 'ap-south-1')
 
@@ -157,21 +175,21 @@ const DnDEnditor = () => {
         }).then((res) => {
           setConfirmModalOpen(false)
           if (res.status !== 200) {
-            setSendError(true)
+            sendError.current = 1
           }
           return res.json()
         }).then(data => {
           console.log(data)
           if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
-            setSendError(true)
+            sendError.current = 1
           } else {
-            setSendError(false)
+            sendError.current = 0
           }
           setSuccessModalOpen(true)
         }).catch(err => {
           console.error(err)
           setSuccessModalOpen(true)
-          setSendError(true)
+          sendError.current = 1
         })
       }
     }
@@ -184,14 +202,12 @@ const DnDEnditor = () => {
   }
 
   const handleConfirm = async () => {
-    const emptyMjml = `<mjml><mj-body>
-    </mj-body></mjml>`
-
-    if (mjml === emptyMjml || !mjml) {
-      await getMjml()
-      if (subject === '') {
-        setError(true)
-      }
+    getMjml()
+    if (subject === '') {
+      setError(true)
+    } else if (mjml.current.replace(/\s/g, '') === emptyMjml) {
+      sendError.current = 2
+      setSuccessModalOpen(true)
     } else {
       setError(false)
       setConfirmModalOpen(true)
@@ -199,16 +215,19 @@ const DnDEnditor = () => {
   }
 
   const handleTest = async () => {
-    if (!mjml) {
-      await getMjml()
-    }
+    getMjml()
     if (subject === '') {
       setError(true)
     } else {
-      window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
-      window.localStorage.setItem('subject', subject)
-      await setSendError(false)
-      setRecipientModalOpen(!recipientModalOpen)
+      if (mjml.current.replace(/\s/g, '') === emptyMjml) {
+        sendError.current = 2
+        setSuccessModalOpen(true)
+      } else {
+        window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
+        window.localStorage.setItem('subject', subject)
+        sendError.current = 0
+        setRecipientModalOpen(!recipientModalOpen)
+      }
     }
   }
 
@@ -234,9 +253,9 @@ const DnDEnditor = () => {
               recipientModalOpen &&
                 <RecipientInput
                   subject={subject}
-                  mjml={mjml}
+                  mjml={mjml.current}
                   recipients={recipients}
-                  setSendError={setSendError}
+                  sendError={sendError}
                   setRecipientModalOpen={setRecipientModalOpen}
                   setSuccessModalOpen={setSuccessModalOpen}
                 />
@@ -244,7 +263,7 @@ const DnDEnditor = () => {
           </div>
         </div>
         <div className={confirmModalOpen ? 'modalOpen' : 'modalClose'}>
-          <div className='modal-content'>
+          <div className='modal-content confirm'>
             <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
             {
               confirmModalOpen &&
@@ -255,7 +274,7 @@ const DnDEnditor = () => {
         <div className={successModalOpen ? 'modalOpen' : 'modalClose'}>
           <div className='modal-content'>
             <span onClick={() => setSuccessModalOpen(false)} className='close'>&times;</span>
-            <EmailSentMessage error={sendError} />
+            <EmailSentMessage error={sendError.current} />
           </div>
         </div>
         <div className='send-body'>
