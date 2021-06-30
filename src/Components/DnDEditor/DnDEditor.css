@@ -105,7 +105,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.modalOpen-content {
   background-color: #fefefe;
   margin: auto;
   padding: 30px;
@@ -114,7 +114,7 @@
   border-radius: 30px;
 }
 
-.modal-content.confirm {
+.modalOpen-content.confirm {
   width: 40%;
 }
 
@@ -331,13 +331,13 @@
   }
 
   .gjs-pn-options {
-    width: 25%;
+    width: 27%;
     right: 23%;
   }
 
   .gjs-pn-btn {
-    min-height: 10px;
-    min-width: 10px;
+    min-height: 7px;
+    min-width: 7px;
     font-size: small;
   }
 
@@ -370,6 +370,7 @@
     padding: 7px 35px;
     border: none;
     cursor: pointer;
+    margin-right: 0;
   }
 
   .send {
@@ -379,6 +380,10 @@
     border: none;
     cursor: pointer;
     margin-top: 5px;
+  }
+
+  .modalOpen-content.confirm {
+    width: 90%;
   }
 
   .gjs-editor {
@@ -393,7 +398,7 @@
 
   .gjs-pn-views,
   .gjs-pn-views-container {
-    width: 25%;
+    width: 35%;
   }
 
   .gjs-pn-options {

@@ -22,7 +22,7 @@ const Home = () => {
   // }
 
   return (
-    <div style={{ height: '100vh' }}>
+    <div style={{ height: '100vh' }} className='home'>
       {
         ((window.localStorage.getItem('token') === null) ||
         (window.localStorage.getItem('token') === undefined) ||
@@ -43,7 +43,7 @@ const Home = () => {
             <a href='/csv'>Get Started</a>
           </div>
         </div>
-        <img alt='desktop' className='home' src={HomeSvg} />
+        <img alt='desktop' className='homeImg' src={HomeSvg} />
       </div>
     </div>
   )

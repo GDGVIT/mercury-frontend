@@ -232,7 +232,7 @@ const DnDEnditor = () => {
   }
 
   return (
-    <div style={{ height: '100vh', maxHeight: '100vh' }}>
+    <div>
       {
         ((window.localStorage.getItem('token') === null) ||
         (window.localStorage.getItem('token') === undefined) ||
@@ -247,7 +247,7 @@ const DnDEnditor = () => {
       <div className='non-editor'>
         <Header />
         <div className={recipientModalOpen ? 'modalOpen' : 'modalClose'}>
-          <div className='modal-content'>
+          <div className='modalOpen-content'>
             <span onClick={() => setRecipientModalOpen(false)} className='close'>&times;</span>
             {
               recipientModalOpen &&
@@ -263,7 +263,7 @@ const DnDEnditor = () => {
           </div>
         </div>
         <div className={confirmModalOpen ? 'modalOpen' : 'modalClose'}>
-          <div className='modal-content confirm'>
+          <div className='modalOpen-content confirm'>
             <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
             {
               confirmModalOpen &&
@@ -272,7 +272,7 @@ const DnDEnditor = () => {
           </div>
         </div>
         <div className={successModalOpen ? 'modalOpen' : 'modalClose'}>
-          <div className='modal-content'>
+          <div className='modalOpen-content'>
             <span onClick={() => setSuccessModalOpen(false)} className='close'>&times;</span>
             <EmailSentMessage error={sendError.current} />
           </div>
@@ -292,7 +292,7 @@ const DnDEnditor = () => {
           </div>
         </div>
       </div>
-      <div id='gjs' className='gjs' style={{ height: '0px' }} />
+      <div id='gjs' className='gjs' />
     </div>
   )
 }
