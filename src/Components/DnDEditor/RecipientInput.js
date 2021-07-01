@@ -21,7 +21,7 @@ const RecipientInput = (props) => {
       console.log('Login again')
       window.localStorage.removeItem('token')
     }
-    const { subject, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, setSendError } = props
+    const { subject, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, sendError } = props
     setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
 
     const formData = new window.FormData()
@@ -43,15 +43,24 @@ const RecipientInput = (props) => {
     }).then((res) => {
       console.log(res)
       setButtonText('Send Test Mail')
+      if (res.status !== 200) {
+        sendError.current = 1
+      }
+      return res.json()
+    }).then(data => {
+      console.log(data)
+      if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
+        sendError.current = 1
+      } else {
+        sendError.current = 0
+      }
       setRecipientModalOpen(false)
       setSuccessModalOpen(true)
-      if (res.status === 200) {
-        setSendError(false)
-      } else {
-        setSendError(true)
-      }
-    }).catch((err) => {
+    }).catch(err => {
       console.error(err)
+      sendError.current = 1
+      setRecipientModalOpen(false)
+      setSuccessModalOpen(true)
     })
   }
 

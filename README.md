@@ -20,7 +20,7 @@
 - [x]  GrapesJS Editor for entering content
 - [x]  Sending subject, CSV file, and MJML code to Backend for bulk mail
 - [x]  Sending subject, CSV file, and MJML code to Backend for test mail
-- [x]  Preview of the email
+- [x]  Preview of the email in the editor
 
 <br>
 

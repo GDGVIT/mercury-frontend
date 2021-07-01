@@ -6,39 +6,22 @@
 
 .send-body {
   display: flex;
-  width: 70%;
+  flex-direction: column;
+  width: 60%;
   margin: 20px auto;
 }
 
-.send {
-  margin-top: 2px;
-  width: fit-content;
-  background: #4285f4;
-  color: white;
-  font-size: 13px;
-  padding: 7px 15px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
-.send:disabled {
-  background: #4285f4;
-  color: white;
-  font-size: 13px;
-  padding: 7px 15px;
-  border: none;
-  border-radius: 15px;
-  cursor: default;
-}
-
 .subject {
-  width: 80%;
-  margin-right: 10px;
-  padding: 7px;
+  padding: 10px;
+  width: 100%;
   border: 1px solid black;
-  border-radius: 20px;
-  font-size: 13px;
+  border-radius: 15px;
+  font-family: 'Roboto-regular', sans-serif;
+  font-weight: 200;
+  font-size: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  outline: none;
   -webkit-appearance: none;
 }
 
@@ -49,6 +32,47 @@
 
 .subject.has-error {
   border: 2px solid tomato;
+}
+
+.send-btn-group {
+  text-align: center;
+}
+
+.csv {
+  margin-top: 2px;
+  width: fit-content;
+  background: #4285f4;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 35px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Metropolis', sans-serif;
+}
+
+.send {
+  margin-top: 2px;
+  width: fit-content;
+  background: #4285f4;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 35px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Metropolis', sans-serif;
+}
+
+.test {
+  margin-right: 10px;
+}
+
+.send:disabled {
+  background: #4285f4;
+  color: white;
+  cursor: default;
 }
 
 /* modal */
@@ -81,13 +105,17 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.modalOpen-content {
   background-color: #fefefe;
   margin: auto;
   padding: 30px;
   border: 1px solid #888;
   width: 80%;
   border-radius: 30px;
+}
+
+.modalOpen-content.confirm {
+  width: 40%;
 }
 
 .close {
@@ -195,17 +223,10 @@
   animation: dash-check 0.9s 0.35s ease-in-out forwards;
 }
 
-p {
+.error {
   text-align: center;
   margin: 20px 0 60px;
   font-size: 1.25em;
-}
-
-p.success {
-  color: #73af55;
-}
-
-p.error {
   color: #d06079;
 }
 
@@ -310,13 +331,13 @@ p.error {
   }
 
   .gjs-pn-options {
-    width: 25%;
+    width: 27%;
     right: 23%;
   }
 
   .gjs-pn-btn {
-    min-height: 10px;
-    min-width: 10px;
+    min-height: 7px;
+    min-width: 7px;
     font-size: small;
   }
 
@@ -333,11 +354,36 @@ p.error {
 
   .subject {
     width: 100%;
+    margin-bottom: 10px;
   }
 
   .send-btn-group {
-    margin: 15px 0;
+    margin: 10px 0;
     text-align: center;
+  }
+
+  .csv {
+    width: 70%;
+    background: #4285f4;
+    color: white;
+    font-size: 1rem;
+    padding: 7px 35px;
+    border: none;
+    cursor: pointer;
+    margin-right: 0;
+  }
+
+  .send {
+    width: calc(35% - 5px);
+    font-size: 1rem;
+    padding: 7px 5%;
+    border: none;
+    cursor: pointer;
+    margin-top: 5px;
+  }
+
+  .modalOpen-content.confirm {
+    width: 90%;
   }
 
   .gjs-editor {
@@ -352,7 +398,7 @@ p.error {
 
   .gjs-pn-views,
   .gjs-pn-views-container {
-    width: 25%;
+    width: 35%;
   }
 
   .gjs-pn-options {
