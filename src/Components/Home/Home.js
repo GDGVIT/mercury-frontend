@@ -22,7 +22,7 @@ const Home = () => {
   // }
 
   return (
-    <div style={{ height: '100vh' }} className='home'>
+    <div style={{ height: '100vh' }}>
       {
         ((window.localStorage.getItem('token') === null) ||
         (window.localStorage.getItem('token') === undefined) ||
@@ -31,7 +31,7 @@ const Home = () => {
           <Redirect to='/login' />
       }
       <Header />
-      <div className='body'>
+      <div className='home'>
         <div className='home-body'>
           <h1>Let's get you started!</h1>
           <p>1. Upload the list of emails in a CSV file.</p>

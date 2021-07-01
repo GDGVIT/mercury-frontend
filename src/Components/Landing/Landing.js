@@ -8,9 +8,9 @@ import Yellow from '../../assets/yellow.svg'
 
 const Landing = () => {
   return (
-    <div style={{ height: '100vh' }} className='landing'>
+    <div style={{ height: '100vh' }}>
       <Header />
-      <div className='body'>
+      <div className='landing'>
         <div className='content-body'>
           <h1 className='content'>BULK MAILING MADE EFFORTLESS!</h1>
           <div className='buttons'>
