@@ -4,7 +4,6 @@ import DataUpload from './Components/DataUpload/DataUpload'
 import Landing from './Components/Landing/Landing'
 import Login from './Components/Login/Login'
 import Home from './Components/Home/Home'
-// import Register from './Components/Register/Register'
 import DnDEnditor from './Components/DnDEditor/DnDEditor'
 
 function App () {
@@ -15,9 +14,6 @@ function App () {
           <Route exact path='/login'>
             <Login />
           </Route>
-          {/* <Route exact path='/register'>
-            <Register />
-          </Route> */}
           <Route exact path='/home'>
             <Home />
           </Route>

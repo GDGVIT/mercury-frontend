@@ -18,7 +18,6 @@ const RecipientInput = (props) => {
   const handleTest = async () => {
     if (new Date().getTime() > accessExpirationTime) {
       // await props.handleRefreshToken()
-      console.log('Login again')
       window.localStorage.removeItem('token')
     }
     const { subject, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, sendError } = props
@@ -41,14 +40,12 @@ const RecipientInput = (props) => {
       }),
       body: formData
     }).then((res) => {
-      console.log(res)
       setButtonText('Send Test Mail')
       if (res.status !== 200) {
         sendError.current = 1
       }
       return res.json()
     }).then(data => {
-      console.log(data)
       if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
         sendError.current = 1
       } else {

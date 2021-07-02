@@ -179,7 +179,6 @@ const DnDEnditor = () => {
           }
           return res.json()
         }).then(data => {
-          console.log(data)
           if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
             sendError.current = 1
           } else {
