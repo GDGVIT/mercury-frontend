@@ -4,6 +4,7 @@ import { css } from '@emotion/core'
 import './DnDEditor.css'
 
 const Confirm = (props) => {
+  const { handleSendEmail, setConfirmModal, disable } = props
   const [buttonText, setButtonText] = useState('Yes')
   const LoaderCss = css`
     display: block;
@@ -13,9 +14,9 @@ const Confirm = (props) => {
   const handleSend = async (confirmation) => {
     if (confirmation) {
       setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
-      await props.handleSend()
+      await handleSendEmail()
     } else {
-      props.setConfirmModal(false)
+      setConfirmModal(false)
     }
   }
 
@@ -23,8 +24,21 @@ const Confirm = (props) => {
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <h2 style={{ display: 'block', margin: '10px auto' }}>Are you sure?</h2>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
-        <button className='send' style={{ marginRight: '20px' }} onClick={() => handleSend(true)}>{buttonText}</button>
-        <button className='send' onClick={() => handleSend(false)}>No</button>
+        <button
+          className='send'
+          style={{ marginRight: '20px' }}
+          onClick={() => handleSend(true)}
+          disabled={disable}
+        >
+          {buttonText}
+        </button>
+        <button
+          className='send'
+          onClick={() => handleSend(false)}
+          disabled={disable}
+        >
+          No
+        </button>
       </div>
     </div>
   )

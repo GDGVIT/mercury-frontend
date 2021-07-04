@@ -5,19 +5,31 @@ import Header from '../Header/Header'
 import HomeSvg from '../../assets/home.svg'
 
 const Home = () => {
-  const handleDownload = () => {
-    window.fetch({
+  const token = window.localStorage.getItem('token')
+  const handleDownload = async () => {
+    await window.fetch({
       method: 'GET',
-      url: 'https://mercury-mailer-dsc.herokuapp.com/download',
-      responseType: 'arraybuffer'
-    }).then((response) => response.blob()).then((blob) => {
-      const url = window.URL.createObjectURL(new window.Blob([blob]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', 'Recipients.csv')
-      document.body.appendChild(link)
-      link.click()
-      link.parentNode.removeChild(link)
+      url: 'https://mercury-mailer-dsc.herokuapp.com/send_email/get_csv',
+      headers: new window.Headers({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token
+      })
+    }).then(res => {
+      if (res.status !== 200) {
+        throw new Error('Server error')
+      }
+      return res.json()
+    }).then(url => {
+      console.log(url)
+      // const link = document.createElement('a')
+      // link.href = url
+      // link.setAttribute('download', 'Recipients.csv')
+      // document.body.appendChild(link)
+      // link.click()
+      // link.parentNode.removeChild(link)
+    }).catch(err => {
+      console.error(err)
     })
   }
 
@@ -39,7 +51,7 @@ const Home = () => {
           <p>3. Send emails in bulk effortlessly!</p>
 
           <div className='home-buttons'>
-            <button onCLick={handleDownload}>Download CSV Template</button>
+            <button onClick={handleDownload}>Download CSV Template</button>
             <a href='/csv'>Get Started</a>
           </div>
         </div>

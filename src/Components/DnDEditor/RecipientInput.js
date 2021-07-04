@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PuffLoader } from 'react-spinners'
 import { css } from '@emotion/core'
 import './DnDEditor.css'
@@ -7,6 +7,7 @@ const RecipientInput = (props) => {
   const [items, setItems] = useState([])
   const [value, setValue] = useState('')
   const [error, setError] = useState(null)
+  const [disable, setDisable] = useState(true)
   const [buttonText, setButtonText] = useState('Send Test Mail')
   const LoaderCss = css`
     display: block;
@@ -15,17 +16,26 @@ const RecipientInput = (props) => {
   const token = window.localStorage.getItem('token')
   const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
 
+  useEffect(() => {
+    if (items.length === 0) {
+      setDisable(true)
+    } else {
+      setDisable(false)
+    }
+  }, [items])
+
   const handleTest = async () => {
+    setDisable(true)
     if (new Date().getTime() > accessExpirationTime) {
       // await props.handleRefreshToken()
       window.localStorage.removeItem('token')
     }
-    const { subject, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, sendError } = props
+    const { subject, name, email, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, sendError } = props
     setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
 
     const formData = new window.FormData()
-    formData.append('sender_name', 'Sricharan')
-    formData.append('sender_email', 'charan1952001@gmail.com')
+    formData.append('sender_name', name)
+    formData.append('sender_email', email)
     formData.append('recipients', recipients, recipients.name)
     formData.append('subject', subject)
     formData.append('body_text', 'Hello world')
@@ -53,6 +63,7 @@ const RecipientInput = (props) => {
       }
       setRecipientModalOpen(false)
       setSuccessModalOpen(true)
+      setDisable(false)
     }).catch(err => {
       console.error(err)
       sendError.current = 1
@@ -140,7 +151,7 @@ const RecipientInput = (props) => {
         onPaste={handlePaste}
       />
       {error && <p className='error'>{error}</p>}
-      <button className='send-test' onClick={handleTest}>{buttonText}</button>
+      <button className='send-test' onClick={handleTest} disabled={disable}>{buttonText}</button>
     </>
   )
 }

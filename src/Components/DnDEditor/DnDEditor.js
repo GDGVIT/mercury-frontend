@@ -47,17 +47,23 @@ const EmailSentMessage = (props) => {
 const DnDEnditor = () => {
   const location = useLocation()
   const [subject, setSubject] = useState('')
+  const [senderEmail, setSenderEmail] = useState('')
+  const [senderName, setSenderName] = useState('')
   const [recipientModalOpen, setRecipientModalOpen] = useState(false)
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [confirmModalOpen, setConfirmModalOpen] = useState(false)
-  const [error, setError] = useState(false)
+  const [subjectError, setSubjectError] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+  const [nameError, setNameError] = useState(false)
+  const [disable, setDisable] = useState(false)
+  const [editor, setEditor] = useState(null)
   const sendError = useRef(2)
+  const history = useHistory()
   const mjml = useRef(null)
   const token = window.localStorage.getItem('token')
   const recipients = location.state.recipients
-  const [editor, setEditor] = useState(null)
-  const history = useHistory()
   const emptyMjml = '<mjml><mj-body></mj-body></mjml>'
+  const buttonDisable = subjectError || emailError || nameError
 
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
@@ -109,35 +115,66 @@ const DnDEnditor = () => {
 
     const localMjml = window.localStorage.getItem('mjml')
     const localSubject = window.localStorage.getItem('subject')
+    const localEmail = window.localStorage.getItem('email')
+    const localName = window.localStorage.getItem('name')
 
-    if ((localMjml === null || localMjml === undefined) &&
-    (localSubject === null || localSubject === undefined)) {
+    if ((localSubject !== null && localSubject !== undefined) &&
+    (localEmail !== null && localEmail !== undefined) &&
+    (localName !== null && localName !== undefined)) {
+      Mjmleditor.addComponents(localMjml)
+      setSubject(localSubject)
+      setSenderEmail(localEmail)
+      setSenderName(localName)
+    } else if (localMjml === null || localMjml === undefined) {
       Mjmleditor.addComponents(`
         <mjml>
           <mj-body>
           </mj-body>
         </mjml>
       `)
-      mjml.current = `
-      <mjml>
-        <mj-body>
-        </mj-body>
-      </mjml>
-    `
     } else {
-      Mjmleditor.addComponents(window.localStorage.getItem('mjml'))
-      setSubject(window.localStorage.getItem('subject'))
+      if (localSubject === null || localSubject === undefined) {
+        setSubject('')
+      }
+      if (localEmail === null || localEmail === undefined) {
+        setSenderEmail('')
+      }
+      if (localName === null || localName === undefined) {
+        setSenderName('')
+      }
     }
 
     setEditor(Mjmleditor)
-  }, [token, mjml])
+  }, [token])
 
   const handleChange = (event) => {
-    setError(false)
-    if (event.target.value === '') {
-      setError(true)
+    const name = event.target.name
+    const value = event.target.value
+    if (name === 'subject') {
+      setSubject(value)
+      if (event.target.value === '') {
+        setSubjectError(true)
+      } else {
+        setSubjectError(false)
+      }
+    } else if (name === 'email') {
+      const emails = value.match(/[\w\d.-]+@[\w\d.-]+\.[\w\d.-]+/g)
+      setSenderEmail(value)
+      if (event.target.value === '') {
+        setEmailError(true)
+      } else if (!emails) {
+        setEmailError(true)
+      } else {
+        setEmailError(false)
+      }
+    } else {
+      setSenderName(value)
+      if (event.target.value === '') {
+        setNameError(true)
+      } else {
+        setNameError(false)
+      }
     }
-    setSubject(event.target.value)
   }
 
   const getMjml = () => {
@@ -147,19 +184,21 @@ const DnDEnditor = () => {
   }
 
   const handleSend = async () => {
+    setDisable(true)
     window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
     window.localStorage.setItem('subject', subject)
+    window.localStorage.setItem('email', senderEmail)
+    window.localStorage.setItem('name', senderName)
     const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
 
     if (new Date().getTime() > accessExpirationTime) {
       window.localStorage.removeItem('token')
     } else {
       sendError.current = 0
-      if (!error) {
+      if (!emailError && !nameError && !subjectError) {
         const formData = new window.FormData()
-        setError(false)
-        formData.append('sender_name', 'Sricharan Ramesh')
-        formData.append('sender_email', 'charan1952001@gmail.com')
+        formData.append('sender_name', senderName)
+        formData.append('sender_email', senderEmail)
         formData.append('subject', subject)
         formData.append('recipients', recipients, recipients.name)
         formData.append('body_mjml', mjml.current)
@@ -173,6 +212,7 @@ const DnDEnditor = () => {
           }),
           body: formData
         }).then((res) => {
+          setDisable(false)
           setConfirmModalOpen(false)
           if (res.status !== 200) {
             sendError.current = 1
@@ -197,26 +237,38 @@ const DnDEnditor = () => {
   const handleChangeCSV = () => {
     window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
     window.localStorage.setItem('subject', subject)
+    window.localStorage.setItem('email', senderEmail)
+    window.localStorage.setItem('name', senderName)
     history.push('/csv')
   }
 
-  const handleConfirm = async () => {
+  const handleConfirm = () => {
     getMjml()
     if (subject === '') {
-      setError(true)
+      setSubjectError(true)
+    } if (senderEmail === '') {
+      setEmailError(true)
+    } if (senderName === '') {
+      setNameError(true)
     } else if (mjml.current.replace(/\s/g, '') === emptyMjml) {
       sendError.current = 2
       setSuccessModalOpen(true)
     } else {
-      setError(false)
+      setEmailError(false)
+      setSubjectError(false)
+      setNameError(false)
       setConfirmModalOpen(true)
     }
   }
 
-  const handleTest = async () => {
+  const handleTest = () => {
     getMjml()
     if (subject === '') {
-      setError(true)
+      setSubjectError(true)
+    } if (senderEmail === '') {
+      setEmailError(true)
+    } if (senderName === '') {
+      setNameError(true)
     } else {
       if (mjml.current.replace(/\s/g, '') === emptyMjml) {
         sendError.current = 2
@@ -224,6 +276,8 @@ const DnDEnditor = () => {
       } else {
         window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
         window.localStorage.setItem('subject', subject)
+        window.localStorage.setItem('email', senderEmail)
+        window.localStorage.setItem('name', senderName)
         sendError.current = 0
         setRecipientModalOpen(!recipientModalOpen)
       }
@@ -252,6 +306,8 @@ const DnDEnditor = () => {
               recipientModalOpen &&
                 <RecipientInput
                   subject={subject}
+                  email={senderEmail}
+                  name={senderName}
                   mjml={mjml.current}
                   recipients={recipients}
                   sendError={sendError}
@@ -266,7 +322,11 @@ const DnDEnditor = () => {
             <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
             {
               confirmModalOpen &&
-                <Confirm handleSend={handleSend} setConfirmModal={setConfirmModalOpen} />
+                <Confirm
+                  handleSendEmail={handleSend}
+                  setConfirmModal={setConfirmModalOpen}
+                  disable={disable}
+                />
             }
           </div>
         </div>
@@ -280,14 +340,31 @@ const DnDEnditor = () => {
           <input
             type='text'
             onChange={handleChange}
+            value={senderEmail}
+            name='email'
+            placeholder='Email Address'
+            className={'details ' + (emailError && 'has-error')}
+          />
+          <input
+            type='text'
+            onChange={handleChange}
+            value={senderName}
+            name='name'
+            placeholder='Name'
+            className={'details ' + (nameError && 'has-error')}
+          />
+          <input
+            type='text'
+            onChange={handleChange}
             value={subject}
+            name='subject'
             placeholder='Subject'
-            className={'subject ' + (error && 'has-error')}
+            className={'details ' + (subjectError && 'has-error')}
           />
           <div className='send-btn-group'>
             <button onClick={handleChangeCSV} className='csv'>Change CSV</button>
-            <button onClick={handleTest} className='send test'>Test</button>
-            <button onClick={handleConfirm} className='send'>Send</button>
+            <button onClick={handleTest} className='send test' disabled={buttonDisable}>Test</button>
+            <button onClick={handleConfirm} className='send' disabled={buttonDisable}>Send</button>
           </div>
         </div>
       </div>
