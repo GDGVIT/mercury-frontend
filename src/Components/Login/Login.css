@@ -95,6 +95,7 @@
 @media only screen and (min-device-width: 768px)  and (max-width: 1024px) {
   .login {
     margin: 0;
+    width: calc(100vw - 10px);
   }
 
   .login-body {
@@ -143,8 +144,8 @@
   }
 
   .login-content {
-    width: 90%;
-    text-align: start;
+    width: 100%;
+    text-align: center;
   }
 
   .login-background {
