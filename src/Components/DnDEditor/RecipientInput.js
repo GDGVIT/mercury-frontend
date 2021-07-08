@@ -56,10 +56,22 @@ const RecipientInput = (props) => {
       }
       return res.json()
     }).then(data => {
-      if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
+      console.log(data)
+      let count = 0
+      const dataSize = Object.keys(data).length
+      // const failedEmails = []
+      for (const datum in data) {
+        if (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!') {
+          ++count
+          console.log(datum)
+        }
+      }
+      if (count === dataSize) {
         sendError.current = 1
-      } else {
+      } else if (count === 0) {
         sendError.current = 0
+      } else {
+        sendError.current = 3
       }
       setRecipientModalOpen(false)
       setSuccessModalOpen(true)

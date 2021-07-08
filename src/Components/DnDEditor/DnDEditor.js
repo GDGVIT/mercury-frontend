@@ -31,13 +31,24 @@ const EmailSentMessage = (props) => {
         <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails not sent successfullly</h3>
       </div>
     )
+  } else if (props.error === 3) {
+    return (
+      <div className='message-sent'>
+        <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
+          <circle className='path circle' fill='none' stroke='#FFFF66' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+          <line className='path line' fill='none' stroke='#FFFF66' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='65.1' y1='37.9' x2='65.1' y2='75.3' />
+          <circle cx='65.1' cy='92.3' r='3' stroke='#FFFF66' stroke-width='4' fill='yellow' />
+        </svg>
+        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Some emails were not sent</h3>
+      </div>
+    )
   }
   return (
     <div className='message-sent'>
       <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-        <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-        <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
-        <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
+        <circle className='path circle' fill='none' stroke='#FFFF66' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+        <line className='path line' fill='none' stroke='#FFFF66' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='65.1' y1='37.9' x2='65.1' y2='75.3' />
+        <circle cx='65.1' cy='92.3' r='3' stroke='#FFFF66' stroke-width='4' fill='yellow' />
       </svg>
       <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Email cannot be empty</h3>
     </div>
@@ -219,10 +230,21 @@ const DnDEnditor = () => {
           }
           return res.json()
         }).then(data => {
-          if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
+          let count = 0
+          const dataSize = Object.keys(data).length
+          // const failedEmails = []
+          for (const datum in data) {
+            if (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!') {
+              ++count
+              console.log(datum)
+            }
+          }
+          if (count === dataSize) {
             sendError.current = 1
-          } else {
+          } else if (count === 0) {
             sendError.current = 0
+          } else {
+            sendError.current = 3
           }
           setSuccessModalOpen(true)
         }).catch(err => {
@@ -331,7 +353,7 @@ const DnDEnditor = () => {
           </div>
         </div>
         <div className={successModalOpen ? 'modalOpen' : 'modalClose'}>
-          <div className='modalOpen-content'>
+          <div className='modalOpen-content confirm'>
             <span onClick={() => setSuccessModalOpen(false)} className='close'>&times;</span>
             <EmailSentMessage error={sendError.current} />
           </div>
