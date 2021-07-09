@@ -231,19 +231,21 @@ const DnDEnditor = () => {
           return res.json()
         }).then(data => {
           let count = 0
-          const dataSize = Object.keys(data).length
+          const dataSize = Object.keys(data).length - 1
           // const failedEmails = []
           for (const datum in data) {
-            if (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!') {
+            if (datum !== 'rejected_emails' && (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!')) {
               ++count
-              console.log(datum)
             }
           }
           if (count === dataSize) {
+            window.open(data.rejected_emails)
             sendError.current = 1
+            window.open()
           } else if (count === 0) {
             sendError.current = 0
           } else {
+            window.open(data.rejected_emails)
             sendError.current = 3
           }
           setSuccessModalOpen(true)
