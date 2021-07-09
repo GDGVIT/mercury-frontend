@@ -232,7 +232,6 @@ const DnDEnditor = () => {
         }).then(data => {
           let count = 0
           const dataSize = Object.keys(data).length - 1
-          // const failedEmails = []
           for (const datum in data) {
             if (datum !== 'rejected_emails' && (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!')) {
               ++count

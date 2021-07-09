@@ -78,7 +78,9 @@ const Login = () => {
   return (
     <div style={{ height: '100vh' }}>
       {
-        (window.localStorage.getItem('token') !== undefined && window.localStorage.getItem('token') !== null) &&
+        (window.localStorage.getItem('token') !== undefined &&
+        window.localStorage.getItem('token') !== null) &&
+        (new Date().getTime() < window.localStorage.getItem('accessExpirationTime')) &&
         history.push('/home')
       }
       <Header />

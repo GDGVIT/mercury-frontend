@@ -25,7 +25,7 @@ const Confirm = (props) => {
       <h2 style={{ display: 'block', margin: '10px auto' }}>Are you sure?</h2>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
         <button
-          className='send'
+          className='send-confirm'
           style={{ marginRight: '20px' }}
           onClick={() => handleSend(true)}
           disabled={disable}
@@ -33,7 +33,7 @@ const Confirm = (props) => {
           {buttonText}
         </button>
         <button
-          className='send'
+          className='send-confirm'
           onClick={() => handleSend(false)}
           disabled={disable}
         >
