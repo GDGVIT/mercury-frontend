@@ -176,7 +176,8 @@
   justify-content: center;
 }
 
-.send-test, .send-confirm {
+.send-test,
+.send-confirm {
   display: block;
   width: 26%;
   height: 53px;
@@ -184,7 +185,6 @@
   margin-top: 30px;
   background: #4285f4;
   color: white;
-  font-size: 17px;
   padding: 12px 35px;
   border: none;
   border-radius: 15px;
@@ -192,7 +192,8 @@
   font-size: 1.2rem;
 }
 
-.send-test:disabled, .send-confirm:disabled {
+.send-test:disabled,
+.send-confirm:disabled {
   background: #6f96d4;
   color: white;
   cursor: default;
