@@ -8,6 +8,8 @@ import Confirm from './Confirm'
 import RecipientInput from './RecipientInput'
 import 'grapesjs/dist/css/grapes.min.css'
 import './DnDEditor.css'
+import { PuffLoader } from 'react-spinners'
+import { css } from '@emotion/core'
 
 const EmailSentMessage = (props) => {
   if (props.error === 0) {
@@ -63,6 +65,7 @@ const DnDEnditor = () => {
   const [recipientModalOpen, setRecipientModalOpen] = useState(false)
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [confirmModalOpen, setConfirmModalOpen] = useState(false)
+  const [uploadLoad, setUploadLoad] = useState(false)
   const [subjectError, setSubjectError] = useState(false)
   const [emailError, setEmailError] = useState(false)
   const [nameError, setNameError] = useState(false)
@@ -74,6 +77,10 @@ const DnDEnditor = () => {
   const token = window.localStorage.getItem('token')
   const recipients = location.state.recipients
   const emptyMjml = '<mjml><mj-body></mj-body></mjml>'
+  const LoaderCss = css`
+    display: block;
+    margin: 0 auto;
+  `
   const buttonDisable = subjectError || emailError || nameError
 
   useEffect(() => {
@@ -92,6 +99,7 @@ const DnDEnditor = () => {
         storeAfterUpload: true,
         assets: [],
         uploadFile: (e) => {
+          setUploadLoad(true)
           const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
           const imagesFormData = new window.FormData()
           for (let i = 0; i < files.length; i++) {
@@ -118,6 +126,7 @@ const DnDEnditor = () => {
             data.data.forEach(image => {
               Mjmleditor.AssetManager.add(image)
             })
+            setUploadLoad(false)
           })
         }
       }
@@ -359,6 +368,16 @@ const DnDEnditor = () => {
             <EmailSentMessage error={sendError.current} />
           </div>
         </div>
+        <div className={uploadLoad ? 'modalOpen' : 'modalClose'}>
+          <div style={{ zIndex: '15' }}>
+            <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
+            {
+              uploadLoad &&
+                <PuffLoader css={LoaderCss} size={48} loading color='white' />
+            }
+          </div>
+        </div>
+
         <div className='send-body'>
           <input
             type='text'
