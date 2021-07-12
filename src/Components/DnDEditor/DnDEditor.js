@@ -30,7 +30,10 @@ const DnDEnditor = () => {
   const history = useHistory()
   const mjml = useRef(null)
   const token = window.localStorage.getItem('token')
-  const recipients = location.state.recipients
+  let recipients
+  if (location.state !== undefined) {
+    recipients = location.state.recipients
+  }
   const emptyMjml = '<mjml><mj-body></mj-body></mjml>'
   const LoaderCss = css`
     display: block;
@@ -281,7 +284,8 @@ const DnDEnditor = () => {
           <Redirect to='/login' />
       }
       {
-        (location.state.recipients === null || location.state.recipients === undefined) &&
+        ((location.state === null || location.state === undefined) ||
+        (location.state.recipients === null || location.state.recipients === undefined)) &&
           <Redirect to='/csv' />
       }
       <div className='non-editor'>
