@@ -56,9 +56,10 @@ const RecipientInput = (props) => {
       }
       return res.json()
     }).then(data => {
+      console.log(data)
       let count = 0
       const dataSize = Object.keys(data).length - 1
-      if (data[0].length > 29 && data[0].substring(0, 29) === 'Email address is not verified') {
+      if (data[1].length > 29 && data[1].substring(0, 29) === 'Email address is not verified') {
         sendError.current = 5
         throw new Error('Email address is not verified')
       }

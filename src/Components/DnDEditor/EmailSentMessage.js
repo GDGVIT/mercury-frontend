@@ -52,7 +52,7 @@ const EmailSentMessage = (props) => {
           <line className='path line' fill='none' stroke='#FFFF66' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='65.1' y1='37.9' x2='65.1' y2='75.3' />
           <circle cx='65.1' cy='92.3' r='3' stroke='#FFFF66' strokeWidth='4' fill='yellow' />
         </svg>
-        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Upload only .png/.jpg/.hpeg/.gif</h3>
+        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Sender's email ID is not verified</h3>
       </div>
     )
   }

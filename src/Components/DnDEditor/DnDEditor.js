@@ -109,7 +109,6 @@ const DnDEnditor = () => {
               setSuccessModalOpen(true)
             })
           } catch (err) {
-            console.log('caught outside', err)
             sendError.current = 4
             setUploadLoad(false)
             setSuccessModalOpen(true)
@@ -118,7 +117,6 @@ const DnDEnditor = () => {
       }
     })
     Mjmleditor.Components.clear()
-    console.log(Mjmleditor)
     const localMjml = window.localStorage.getItem('mjml')
     const localSubject = window.localStorage.getItem('subject')
     const localEmail = window.localStorage.getItem('email')
@@ -225,16 +223,18 @@ const DnDEnditor = () => {
           }
           return res.json()
         }).then(data => {
-          console.log(data)
           let count = 0
           const dataSize = Object.keys(data).length - 1
+          if (data[1].length > 29 && data[1].substring(0, 29) === 'Email address is not verified') {
+            sendError.current = 5
+            throw new Error('Email address is not verified')
+          }
           for (const datum in data) {
             if (datum !== 'rejected_emails' && (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!')) {
               ++count
             }
           }
           if (count === dataSize) {
-            // if (data[1].substring(0, 11) !== 'Email sent!')
             window.open(data.rejected_emails)
             sendError.current = 1
           } else if (count === 0) {
