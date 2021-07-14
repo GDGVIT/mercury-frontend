@@ -104,16 +104,6 @@ const RecipientInput = (props) => {
     setItems(items.filter(i => i !== item))
   }
 
-  const handlePaste = event => {
-    event.preventDefault()
-    const paste = event.clipboardData.getData('text')
-    const emails = paste.match(/[\w\d.-]+@[\w\d.-]+\.[\w\d.-]+/g)
-    if (emails) {
-      const toBeAdded = emails.filter(email => !isInList(email))
-      setItems(...items, ...toBeAdded)
-    }
-  }
-
   const isValid = (email) => {
     let error = null
     if (isInList(email)) {
@@ -158,10 +148,9 @@ const RecipientInput = (props) => {
         placeholder='Type or paste email addresses and press `Enter`...'
         onKeyDown={handleKeyDown}
         onChange={handleChange}
-        onPaste={handlePaste}
       />
       {error && <p className='error'>{error}</p>}
-      <button className='send-test' onClick={handleTest} disabled={disable}>{buttonText}</button>
+      <button className='send-test send-button' onClick={handleTest} disabled={disable}>{buttonText}</button>
     </>
   )
 }

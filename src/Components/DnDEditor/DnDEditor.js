@@ -59,10 +59,28 @@ const DnDEnditor = () => {
         uploadFile: (e) => {
           setUploadLoad(true)
           const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
-          const imagesFormData = new window.FormData()
+          const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
+          const allowedFiles = new window.DataTransfer()
+          if (files.length === 0) {
+            sendError.current = 4
+            setEmailError(true)
+            setUploadLoad(false)
+            throw new Error('Cannot upload image')
+          }
           for (let i = 0; i < files.length; i++) {
-            const fileName = files[i].name.replace(/\.[^/.]+$/, '')
-            imagesFormData.append('image', files[i])
+            if (allowedExtensions.exec(files[i].name)) {
+              allowedFiles.items.add(files[i])
+            }
+          }
+          if (allowedFiles.files.length === 0) {
+            sendError.current = 4
+            setUploadLoad(false)
+            throw new Error('Cannot upload file')
+          }
+          const imagesFormData = new window.FormData()
+          for (let i = 0; i < allowedFiles.files.length; i++) {
+            const fileName = allowedFiles.files[i].name.replace(/\.[^/.]+$/, '')
+            imagesFormData.append('image', allowedFiles.files[i])
             imagesFormData.append('file_name', fileName)
           }
           window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
@@ -79,12 +97,19 @@ const DnDEnditor = () => {
           }).then(res => {
             if (res.status === 200) {
               return res.json()
+            } else {
+              sendError.current = 4
+              setUploadLoad(false)
+              setEmailError(true)
+              throw new Error('Cannot upload image')
             }
           }).then(data => {
             data.data.forEach(image => {
               Mjmleditor.AssetManager.add(image)
             })
             setUploadLoad(false)
+          }).catch(err => {
+            console.error(err.message)
           })
         }
       }
@@ -197,6 +222,7 @@ const DnDEnditor = () => {
           }
           return res.json()
         }).then(data => {
+          console.log(data)
           let count = 0
           const dataSize = Object.keys(data).length - 1
           for (const datum in data) {
@@ -205,9 +231,9 @@ const DnDEnditor = () => {
             }
           }
           if (count === dataSize) {
+            // if (data[1].substring(0, 11) !== 'Email sent!')
             window.open(data.rejected_emails)
             sendError.current = 1
-            window.open()
           } else if (count === 0) {
             sendError.current = 0
           } else {
@@ -327,8 +353,8 @@ const DnDEnditor = () => {
             <EmailSentMessage error={sendError.current} />
           </div>
         </div>
-        <div className={uploadLoad ? 'modalOpen' : 'modalClose'}>
-          <div style={{ zIndex: '15' }}>
+        <div style={{ zIndex: '20' }} className={uploadLoad ? 'modalOpen' : 'modalClose'}>
+          <div>
             <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
             {
               uploadLoad &&
@@ -343,7 +369,7 @@ const DnDEnditor = () => {
             onChange={handleChange}
             value={senderEmail}
             name='email'
-            placeholder='Email Address'
+            placeholder="Sender's Email Address"
             className={'details ' + (emailError && 'has-error')}
           />
           <input
@@ -351,7 +377,7 @@ const DnDEnditor = () => {
             onChange={handleChange}
             value={senderName}
             name='name'
-            placeholder='Name'
+            placeholder="Sender's Name"
             className={'details ' + (nameError && 'has-error')}
           />
           <input
