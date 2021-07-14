@@ -58,64 +58,67 @@ const DnDEnditor = () => {
         assets: [],
         uploadFile: (e) => {
           setUploadLoad(true)
-          const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
-          const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
-          const allowedFiles = new window.DataTransfer()
-          if (files.length === 0) {
-            sendError.current = 4
-            setEmailError(true)
-            setUploadLoad(false)
-            throw new Error('Cannot upload image')
-          }
-          for (let i = 0; i < files.length; i++) {
-            if (allowedExtensions.exec(files[i].name)) {
-              allowedFiles.items.add(files[i])
-            }
-          }
-          if (allowedFiles.files.length === 0) {
-            sendError.current = 4
-            setUploadLoad(false)
-            throw new Error('Cannot upload file')
-          }
-          const imagesFormData = new window.FormData()
-          for (let i = 0; i < allowedFiles.files.length; i++) {
-            const fileName = allowedFiles.files[i].name.replace(/\.[^/.]+$/, '')
-            imagesFormData.append('image', allowedFiles.files[i])
-            imagesFormData.append('file_name', fileName)
-          }
-          window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
-            method: 'POST',
-            headers: new window.Headers({
-              Authorization: 'Bearer ' + token
-            }),
-            body: imagesFormData,
-            contentType: false,
-            crossDomain: true,
-            dataType: 'json',
-            mimeType: 'multipart/form-data',
-            processData: false
-          }).then(res => {
-            if (res.status === 200) {
-              return res.json()
-            } else {
-              sendError.current = 4
-              setUploadLoad(false)
-              setEmailError(true)
+          try {
+            const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
+            const allowedFiles = new window.DataTransfer()
+            if (files.length === 0) {
               throw new Error('Cannot upload image')
             }
-          }).then(data => {
-            data.data.forEach(image => {
-              Mjmleditor.AssetManager.add(image)
+            for (let i = 0; i < files.length; i++) {
+              if (allowedExtensions.exec(files[i].name)) {
+                allowedFiles.items.add(files[i])
+              }
+            }
+            if (allowedFiles.files.length === 0) {
+              Mjmleditor.Modal.close()
+              throw new Error('Cannot upload image')
+            }
+            const imagesFormData = new window.FormData()
+            for (let i = 0; i < allowedFiles.files.length; i++) {
+              const fileName = allowedFiles.files[i].name.replace(/\.[^/.]+$/, '')
+              imagesFormData.append('image', allowedFiles.files[i])
+              imagesFormData.append('file_name', fileName)
+            }
+            window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
+              method: 'POST',
+              headers: new window.Headers({
+                Authorization: 'Bearer ' + token
+              }),
+              body: imagesFormData,
+              contentType: false,
+              crossDomain: true,
+              dataType: 'json',
+              mimeType: 'multipart/form-data',
+              processData: false
+            }).then(res => {
+              if (res.status === 200) {
+                return res.json()
+              } else {
+                throw new Error('Cannot upload image')
+              }
+            }).then(data => {
+              data.data.forEach(image => {
+                Mjmleditor.AssetManager.add(image)
+              })
+              setUploadLoad(false)
+            }).catch(err => {
+              console.log(err)
+              sendError.current = 4
+              setUploadLoad(false)
+              setSuccessModalOpen(true)
             })
+          } catch (err) {
+            console.log('caught outside', err)
+            sendError.current = 4
             setUploadLoad(false)
-          }).catch(err => {
-            console.error(err.message)
-          })
+            setSuccessModalOpen(true)
+          }
         }
       }
     })
     Mjmleditor.Components.clear()
-
+    console.log(Mjmleditor)
     const localMjml = window.localStorage.getItem('mjml')
     const localSubject = window.localStorage.getItem('subject')
     const localEmail = window.localStorage.getItem('email')

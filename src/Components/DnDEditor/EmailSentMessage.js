@@ -44,6 +44,17 @@ const EmailSentMessage = (props) => {
         <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Could not upload image</h3>
       </div>
     )
+  } else if (props.error === 5) {
+    return (
+      <div className='message-sent'>
+        <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
+          <circle className='path circle' fill='none' stroke='#FFFF66' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
+          <line className='path line' fill='none' stroke='#FFFF66' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='65.1' y1='37.9' x2='65.1' y2='75.3' />
+          <circle cx='65.1' cy='92.3' r='3' stroke='#FFFF66' strokeWidth='4' fill='yellow' />
+        </svg>
+        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Upload only .png/.jpg/.hpeg/.gif</h3>
+      </div>
+    )
   }
   return (
     <div className='message-sent'>
