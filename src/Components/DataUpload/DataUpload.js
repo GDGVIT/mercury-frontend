@@ -17,7 +17,7 @@ const DataUpload = () => {
 
   const handleNext = () => {
     history.push({
-      pathname: '/dnd',
+      pathname: '/editor',
       state: {
         recipients
       }

@@ -5,21 +5,9 @@ import Header from '../Header/Header'
 import HomeSvg from '../../assets/home.svg'
 
 const Home = () => {
-  // const handleDownload = () => {
-  //   window.fetch({
-  //     method: 'GET',
-  //     url: 'https://mercury-mailer-dsc.herokuapp.com/download',
-  //     responseType: 'arraybuffer'
-  //   }).then((response) => response.blob()).then((blob) => {
-  //     const url = window.URL.createObjectURL(new window.Blob([blob]))
-  //     const link = document.createElement('a')
-  //     link.href = url
-  //     link.setAttribute('download', 'Recipients.csv')
-  //     document.body.appendChild(link)
-  //     link.click()
-  //     link.parentNode.removeChild(link)
-  //   })
-  // }
+  const handleDownload = async () => {
+    await window.open('https://mercury-mailer.s3.ap-south-1.amazonaws.com/mercury.csv')
+  }
 
   return (
     <div style={{ height: '100vh' }}>
@@ -39,7 +27,7 @@ const Home = () => {
           <p>3. Send emails in bulk effortlessly!</p>
 
           <div className='home-buttons'>
-            <button>Download CSV Template</button>
+            <button onClick={handleDownload}>Download CSV Template</button>
             <a href='/csv'>Get Started</a>
           </div>
         </div>

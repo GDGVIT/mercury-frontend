@@ -1,9 +1,3 @@
-.btn-send-button {
-  margin-left: 10px;
-  font-size: 15px;
-  background-color: #555;
-}
-
 .send-body {
   display: flex;
   flex-direction: column;
@@ -11,7 +5,7 @@
   margin: 20px auto;
 }
 
-.subject {
+.details {
   padding: 10px;
   width: 100%;
   border: 1px solid black;
@@ -19,22 +13,23 @@
   font-family: 'Roboto-regular', sans-serif;
   font-weight: 200;
   font-size: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   outline: none;
   -webkit-appearance: none;
 }
 
-.subject:focus {
+.details:focus {
   border-color: cornflowerblue;
   outline: none;
 }
 
-.subject.has-error {
+.details.has-error {
   border: 2px solid tomato;
 }
 
 .send-btn-group {
+  margin: 15px 0 0 0;
   text-align: center;
 }
 
@@ -70,7 +65,7 @@
 }
 
 .send:disabled {
-  background: #4285f4;
+  background: #6f96d4;
   color: white;
   cursor: default;
 }
@@ -110,8 +105,8 @@
   margin: auto;
   padding: 30px;
   border: 1px solid #888;
-  width: 80%;
-  border-radius: 30px;
+  width: 70%;
+  border-radius: 20px;
 }
 
 .modalOpen-content.confirm {
@@ -182,17 +177,45 @@
   justify-content: center;
 }
 
-.send-test {
+.send-confirm {
   display: block;
+  height: 53px;
   margin: auto;
   margin-top: 30px;
   background: #4285f4;
   color: white;
-  font-size: 17px;
-  padding: 10px 35px;
+  padding: 12px 35px;
   border: none;
   border-radius: 15px;
   cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.send-test {
+  display: block;
+  width: 26%;
+  height: 53px;
+  margin: auto;
+  margin-top: 30px;
+  background: #4285f4;
+  color: white;
+  padding: 12px 35px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.send-test:disabled,
+.send-confirm:disabled {
+  background: #6f96d4;
+  color: white;
+  cursor: default;
+}
+
+.send-test.send-button {
+  height: fit-content;
+  width: 30%;
 }
 
 .message-sent svg {
@@ -283,8 +306,25 @@
   overflow: hidden;
 }
 
-.gjs-mdl-dialog {
+.gjs-mdl-content {
+  height: calc(50vh + 20px);
+}
+
+.gjs-am-file-uploader form {
   height: 50vh;
+  padding-bottom: 0;
+}
+
+.gjs-am-assets {
+  height: 50vh;
+}
+
+.gjs-am-assets-cont {
+  height: 50vh;
+}
+
+.gjs-mdl-dialog {
+  height: calc(55vh + 20px);
 }
 
 .gjs-pn-btn {
@@ -297,13 +337,17 @@
     width: 80%;
   }
 
-  .subject {
+  .details {
     width: 100%;
   }
 
   .send-btn-group {
     margin: 15px 0;
     text-align: center;
+  }
+
+  .send-test.send-button {
+    width: 45%;
   }
 
   .gjs-editor {
@@ -314,10 +358,6 @@
   .gjs-frame {
     left: -10%;
     width: 90%;
-  }
-
-  .gjs-mdl-dialog {
-    height: 50vh;
   }
 
   div[data-gjs-type="mj-section"] {
@@ -336,9 +376,9 @@
   }
 
   .gjs-pn-btn {
-    min-height: 7px;
-    min-width: 7px;
-    font-size: small;
+    min-height: 5px;
+    min-width: 5px;
+    font-size: 18px;
   }
 
   .gjs-block {
@@ -352,7 +392,7 @@
     width: 80%;
   }
 
-  .subject {
+  .details {
     width: 100%;
     margin-bottom: 10px;
   }
@@ -362,41 +402,50 @@
     text-align: center;
   }
 
-  .csv {
-    width: 70%;
-    background: #4285f4;
-    color: white;
-    font-size: 1rem;
-    padding: 7px 35px;
-    border: none;
-    cursor: pointer;
-    margin-right: 0;
-  }
-
   .send {
     width: calc(35% - 5px);
     font-size: 1rem;
-    padding: 7px 5%;
+    padding: 9px 5%;
     border: none;
     cursor: pointer;
     margin-top: 5px;
   }
 
+  .send-test.send-button {
+    width: 80%;
+    height: fit-content;
+  }
+
+  .csv {
+    width: 70%;
+    background: #4285f4;
+    color: white;
+    font-size: 1rem;
+    padding: 9px 35px;
+    border: none;
+    cursor: pointer;
+    margin-right: 0;
+  }
+
   .modalOpen-content.confirm {
     width: 90%;
+    max-width: 500px;
   }
 
   .gjs-editor {
     height: 100vh;
     max-width: 100vw;
-    overflow: hidden;
+    overflow: auto;
   }
 
-  .gjs-mdl-dialog {
-    height: 60vh;
+  .gjs.cv.canvas {
+    width: 65%;
   }
 
-  .gjs-pn-views,
+  .gjs-pn-views {
+    width: 35%;
+  }
+
   .gjs-pn-views-container {
     width: 35%;
   }
@@ -408,7 +457,7 @@
   .gjs-pn-btn {
     min-height: 5px;
     min-width: 5px;
-    font-size: x-small;
+    font-size: 10px;
   }
 
   .gjs-block {

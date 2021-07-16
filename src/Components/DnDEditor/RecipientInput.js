@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PuffLoader } from 'react-spinners'
 import { css } from '@emotion/core'
 import './DnDEditor.css'
@@ -7,6 +7,7 @@ const RecipientInput = (props) => {
   const [items, setItems] = useState([])
   const [value, setValue] = useState('')
   const [error, setError] = useState(null)
+  const [disable, setDisable] = useState(true)
   const [buttonText, setButtonText] = useState('Send Test Mail')
   const LoaderCss = css`
     display: block;
@@ -15,18 +16,26 @@ const RecipientInput = (props) => {
   const token = window.localStorage.getItem('token')
   const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
 
+  useEffect(() => {
+    if (items.length === 0) {
+      setDisable(true)
+    } else {
+      setDisable(false)
+    }
+  }, [items])
+
   const handleTest = async () => {
+    setDisable(true)
     if (new Date().getTime() > accessExpirationTime) {
       // await props.handleRefreshToken()
-      console.log('Login again')
       window.localStorage.removeItem('token')
     }
-    const { subject, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, sendError } = props
+    const { subject, name, email, mjml, recipients, setRecipientModalOpen, setSuccessModalOpen, sendError } = props
     setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
 
     const formData = new window.FormData()
-    formData.append('sender_name', 'Sricharan')
-    formData.append('sender_email', 'charan1952001@gmail.com')
+    formData.append('sender_name', name)
+    formData.append('sender_email', email)
     formData.append('recipients', recipients, recipients.name)
     formData.append('subject', subject)
     formData.append('body_text', 'Hello world')
@@ -41,7 +50,6 @@ const RecipientInput = (props) => {
       }),
       body: formData
     }).then((res) => {
-      console.log(res)
       setButtonText('Send Test Mail')
       if (res.status !== 200) {
         sendError.current = 1
@@ -49,18 +57,33 @@ const RecipientInput = (props) => {
       return res.json()
     }).then(data => {
       console.log(data)
-      if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
+      let count = 0
+      const dataSize = Object.keys(data).length - 1
+      if (data[1].length > 29 && data[1].substring(0, 29) === 'Email address is not verified') {
+        sendError.current = 5
+        throw new Error('Email address is not verified')
+      }
+      for (const datum in data) {
+        if (datum !== 'rejected_emails' && (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!')) {
+          ++count
+        }
+      }
+      if (count === dataSize) {
         sendError.current = 1
-      } else {
+      } else if (count === 0) {
         sendError.current = 0
+      } else {
+        window.open(data.rejected_emails)
+        sendError.current = 3
       }
       setRecipientModalOpen(false)
       setSuccessModalOpen(true)
+      setDisable(false)
     }).catch(err => {
       console.error(err)
-      sendError.current = 1
       setRecipientModalOpen(false)
       setSuccessModalOpen(true)
+      setDisable(false)
     })
   }
 
@@ -84,16 +107,6 @@ const RecipientInput = (props) => {
 
   const handleDelete = item => {
     setItems(items.filter(i => i !== item))
-  }
-
-  const handlePaste = event => {
-    event.preventDefault()
-    const paste = event.clipboardData.getData('text')
-    const emails = paste.match(/[\w\d.-]+@[\w\d.-]+\.[\w\d.-]+/g)
-    if (emails) {
-      const toBeAdded = emails.filter(email => !isInList(email))
-      setItems(...items, ...toBeAdded)
-    }
   }
 
   const isValid = (email) => {
@@ -140,10 +153,9 @@ const RecipientInput = (props) => {
         placeholder='Type or paste email addresses and press `Enter`...'
         onKeyDown={handleKeyDown}
         onChange={handleChange}
-        onPaste={handlePaste}
       />
       {error && <p className='error'>{error}</p>}
-      <button className='send-test' onClick={handleTest}>{buttonText}</button>
+      <button className='send-test send-button' onClick={handleTest} disabled={disable}>{buttonText}</button>
     </>
   )
 }

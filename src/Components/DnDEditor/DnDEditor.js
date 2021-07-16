@@ -6,58 +6,40 @@ import grapesjsMJML from 'grapesjs-mjml'
 import Header from '../Header/Header'
 import Confirm from './Confirm'
 import RecipientInput from './RecipientInput'
+import EmailSentMessage from './EmailSentMessage'
 import 'grapesjs/dist/css/grapes.min.css'
 import './DnDEditor.css'
-
-const EmailSentMessage = (props) => {
-  if (props.error === 0) {
-    return (
-      <div className='message-sent'>
-        <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-          <circle className='path circle' fill='none' stroke='#73AF55' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-          <polyline className='path check' fill='none' stroke='#73AF55' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' points='100.2,40.2 51.5,88.8 29.8,67.5 ' />
-        </svg>
-        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails sent successfullly!</h3>
-      </div>
-    )
-  } else if (props.error === 1) {
-    return (
-      <div className='message-sent'>
-        <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-          <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
-          <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
-        </svg>
-        <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Emails not sent successfullly</h3>
-      </div>
-    )
-  }
-  return (
-    <div className='message-sent'>
-      <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130.2 130.2'>
-        <circle className='path circle' fill='none' stroke='#D06079' strokeWidth='6' strokeMiterlimit='10' cx='65.1' cy='65.1' r='62.1' />
-        <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='34.4' y1='37.9' x2='95.8' y2='92.3' />
-        <line className='path line' fill='none' stroke='#D06079' strokeWidth='6' strokeLinecap='round' strokeMiterlimit='10' x1='95.8' y1='38' x2='34.4' y2='92.2' />
-      </svg>
-      <h3 style={{ textAlign: 'center', marginTop: '30px' }}>Email cannot be empty</h3>
-    </div>
-  )
-}
+import { PuffLoader } from 'react-spinners'
+import { css } from '@emotion/core'
 
 const DnDEnditor = () => {
   const location = useLocation()
   const [subject, setSubject] = useState('')
+  const [senderEmail, setSenderEmail] = useState('')
+  const [senderName, setSenderName] = useState('')
   const [recipientModalOpen, setRecipientModalOpen] = useState(false)
   const [successModalOpen, setSuccessModalOpen] = useState(false)
   const [confirmModalOpen, setConfirmModalOpen] = useState(false)
-  const [error, setError] = useState(false)
+  const [uploadLoad, setUploadLoad] = useState(false)
+  const [subjectError, setSubjectError] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+  const [nameError, setNameError] = useState(false)
+  const [disable, setDisable] = useState(false)
+  const [editor, setEditor] = useState(null)
   const sendError = useRef(2)
+  const history = useHistory()
   const mjml = useRef(null)
   const token = window.localStorage.getItem('token')
-  const recipients = location.state.recipients
-  const [editor, setEditor] = useState(null)
-  const history = useHistory()
+  let recipients
+  if (location.state !== undefined) {
+    recipients = location.state.recipients
+  }
   const emptyMjml = '<mjml><mj-body></mj-body></mjml>'
+  const LoaderCss = css`
+    display: block;
+    margin: 0 auto;
+  `
+  const buttonDisable = subjectError || emailError || nameError
 
   useEffect(() => {
     const Mjmleditor = grapesjs.init({
@@ -75,69 +57,128 @@ const DnDEnditor = () => {
         storeAfterUpload: true,
         assets: [],
         uploadFile: (e) => {
-          const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
-          const imagesFormData = new window.FormData()
-          for (let i = 0; i < files.length; i++) {
-            const fileName = files[i].name.replace(/\.[^/.]+$/, '')
-            imagesFormData.append('image', files[i])
-            imagesFormData.append('file_name', fileName)
-          }
-          window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
-            method: 'POST',
-            headers: new window.Headers({
-              Authorization: 'Bearer ' + token
-            }),
-            body: imagesFormData,
-            contentType: false,
-            crossDomain: true,
-            dataType: 'json',
-            mimeType: 'multipart/form-data',
-            processData: false
-          }).then(res => {
-            if (res.status === 200) {
-              return res.json()
+          setUploadLoad(true)
+          try {
+            const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
+            const allowedFiles = new window.DataTransfer()
+            if (files.length === 0) {
+              throw new Error('Cannot upload image')
             }
-          }).then(data => {
-            data.data.forEach(image => {
-              Mjmleditor.AssetManager.add(image)
+            for (let i = 0; i < files.length; i++) {
+              if (allowedExtensions.exec(files[i].name)) {
+                allowedFiles.items.add(files[i])
+              }
+            }
+            if (allowedFiles.files.length === 0) {
+              Mjmleditor.Modal.close()
+              throw new Error('Cannot upload image')
+            }
+            const imagesFormData = new window.FormData()
+            for (let i = 0; i < allowedFiles.files.length; i++) {
+              const fileName = allowedFiles.files[i].name.replace(/\.[^/.]+$/, '')
+              imagesFormData.append('image', allowedFiles.files[i])
+              imagesFormData.append('file_name', fileName)
+            }
+            window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
+              method: 'POST',
+              headers: new window.Headers({
+                Authorization: 'Bearer ' + token
+              }),
+              body: imagesFormData,
+              contentType: false,
+              crossDomain: true,
+              dataType: 'json',
+              mimeType: 'multipart/form-data',
+              processData: false
+            }).then(res => {
+              if (res.status === 200) {
+                return res.json()
+              } else {
+                throw new Error('Cannot upload image')
+              }
+            }).then(data => {
+              data.data.forEach(image => {
+                Mjmleditor.AssetManager.add(image)
+              })
+              setUploadLoad(false)
+            }).catch(err => {
+              console.log(err)
+              sendError.current = 4
+              setUploadLoad(false)
+              setSuccessModalOpen(true)
             })
-          })
+          } catch (err) {
+            sendError.current = 4
+            setUploadLoad(false)
+            setSuccessModalOpen(true)
+          }
         }
       }
     })
     Mjmleditor.Components.clear()
-
     const localMjml = window.localStorage.getItem('mjml')
     const localSubject = window.localStorage.getItem('subject')
+    const localEmail = window.localStorage.getItem('email')
+    const localName = window.localStorage.getItem('name')
 
-    if ((localMjml === null || localMjml === undefined) &&
-    (localSubject === null || localSubject === undefined)) {
+    if ((localSubject !== null && localSubject !== undefined) &&
+    (localEmail !== null && localEmail !== undefined) &&
+    (localName !== null && localName !== undefined)) {
+      Mjmleditor.addComponents(localMjml)
+      setSubject(localSubject)
+      setSenderEmail(localEmail)
+      setSenderName(localName)
+    } else if (localMjml === null || localMjml === undefined) {
       Mjmleditor.addComponents(`
         <mjml>
           <mj-body>
           </mj-body>
         </mjml>
       `)
-      mjml.current = `
-      <mjml>
-        <mj-body>
-        </mj-body>
-      </mjml>
-    `
     } else {
-      Mjmleditor.addComponents(window.localStorage.getItem('mjml'))
-      setSubject(window.localStorage.getItem('subject'))
+      if (localSubject === null || localSubject === undefined) {
+        setSubject('')
+      }
+      if (localEmail === null || localEmail === undefined) {
+        setSenderEmail('')
+      }
+      if (localName === null || localName === undefined) {
+        setSenderName('')
+      }
     }
 
     setEditor(Mjmleditor)
-  }, [token, mjml])
+  }, [token])
 
   const handleChange = (event) => {
-    setError(false)
-    if (event.target.value === '') {
-      setError(true)
+    const name = event.target.name
+    const value = event.target.value
+    if (name === 'subject') {
+      setSubject(value)
+      if (event.target.value === '') {
+        setSubjectError(true)
+      } else {
+        setSubjectError(false)
+      }
+    } else if (name === 'email') {
+      const emails = value.match(/[\w\d.-]+@[\w\d.-]+\.[\w\d.-]+/g)
+      setSenderEmail(value)
+      if (event.target.value === '') {
+        setEmailError(true)
+      } else if (!emails) {
+        setEmailError(true)
+      } else {
+        setEmailError(false)
+      }
+    } else {
+      setSenderName(value)
+      if (event.target.value === '') {
+        setNameError(true)
+      } else {
+        setNameError(false)
+      }
     }
-    setSubject(event.target.value)
   }
 
   const getMjml = () => {
@@ -147,19 +188,21 @@ const DnDEnditor = () => {
   }
 
   const handleSend = async () => {
+    setDisable(true)
     window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
     window.localStorage.setItem('subject', subject)
+    window.localStorage.setItem('email', senderEmail)
+    window.localStorage.setItem('name', senderName)
     const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
 
     if (new Date().getTime() > accessExpirationTime) {
       window.localStorage.removeItem('token')
     } else {
       sendError.current = 0
-      if (!error) {
+      if (!emailError && !nameError && !subjectError) {
         const formData = new window.FormData()
-        setError(false)
-        formData.append('sender_name', 'Sricharan Ramesh')
-        formData.append('sender_email', 'charan1952001@gmail.com')
+        formData.append('sender_name', senderName)
+        formData.append('sender_email', senderEmail)
         formData.append('subject', subject)
         formData.append('recipients', recipients, recipients.name)
         formData.append('body_mjml', mjml.current)
@@ -173,17 +216,32 @@ const DnDEnditor = () => {
           }),
           body: formData
         }).then((res) => {
+          setDisable(false)
           setConfirmModalOpen(false)
           if (res.status !== 200) {
             sendError.current = 1
           }
           return res.json()
         }).then(data => {
-          console.log(data)
-          if (data[1] === undefined || data[1].substring(0, 11) !== 'Email sent!') {
+          let count = 0
+          const dataSize = Object.keys(data).length - 1
+          if (data[1].length > 29 && data[1].substring(0, 29) === 'Email address is not verified') {
+            sendError.current = 5
+            throw new Error('Email address is not verified')
+          }
+          for (const datum in data) {
+            if (datum !== 'rejected_emails' && (data[datum] === undefined || data[datum].substring(0, 11) !== 'Email sent!')) {
+              ++count
+            }
+          }
+          if (count === dataSize) {
+            window.open(data.rejected_emails)
             sendError.current = 1
-          } else {
+          } else if (count === 0) {
             sendError.current = 0
+          } else {
+            window.open(data.rejected_emails)
+            sendError.current = 3
           }
           setSuccessModalOpen(true)
         }).catch(err => {
@@ -198,26 +256,38 @@ const DnDEnditor = () => {
   const handleChangeCSV = () => {
     window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
     window.localStorage.setItem('subject', subject)
+    window.localStorage.setItem('email', senderEmail)
+    window.localStorage.setItem('name', senderName)
     history.push('/csv')
   }
 
-  const handleConfirm = async () => {
+  const handleConfirm = () => {
     getMjml()
     if (subject === '') {
-      setError(true)
+      setSubjectError(true)
+    } if (senderEmail === '') {
+      setEmailError(true)
+    } if (senderName === '') {
+      setNameError(true)
     } else if (mjml.current.replace(/\s/g, '') === emptyMjml) {
       sendError.current = 2
       setSuccessModalOpen(true)
     } else {
-      setError(false)
+      setEmailError(false)
+      setSubjectError(false)
+      setNameError(false)
       setConfirmModalOpen(true)
     }
   }
 
-  const handleTest = async () => {
+  const handleTest = () => {
     getMjml()
     if (subject === '') {
-      setError(true)
+      setSubjectError(true)
+    } if (senderEmail === '') {
+      setEmailError(true)
+    } if (senderName === '') {
+      setNameError(true)
     } else {
       if (mjml.current.replace(/\s/g, '') === emptyMjml) {
         sendError.current = 2
@@ -225,6 +295,8 @@ const DnDEnditor = () => {
       } else {
         window.localStorage.setItem('mjml', editor.getHtml().replaceAll(/ id="([^"]+)"/g, ''))
         window.localStorage.setItem('subject', subject)
+        window.localStorage.setItem('email', senderEmail)
+        window.localStorage.setItem('name', senderName)
         sendError.current = 0
         setRecipientModalOpen(!recipientModalOpen)
       }
@@ -241,7 +313,8 @@ const DnDEnditor = () => {
           <Redirect to='/login' />
       }
       {
-        (location.state.recipients === null || location.state.recipients === undefined) &&
+        ((location.state === null || location.state === undefined) ||
+        (location.state.recipients === null || location.state.recipients === undefined)) &&
           <Redirect to='/csv' />
       }
       <div className='non-editor'>
@@ -253,6 +326,8 @@ const DnDEnditor = () => {
               recipientModalOpen &&
                 <RecipientInput
                   subject={subject}
+                  email={senderEmail}
+                  name={senderName}
                   mjml={mjml.current}
                   recipients={recipients}
                   sendError={sendError}
@@ -267,28 +342,59 @@ const DnDEnditor = () => {
             <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
             {
               confirmModalOpen &&
-                <Confirm handleSend={handleSend} setConfirmModal={setConfirmModalOpen} />
+                <Confirm
+                  handleSendEmail={handleSend}
+                  setConfirmModal={setConfirmModalOpen}
+                  disable={disable}
+                />
             }
           </div>
         </div>
         <div className={successModalOpen ? 'modalOpen' : 'modalClose'}>
-          <div className='modalOpen-content'>
+          <div className='modalOpen-content confirm'>
             <span onClick={() => setSuccessModalOpen(false)} className='close'>&times;</span>
             <EmailSentMessage error={sendError.current} />
           </div>
         </div>
+        <div style={{ zIndex: '20' }} className={uploadLoad ? 'modalOpen' : 'modalClose'}>
+          <div>
+            <span onClick={() => setConfirmModalOpen(false)} className='close'>&times;</span>
+            {
+              uploadLoad &&
+                <PuffLoader css={LoaderCss} size={48} loading color='white' />
+            }
+          </div>
+        </div>
+
         <div className='send-body'>
           <input
             type='text'
             onChange={handleChange}
+            value={senderEmail}
+            name='email'
+            placeholder="Sender's Email Address"
+            className={'details ' + (emailError && 'has-error')}
+          />
+          <input
+            type='text'
+            onChange={handleChange}
+            value={senderName}
+            name='name'
+            placeholder="Sender's Name"
+            className={'details ' + (nameError && 'has-error')}
+          />
+          <input
+            type='text'
+            onChange={handleChange}
             value={subject}
+            name='subject'
             placeholder='Subject'
-            className={'subject ' + (error && 'has-error')}
+            className={'details ' + (subjectError && 'has-error')}
           />
           <div className='send-btn-group'>
             <button onClick={handleChangeCSV} className='csv'>Change CSV</button>
-            <button onClick={handleTest} className='send test'>Test</button>
-            <button onClick={handleConfirm} className='send'>Send</button>
+            <button onClick={handleTest} className='send test' disabled={buttonDisable}>Test</button>
+            <button onClick={handleConfirm} className='send' disabled={buttonDisable}>Send</button>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@
 }
 
 .home-body {
-  padding-top: 50px;
+  padding-top: 30px;
   width: 100vw;
   margin-left: 50px;
   text-align: start;
@@ -37,7 +37,7 @@
   flex-direction: column;
   align-items: center;
   width: 30%;
-  padding-top: 50px;
+  padding-top: 30px;
   margin-left: 40px;
 }
 
