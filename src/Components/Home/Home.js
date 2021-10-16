@@ -5,8 +5,9 @@ import Header from '../Header/Header'
 import HomeSvg from '../../assets/home.svg'
 
 const Home = () => {
+  const baseURL = process.env.REACT_APP_API_URL
   const handleDownload = async () => {
-    await window.open('https://mercury-mailer.s3.ap-south-1.amazonaws.com/mercury.csv')
+    await window.open(`${baseURL}/mercury.csv`)
   }
 
   return (
