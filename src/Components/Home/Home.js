@@ -5,9 +5,9 @@ import Header from '../Header/Header'
 import HomeSvg from '../../assets/home.svg'
 
 const Home = () => {
-  const baseURL = process.env.REACT_APP_API_URL
+  const csvLink = process.env.REACT_APP_CSV_URL
   const handleDownload = async () => {
-    await window.open(`${baseURL}/mercury.csv`)
+    await window.open(`${csvLink}`)
   }
 
   return (
