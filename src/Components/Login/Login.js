@@ -13,6 +13,7 @@ const Login = () => {
   const [buttonText, setButtonText] = useState('LOGIN')
   const [buttonDisable, setButtonDisable] = useState(true)
   const history = useHistory()
+  const baseURL = process.env.REACT_APP_API_URL
   const LoaderCss = css`
     display: block;
     margin: 0 auto;
@@ -40,7 +41,7 @@ const Login = () => {
     if (credentials.username !== '' && credentials.password !== '') {
       setButtonDisable(true)
       setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
-      window.fetch('https://mercury-mailer-dsc.herokuapp.com/user/login', {
+      window.fetch(`${baseURL}/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)

@@ -15,6 +15,7 @@ const RecipientInput = (props) => {
   `
   const token = window.localStorage.getItem('token')
   const accessExpirationTime = window.localStorage.getItem('accessExpirationTime')
+  const baseURL = process.env.REACT_APP_API_URL
 
   useEffect(() => {
     if (items.length === 0) {
@@ -43,7 +44,7 @@ const RecipientInput = (props) => {
     formData.append('test_recipient_emails', items)
     formData.append('aws_region', 'ap-south-1')
 
-    window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send_test', {
+    window.fetch(`${baseURL}/send_email/send_test`, {
       method: 'POST',
       headers: new window.Headers({
         Authorization: 'Bearer ' + token

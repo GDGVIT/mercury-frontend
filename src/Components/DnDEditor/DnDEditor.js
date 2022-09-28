@@ -30,6 +30,8 @@ const DnDEnditor = () => {
   const history = useHistory()
   const mjml = useRef(null)
   const token = window.localStorage.getItem('token')
+  const baseURL = process.env.REACT_APP_API_URL
+
   let recipients
   if (location.state !== undefined) {
     recipients = location.state.recipients
@@ -80,7 +82,7 @@ const DnDEnditor = () => {
               imagesFormData.append('image', allowedFiles.files[i])
               imagesFormData.append('file_name', fileName)
             }
-            window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/get_image_url', {
+            window.fetch(`${baseURL}/send_email/get_image_url`, {
               method: 'POST',
               headers: new window.Headers({
                 Authorization: 'Bearer ' + token
@@ -149,7 +151,7 @@ const DnDEnditor = () => {
     }
 
     setEditor(Mjmleditor)
-  }, [token])
+  }, [token, baseURL])
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -209,7 +211,7 @@ const DnDEnditor = () => {
         formData.append('body_text', 'Hello world')
         formData.append('aws_region', 'ap-south-1')
 
-        window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send', {
+        window.fetch(`${baseURL}/send_email/send`, {
           method: 'POST',
           headers: new window.Headers({
             Authorization: 'Bearer ' + token
