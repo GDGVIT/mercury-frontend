@@ -43,7 +43,7 @@ const RecipientInput = (props) => {
     formData.append('test_recipient_emails', items)
     formData.append('aws_region', 'ap-south-1')
 
-    window.fetch('https://mercury-mailer-dsc.herokuapp.com/send_email/send_test', {
+    window.fetch('http://mercury-backend.dscvit.com/send_email/send_test', {
       method: 'POST',
       headers: new window.Headers({
         Authorization: 'Bearer ' + token

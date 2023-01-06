@@ -40,7 +40,7 @@ const Login = () => {
     if (credentials.username !== '' && credentials.password !== '') {
       setButtonDisable(true)
       setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
-      window.fetch('https://mercury-mailer-dsc.herokuapp.com/user/login', {
+      window.fetch('http://mercury-backend.dscvit.com/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)
