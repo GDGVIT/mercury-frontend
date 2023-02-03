@@ -40,7 +40,7 @@ const Login = () => {
     if (credentials.username !== '' && credentials.password !== '') {
       setButtonDisable(true)
       setButtonText(<PuffLoader css={LoaderCss} size={24} loading color='white' />)
-      window.fetch('https://mercury-backend.dscvit.com/user/login', {
+      window.fetch(process.env.REACT_APP_API_ENDPOINT + '/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)

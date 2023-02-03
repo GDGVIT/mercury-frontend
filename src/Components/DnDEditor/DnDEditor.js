@@ -80,7 +80,7 @@ const DnDEnditor = () => {
               imagesFormData.append('image', allowedFiles.files[i])
               imagesFormData.append('file_name', fileName)
             }
-            window.fetch('https://mercury-backend.dscvit.com/send_email/get_image_url', {
+            window.fetch(process.env.REACT_APP_API_ENDPOINT + '/send_email/get_image_url', {
               method: 'POST',
               headers: new window.Headers({
                 Authorization: 'Bearer ' + token
@@ -209,7 +209,7 @@ const DnDEnditor = () => {
         formData.append('body_text', 'Hello world')
         formData.append('aws_region', 'ap-south-1')
 
-        window.fetch('https://mercury-backend.dscvit.com/send_email/send', {
+        window.fetch(process.env.REACT_APP_API_ENDPOINT + '/send_email/send', {
           method: 'POST',
           headers: new window.Headers({
             Authorization: 'Bearer ' + token
