@@ -6,7 +6,7 @@ import HomeSvg from '../../assets/home.svg'
 
 const Home = () => {
   const handleDownload = async () => {
-    await window.open(`https://{process.env.REACT_APP_S3_BUCKET}.s3.ap-south-1.amazonaws.com/mercury.csv`)
+    await window.open(`https://${process.env.REACT_APP_S3_BUCKET}.s3.ap-south-1.amazonaws.com/mercury.csv`)
   }
 
   return (
